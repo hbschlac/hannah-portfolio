@@ -1,65 +1,63 @@
-import Image from "next/image";
+import { projects } from "@/content/projects";
+import ProjectTile from "@/components/ProjectTile";
+import Manifesto from "@/components/Manifesto";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-background">
+      {/* Name / header */}
+      <div className="max-w-2xl mx-auto px-6 pt-16 pb-2">
+        <p className="text-xs tracking-widest uppercase text-muted">
+          Hannah Schlacter
+        </p>
+        <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+          <p className="text-xs text-muted">PM building consumer products with AI</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+        <div className="flex items-center gap-3 mt-1 flex-wrap">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="mailto:hbschlac@gmail.com"
+            className="text-xs text-muted hover:text-foreground transition-colors"
+          >
+            hbschlac@gmail.com
+          </a>
+          <span className="text-muted/40 text-xs">·</span>
+          <a
+            href="https://www.linkedin.com/in/hannahschlacter"
             target="_blank"
             rel="noopener noreferrer"
+            className="text-xs text-muted hover:text-foreground transition-colors"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+            LinkedIn
           </a>
         </div>
-      </main>
-    </div>
+      </div>
+
+      {/* Manifesto */}
+      <Manifesto />
+
+      {/* Divider */}
+      <div className="max-w-2xl mx-auto px-6 py-10">
+        <div className="border-t border-border" />
+      </div>
+
+      {/* Projects */}
+      <section className="max-w-2xl mx-auto px-6 pb-24">
+        <p className="text-xs tracking-widest uppercase text-muted mb-1">
+          Projects
+        </p>
+        <p className="text-xs text-muted/70 mb-6">Four things I built because I wanted them to exist.</p>
+        <div className="flex flex-col gap-3">
+          {projects.map((project) => (
+            <ProjectTile key={project.slug} project={project} />
+          ))}
+        </div>
+      </section>
+      {/* Footer */}
+      <footer className="max-w-2xl mx-auto px-6 py-8 border-t border-border">
+        <p className="text-xs text-muted/60 mb-3">Open to PM roles at AI-first companies — <a href="mailto:hbschlac@gmail.com" className="hover:text-foreground transition-colors">hbschlac@gmail.com</a></p>
+        <p className="text-xs text-muted/60">Projects built with Claude, Codex &amp; ChatGPT.</p>
+        <p className="text-xs text-muted/60">This site built by Claude.</p>
+      </footer>
+    </main>
   );
 }
