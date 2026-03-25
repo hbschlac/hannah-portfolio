@@ -34,7 +34,7 @@ export async function loginAdmin(
     return { error: "Admin password not configured. Set ADMIN_PASSWORD in environment variables." };
   }
 
-  if (password !== expected) {
+  if (password.trim() !== expected.trim()) {
     return { error: "Incorrect password." };
   }
 

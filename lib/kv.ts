@@ -2,11 +2,11 @@ import { Redis } from "@upstash/redis";
 import { cacheLife, cacheTag } from "next/cache";
 
 function getRedis() {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
   if (!url || !token) {
     throw new Error(
-      "Missing Upstash Redis credentials. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN."
+      "Missing Redis credentials. Set KV_REST_API_URL and KV_REST_API_TOKEN in environment variables."
     );
   }
   return new Redis({ url, token });
