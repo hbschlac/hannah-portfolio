@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+@keyframes bounce-x {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+@theme inline {
+  --animate-bounce-x: bounce-x 1s ease-in-out infinite;
+  --color-background: #F8F6F2;
+  --color-foreground: #1A1A1A;
+  --color-accent: #E8A5B4;
+  --color-accent-light: #F5E0E6;
+  --color-muted: #8A8A8A;
+  --color-border: #E5E1D8;
+}
+
 :root {
   --font-inter: "Inter", system-ui, sans-serif;
 }

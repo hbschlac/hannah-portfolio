@@ -10,7 +10,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Hannah Schlacter",
-  description: "Resume",
+  description: "PM building consumer products with AI",
+  icons: {
+    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>",
+  },
 };
 
 export default function RootLayout({
