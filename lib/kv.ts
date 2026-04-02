@@ -1,5 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { cacheLife, cacheTag } from "next/cache";
+import type { DocBlock } from "@/lib/google";
 
 function getRedis() {
   const url = process.env.KV_REST_API_URL;
@@ -16,6 +17,25 @@ export type ResumeEntry = {
   slug: string;
   docId: string;
   label: string;
+  createdAt: string;
+  content?: DocBlock[];
+};
+
+export type IdeaCategory = "Memory" | "UI-UX" | "API" | "Agents" | "Tools" | "Other";
+export type IdeaStatus = "Draft" | "Active" | "Submitted";
+
+export type Idea = {
+  id: string;
+  title: string;
+  useCase: string;
+  category: IdeaCategory[];
+  status: IdeaStatus;
+  priority: number;
+  loe: number;
+  impact: number;
+  problemSize: string;
+  successMetrics: string;
+  notes: string;
   createdAt: string;
 };
 
@@ -35,6 +55,33 @@ export async function getResume(slug: string): Promise<ResumeEntry | null> {
   // Upstash may auto-parse JSON
   if (typeof raw === "object") return raw as ResumeEntry;
   return JSON.parse(raw);
+}
+
+const IDEAS_KEY = "claude-ideas";
+
+export async function getIdeasFromKV(): Promise<Idea[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("claude-ideas");
+
+  const redis = getRedis();
+  const raw = await redis.get<string>(IDEAS_KEY);
+  if (!raw) return [];
+  if (typeof raw === "object") return raw as Idea[];
+  return JSON.parse(raw) as Idea[];
+}
+
+export async function saveIdeasToKV(ideas: Idea[]): Promise<void> {
+  const redis = getRedis();
+  await redis.set(IDEAS_KEY, JSON.stringify(ideas));
+}
+
+export async function getIdeasFromKVDirect(): Promise<Idea[]> {
+  const redis = getRedis();
+  const raw = await redis.get<string>(IDEAS_KEY);
+  if (!raw) return [];
+  if (typeof raw === "object") return raw as Idea[];
+  return JSON.parse(raw) as Idea[];
 }
 
 export async function listResumes(): Promise<ResumeEntry[]> {

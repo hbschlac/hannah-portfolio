@@ -20,6 +20,11 @@ async function ResumeContent({ slug }: { slug: string }) {
   const entry = await getResume(slug);
   if (!entry) notFound();
 
+  // Use inline content if present (no Google Doc needed)
+  if (entry.content && entry.content.length > 0) {
+    return <ResumeLayout blocks={entry.content} />;
+  }
+
   let blocks;
   try {
     blocks = await fetchGoogleDoc(entry.docId);
