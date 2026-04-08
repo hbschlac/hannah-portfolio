@@ -2,7 +2,7 @@ import { Redis } from "@upstash/redis";
 
 // ── Types ──
 
-export type FeedbackSource = "reddit" | "hackernews" | "playstore" | "curated";
+export type FeedbackSource = "reddit" | "hackernews" | "playstore" | "appstore" | "stackoverflow" | "youtube" | "curated";
 
 export type RawFeedback = {
   id: string;
@@ -32,7 +32,7 @@ export type PainPointTheme = {
 export type AnalysisSnapshot = {
   lastUpdated: string;
   totalFeedback: number;
-  sources: Record<FeedbackSource, number>;
+  sources: Partial<Record<FeedbackSource, number>>;
   themes: PainPointTheme[];
   topCompetitors: { name: string; mentionCount: number; topReasons: string[] }[];
 };
@@ -225,6 +225,204 @@ export async function scrapePlayStore(): Promise<RawFeedback[]> {
   }
 }
 
+// ── YouTube scraper (search + transcripts) ──
+
+async function searchYouTubeVideoIds(query: string): Promise<string[]> {
+  try {
+    const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=CAISBAgCEAE`; // filter: this year, relevance
+    const res = await fetch(url, {
+      headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" },
+    });
+    if (!res.ok) return [];
+    const html = await res.text();
+    // Extract video IDs from ytInitialData
+    const ids = [...html.matchAll(/\"videoId\":\"([a-zA-Z0-9_-]{11})\"/g)].map((m) => m[1]);
+    // Deduplicate and take top 10
+    return [...new Set(ids)].slice(0, 10);
+  } catch {
+    return [];
+  }
+}
+
+async function getYouTubeTranscript(videoId: string): Promise<string | null> {
+  const { execSync } = await import("child_process");
+  try {
+    const result = execSync(
+      `python3 -c "
+from youtube_transcript_api import YouTubeTranscriptApi
+api = YouTubeTranscriptApi()
+try:
+    transcript = api.fetch('${videoId}', languages=['en'])
+    text = ' '.join([s.text for s in transcript.snippets])
+    print(text[:2000])
+except:
+    print('')
+"`,
+      { timeout: 10000, encoding: "utf-8" }
+    );
+    return result.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
+export async function scrapeYouTube(): Promise<RawFeedback[]> {
+  const queries = [
+    "gemini google workspace review",
+    "gemini docs gmail problems",
+    "google ai workspace honest review",
+    "gemini for workspace vs chatgpt",
+    "google workspace AI features review 2025",
+    "gemini side panel review",
+  ];
+
+  const allVideoIds = new Set<string>();
+  for (const q of queries) {
+    const ids = await searchYouTubeVideoIds(q);
+    ids.forEach((id) => allVideoIds.add(id));
+  }
+
+  const results: RawFeedback[] = [];
+  // Process up to 15 videos
+  const videoIds = [...allVideoIds].slice(0, 15);
+
+  for (const videoId of videoIds) {
+    const transcript = await getYouTubeTranscript(videoId);
+    if (!transcript || transcript.length < 50) continue;
+
+    results.push({
+      id: `youtube-${videoId}`,
+      source: "youtube",
+      text: transcript.slice(0, 500),
+      author: "YouTube creator",
+      url: `https://www.youtube.com/watch?v=${videoId}`,
+      score: 0,
+      date: new Date().toISOString(),
+    });
+  }
+
+  return results;
+}
+
+// ── Stack Overflow scraper (public API, no auth) ──
+
+export async function scrapeStackOverflow(): Promise<RawFeedback[]> {
+  const results: RawFeedback[] = [];
+  const queries = ["gemini+google+workspace", "gemini+docs", "gemini+gmail", "gemini+sheets", "google+ai+workspace"];
+
+  for (const query of queries) {
+    try {
+      const url = `https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=relevance&q=${query}&site=stackoverflow&pagesize=30&filter=withbody`;
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+
+      for (const item of data.items ?? []) {
+        const text = (item.title ?? "") + "\n\n" + ((item.body ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim());
+        if (text.length < 30) continue;
+        results.push({
+          id: `so-${item.question_id}`,
+          source: "stackoverflow",
+          text: text.slice(0, 500),
+          author: item.owner?.display_name ?? "anonymous",
+          url: item.link ?? `https://stackoverflow.com/q/${item.question_id}`,
+          score: item.score ?? 0,
+          date: new Date((item.creation_date ?? 0) * 1000).toISOString(),
+        });
+      }
+    } catch {
+      // skip
+    }
+  }
+
+  // Also search webapps.stackexchange.com (more Workspace questions)
+  for (const query of ["gemini+workspace", "google+gemini", "gemini+docs"]) {
+    try {
+      const url = `https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=relevance&q=${query}&site=webapps&pagesize=30&filter=withbody`;
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+
+      for (const item of data.items ?? []) {
+        const text = (item.title ?? "") + "\n\n" + ((item.body ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim());
+        if (text.length < 30) continue;
+        results.push({
+          id: `so-wa-${item.question_id}`,
+          source: "stackoverflow",
+          text: text.slice(0, 500),
+          author: item.owner?.display_name ?? "anonymous",
+          url: item.link ?? `https://webapps.stackexchange.com/q/${item.question_id}`,
+          score: item.score ?? 0,
+          date: new Date((item.creation_date ?? 0) * 1000).toISOString(),
+        });
+      }
+    } catch {
+      // skip
+    }
+  }
+
+  const seen = new Set<string>();
+  return results.filter((r) => {
+    if (seen.has(r.id)) return false;
+    seen.add(r.id);
+    return true;
+  });
+}
+
+// ── Apple App Store scraper ──
+
+export async function scrapeAppStore(): Promise<RawFeedback[]> {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const store = require("app-store-scraper");
+    const apps = [
+      { id: 422689480, name: "gmail" },    // Gmail
+      { id: 842842640, name: "docs" },     // Google Docs
+      { id: 842849113, name: "sheets" },   // Google Sheets
+      { id: 879478102, name: "slides" },   // Google Slides
+      { id: 1013161476, name: "meet" },    // Google Meet
+    ];
+
+    const AI_KEYWORDS = ["ai", "gemini", "smart", "suggest", "summary", "compose", "write", "draft", "autocomplete", "auto", "intelligence", "assistant", "copilot", "generate", "generated", "hallucin", "context", "help me", "side panel", "annoying", "useless", "broken", "buggy", "slow", "worse", "bad", "terrible", "garbage", "awful", "horrible", "update", "new feature", "recent update"];
+    const results: RawFeedback[] = [];
+    for (const app of apps) {
+      // Pull multiple pages
+      for (let page = 1; page <= 5; page++) {
+        try {
+          const reviews = await store.reviews({
+            id: app.id,
+            sort: store.sort.RECENT,
+            page,
+            country: "us",
+          });
+
+          if (!reviews?.length) break;
+
+          for (const review of reviews) {
+            const text = (review.text ?? "").toLowerCase();
+            if (!AI_KEYWORDS.some((kw) => text.includes(kw))) continue;
+
+            results.push({
+              id: `appstore-${app.name}-${review.id ?? crypto.randomUUID()}`,
+              source: "appstore",
+              text: review.text ?? "",
+              author: review.userName ?? "anonymous",
+              url: review.url ?? `https://apps.apple.com/app/id${app.id}`,
+              score: review.score ?? 3,
+              date: review.date ? new Date(review.date).toISOString() : new Date().toISOString(),
+            });
+          }
+        } catch {
+          // skip individual page failures
+        }
+      }
+    }
+    return results;
+  } catch {
+    return [];
+  }
+}
+
 // ── Curated data (manually sourced insights from articles/reports) ──
 
 export function getCuratedFeedback(): RawFeedback[] {
@@ -300,6 +498,69 @@ export function getCuratedFeedback(): RawFeedback[] {
       url: "https://www.reddit.com/r/GoogleWorkspace/",
       score: 0,
       date: "2026-03-10T00:00:00Z",
+    },
+    {
+      id: "curated-9",
+      source: "curated",
+      text: "Gemini in Calendar can't intelligently schedule meetings. It doesn't consider my working hours preferences, travel time, or even basic context like 'schedule this after my 1:1 with Sarah.' Reclaim.ai does this 10x better.",
+      author: "Calendar power user",
+      url: "https://www.reddit.com/r/productivity/",
+      score: 0,
+      date: "2026-02-20T00:00:00Z",
+    },
+    {
+      id: "curated-10",
+      source: "curated",
+      text: "Tried using Gemini to analyze a 50-page doc in Drive. It gave me a summary of the first 5 pages and hallucinated the rest. The context window might be large but it clearly isn't using it well for long documents.",
+      author: "Analyst",
+      url: "https://www.reddit.com/r/GoogleWorkspace/",
+      score: 0,
+      date: "2026-03-28T00:00:00Z",
+    },
+    {
+      id: "curated-11",
+      source: "curated",
+      text: "Privacy is a real concern. Gemini accessing my inbox by default with no clear opt-out is a dealbreaker for our legal team. We had to disable it org-wide which means we lose ALL AI features, not just the inbox scanning.",
+      author: "IT Director",
+      url: "https://www.reddit.com/r/sysadmin/",
+      score: 0,
+      date: "2026-01-30T00:00:00Z",
+    },
+    {
+      id: "curated-12",
+      source: "curated",
+      text: "The Gemini side panel in Slides is basically useless. It can generate an image or suggest a layout, but it can't restructure a presentation, reorder slides based on narrative flow, or create speaker notes that match my style. Gamma.app does all of this.",
+      author: "Presenter",
+      url: "https://www.reddit.com/r/GoogleWorkspace/",
+      score: 0,
+      date: "2026-03-05T00:00:00Z",
+    },
+    {
+      id: "curated-13",
+      source: "curated",
+      text: "Why doesn't Gemini in Chat summarize thread history? In Slack, AI catches you up on channels you missed. In Google Chat, Gemini can't even tell me what happened while I was away. Basic feature that's missing.",
+      author: "Chat user",
+      url: "https://www.reddit.com/r/google/",
+      score: 0,
+      date: "2026-02-15T00:00:00Z",
+    },
+    {
+      id: "curated-14",
+      source: "curated",
+      text: "Enterprise rollout of Gemini for Workspace has been painful. No granular admin controls — it's all or nothing. Can't enable AI for specific teams, can't restrict which data it accesses, can't set per-user policies. Microsoft Copilot admin controls are way ahead.",
+      author: "Enterprise Admin",
+      url: "https://www.reddit.com/r/sysadmin/",
+      score: 0,
+      date: "2026-03-12T00:00:00Z",
+    },
+    {
+      id: "curated-15",
+      source: "curated",
+      text: "Gemini can't work with attachments in Gmail. I get a PDF invoice, ask Gemini to extract the total and due date, and it says it can't access attachments. I have to download, upload to ChatGPT, and paste the answer back. Terrible workflow.",
+      author: "Operations Manager",
+      url: "https://www.reddit.com/r/GoogleWorkspace/",
+      score: 0,
+      date: "2026-02-25T00:00:00Z",
     },
   ];
 }
@@ -452,15 +713,20 @@ export function analyzeFeedback(raw: RawFeedback[], themes: PainPointTheme[]): P
 // ── Build full snapshot ──
 
 export async function buildSnapshot(): Promise<AnalysisSnapshot> {
-  // Scrape all sources
-  const [reddit, hn] = await Promise.all([
+  // Scrape all sources in parallel (with timeouts for flaky scrapers)
+  const withTimeout = <T>(p: Promise<T>, ms: number, fallback: T) =>
+    Promise.race([p, new Promise<T>((r) => setTimeout(() => r(fallback), ms))]);
+
+  const [reddit, hn, stackoverflow, appstore] = await Promise.all([
     scrapeReddit(),
     scrapeHackerNews(),
+    scrapeStackOverflow(),
+    withTimeout(scrapeAppStore(), 20000, []),
   ]);
-  // Play Store scraping is disabled in dev — can be enabled for production seeding
-  const playstore: RawFeedback[] = [];
+  // YouTube is slower (transcripts), run after fast sources
+  const youtube = await withTimeout(scrapeYouTube(), 60000, []);
   const curated = getCuratedFeedback();
-  const allFeedback = [...reddit, ...hn, ...playstore, ...curated];
+  const allFeedback = [...reddit, ...hn, ...stackoverflow, ...appstore, ...youtube, ...curated];
 
   // Analyze
   const themes = analyzeFeedback(allFeedback, getDefaultThemes());
@@ -490,7 +756,9 @@ export async function buildSnapshot(): Promise<AnalysisSnapshot> {
     sources: {
       reddit: reddit.length,
       hackernews: hn.length,
-      playstore: playstore.length,
+      stackoverflow: stackoverflow.length,
+      appstore: appstore.length,
+      youtube: youtube.length,
       curated: curated.length,
     },
     themes,

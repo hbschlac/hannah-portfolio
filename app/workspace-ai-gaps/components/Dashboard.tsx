@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { AnalysisSnapshot, PainPointTheme, WorkspaceApp } from "@/lib/workspace-ai";
+import { ChartsSection } from "./Charts";
 
 const APP_LABELS: Record<WorkspaceApp, string> = {
   gmail: "Gmail",
@@ -27,10 +28,13 @@ const APP_COLORS: Record<WorkspaceApp, string> = {
   general: "#5F6368",
 };
 
-const SOURCE_LABELS = {
+const SOURCE_LABELS: Record<string, string> = {
   reddit: "Reddit",
   hackernews: "Hacker News",
   playstore: "Play Store",
+  appstore: "App Store",
+  stackoverflow: "Stack Overflow",
+  youtube: "YouTube",
   curated: "Industry Reports",
 };
 
@@ -313,22 +317,15 @@ function Methodology({ snapshot }: { snapshot: AnalysisSnapshot }) {
         <div className="border rounded-xl p-5" style={{ borderColor: "#E8EAED" }}>
           <h3 className="font-medium text-gray-900 text-sm mb-3">Data Sources</h3>
           <ul className="space-y-2 text-sm text-gray-600">
-            <li className="flex justify-between">
-              <span>Reddit (r/GoogleWorkspace, r/google, r/artificial, etc.)</span>
-              <span className="text-gray-400 font-mono">{snapshot.sources.reddit}</span>
-            </li>
-            <li className="flex justify-between">
-              <span>Hacker News (stories + comments)</span>
-              <span className="text-gray-400 font-mono">{snapshot.sources.hackernews}</span>
-            </li>
-            <li className="flex justify-between">
-              <span>Google Play Store reviews</span>
-              <span className="text-gray-400 font-mono">{snapshot.sources.playstore}</span>
-            </li>
-            <li className="flex justify-between">
-              <span>Industry reports & curated sources</span>
-              <span className="text-gray-400 font-mono">{snapshot.sources.curated}</span>
-            </li>
+            {Object.entries(snapshot.sources)
+              .filter(([, v]) => (v ?? 0) > 0)
+              .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))
+              .map(([key, value]) => (
+                <li key={key} className="flex justify-between">
+                  <span>{SOURCE_LABELS[key] ?? key}</span>
+                  <span className="text-gray-400 font-mono">{value}</span>
+                </li>
+              ))}
           </ul>
         </div>
         <div className="border rounded-xl p-5" style={{ borderColor: "#E8EAED" }}>
@@ -459,14 +456,11 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
       </header>
 
       <main className="max-w-5xl mx-auto px-6">
-        {/* App Heatmap */}
-        <section className="mt-10">
-          <h2 className="text-xl font-bold text-gray-900 mb-1">Pain by App Surface</h2>
-          <p className="text-sm text-gray-500 mb-4">
-            Number of identified pain point themes affecting each Workspace app
-          </p>
-          <AppHeatmap themes={snapshot.themes} />
-        </section>
+        {/* Interactive Charts */}
+        <ChartsSection
+          snapshot={snapshot}
+          onAppFilter={(app) => setFilterApp(app)}
+        />
 
         {/* Pain Point Explorer */}
         <section className="mt-12">

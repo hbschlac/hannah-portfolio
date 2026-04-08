@@ -9,7 +9,7 @@ function buildFallbackSnapshot(): AnalysisSnapshot {
   return {
     lastUpdated: new Date().toISOString(),
     totalFeedback: curated.length,
-    sources: { reddit: 0, hackernews: 0, playstore: 0, curated: curated.length },
+    sources: { reddit: 0, hackernews: 0, stackoverflow: 0, appstore: 0, youtube: 0, curated: curated.length },
     themes,
     topCompetitors: [
       { name: "ChatGPT", mentionCount: 4, topReasons: ["More reliable grounding", "Better formula generation", "Persistent memory"] },
