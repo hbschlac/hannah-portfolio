@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         source: "/aiprojects/:slug",
         destination: "/projects/:slug",
       },
+      {
+        source: "/google-workspace-ai-feedback",
+        destination: "/workspace-ai-gaps",
+      },
     ];
   },
 };
