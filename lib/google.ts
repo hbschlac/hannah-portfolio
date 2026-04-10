@@ -1,6 +1,33 @@
 import { google } from "googleapis";
 import { cacheLife, cacheTag } from "next/cache";
 
+export async function exportDocAsPdf(docId: string): Promise<ArrayBuffer> {
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const key = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  if (!email || !key) throw new Error("Missing Google service account credentials.");
+
+  const auth = new google.auth.JWT({
+    email,
+    key,
+    scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+  });
+
+  const { token } = await auth.getAccessToken();
+  if (!token) throw new Error("Failed to obtain access token.");
+
+  const res = await fetch(
+    `https://www.googleapis.com/drive/v3/files/${docId}/export?mimeType=application%2Fpdf`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "(no body)");
+    throw new Error(`Drive export failed: ${res.status} ${res.statusText} — ${body}`);
+  }
+
+  return res.arrayBuffer();
+}
+
 function getDocsClient() {
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const key = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(

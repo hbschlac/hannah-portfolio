@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { createResume, logoutAdmin, type ActionState } from "@/app/actions";
+import { createResume, type ActionState } from "@/app/actions";
 
 function slugify(raw: string): string {
   return raw
@@ -19,23 +19,8 @@ export default function CreateResumeForm() {
   const [slugPreview, setSlugPreview] = useState("");
 
   return (
-    <div className="w-full max-w-lg">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <p className="text-xs tracking-widest uppercase text-stone-400 mb-1">schlacter.me</p>
-          <h1 className="text-2xl font-semibold text-stone-800">New Resume Page</h1>
-        </div>
-        <form action={logoutAdmin}>
-          <button
-            type="submit"
-            className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
-          >
-            Sign out
-          </button>
-        </form>
-      </div>
-
-      <form action={action} className="bg-white rounded-2xl shadow-sm border border-stone-200 p-8 space-y-6">
+    <div>
+      <form action={action} className="space-y-6">
         {/* Google Doc URL */}
         <div>
           <label htmlFor="docUrl" className="block text-sm font-medium text-stone-700 mb-1.5">

@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import LoginForm from "./LoginForm";
-import CreateResumeForm from "./CreateResumeForm";
+import AdminTabs from "./AdminTabs";
+import { listResumes } from "@/lib/kv";
 
 export default function AdminPage() {
   return (
@@ -16,5 +17,9 @@ export default function AdminPage() {
 async function AdminContent() {
   const cookieStore = await cookies();
   const isAuthed = cookieStore.get("admin_session")?.value === "1";
-  return isAuthed ? <CreateResumeForm /> : <LoginForm />;
+
+  if (!isAuthed) return <LoginForm />;
+
+  const resumes = await listResumes();
+  return <AdminTabs resumes={resumes} />;
 }

@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import type { AnalysisSnapshot, PainPointTheme, WorkspaceApp } from "@/lib/workspace-ai";
+import { useState, useEffect, useCallback } from "react";
+import type { AnalysisSnapshot, PainPointTheme, WorkspaceApp, RawFeedback, FeedbackSource } from "@/lib/workspace-ai";
 import { ChartsSection } from "./Charts";
+
+const GITHUB_URL = "https://github.com/hbschlac/workspace-ai-research";
+const RAW_DATA_URL = "/workspace-ai-gaps/api/export";
 
 const APP_LABELS: Record<WorkspaceApp, string> = {
   gmail: "Gmail",
@@ -85,10 +88,12 @@ function ThemeCard({
   theme,
   isExpanded,
   onToggle,
+  onViewData,
 }: {
   theme: PainPointTheme;
   isExpanded: boolean;
   onToggle: () => void;
+  onViewData: (themeId: string, themeName: string) => void;
 }) {
   return (
     <div
@@ -118,6 +123,19 @@ function ThemeCard({
 
       {isExpanded && (
         <div className="mt-5 pt-5 border-t" style={{ borderColor: "#E8EAED" }}>
+          {/* View all data points CTA */}
+          <div className="mb-4">
+            <button
+              onClick={(e) => { e.stopPropagation(); onViewData(theme.id, theme.name); }}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+              </svg>
+              View {theme.frequency > 0 ? `all ${theme.frequency}` : ""} source data points
+            </button>
+          </div>
+
           {/* Quotes */}
           {theme.quotes.length > 0 && (
             <div className="mb-5">
@@ -346,6 +364,187 @@ function Methodology({ snapshot }: { snapshot: AnalysisSnapshot }) {
   );
 }
 
+// ── Data Drawer ──
+
+const SOURCE_BADGE_COLORS: Record<FeedbackSource, { bg: string; text: string; label: string }> = {
+  reddit: { bg: "#FFF0EC", text: "#FF4500", label: "Reddit" },
+  hackernews: { bg: "#FFF3E8", text: "#FF6600", label: "Hacker News" },
+  playstore: { bg: "#E8F5E9", text: "#2E7D32", label: "Play Store" },
+  appstore: { bg: "#E3F2FD", text: "#0D47A1", label: "App Store" },
+  stackoverflow: { bg: "#FFF8E1", text: "#F48024", label: "Stack Overflow" },
+  youtube: { bg: "#FFEBEE", text: "#C62828", label: "YouTube" },
+  curated: { bg: "#F3F4F6", text: "#4B5563", label: "Curated" },
+};
+
+function SourceBadge({ source }: { source: FeedbackSource }) {
+  const colors = SOURCE_BADGE_COLORS[source] ?? { bg: "#F3F4F6", text: "#4B5563", label: source };
+  return (
+    <span
+      className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+      style={{ background: colors.bg, color: colors.text }}
+    >
+      {colors.label}
+    </span>
+  );
+}
+
+function DataDrawer({
+  themeId,
+  themeName,
+  onClose,
+}: {
+  themeId: string;
+  themeName: string;
+  onClose: () => void;
+}) {
+  const [items, setItems] = useState<RawFeedback[]>([]);
+  const [total, setTotal] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    fetch(`/workspace-ai-gaps/api/feedback?themeId=${encodeURIComponent(themeId)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setItems(data.items ?? []);
+        setTotal(data.total ?? 0);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to load data. Please try again.");
+        setLoading(false);
+      });
+  }, [themeId]);
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); },
+    [onClose]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/30 z-40"
+        onClick={onClose}
+      />
+      {/* Drawer */}
+      <div
+        className="fixed right-0 top-0 h-full w-full max-w-lg bg-white shadow-2xl z-50 flex flex-col"
+        style={{ borderLeft: "1px solid #E8EAED" }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "#E8EAED" }}>
+          <div>
+            <h3 className="font-semibold text-gray-900">{themeName}</h3>
+            {total !== null && (
+              <p className="text-xs text-gray-500 mt-0.5">{total} matching data points</p>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            <a
+              href={RAW_DATA_URL}
+              download
+              className="text-xs text-blue-500 hover:underline"
+            >
+              ↓ Download all
+            </a>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 p-1 rounded"
+              aria-label="Close"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          {loading && (
+            <div className="space-y-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="h-3 bg-gray-100 rounded w-24 mb-2" />
+                  <div className="h-4 bg-gray-100 rounded w-full mb-1" />
+                  <div className="h-4 bg-gray-100 rounded w-3/4" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {error && (
+            <p className="text-sm text-red-500 mt-4">{error}</p>
+          )}
+
+          {!loading && !error && items.length === 0 && (
+            <p className="text-sm text-gray-400 mt-4">No data points found for this theme yet. Run the scraper to populate live data.</p>
+          )}
+
+          {!loading && !error && items.length > 0 && (
+            <div className="space-y-5">
+              {items.map((item) => (
+                <div key={item.id} className="bg-gray-50 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <SourceBadge source={item.source} />
+                      <span className="text-xs text-gray-400">{item.author}</span>
+                    </div>
+                    <span className="text-xs text-gray-300">
+                      {new Date(item.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-800 leading-relaxed">{item.text}</p>
+                  <div className="flex items-center justify-between mt-3">
+                    {item.score > 0 && (
+                      <span className="text-xs text-gray-400">↑ {item.score}</span>
+                    )}
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-500 hover:underline ml-auto"
+                    >
+                      View source →
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="border-t px-6 py-3 bg-gray-50 flex items-center justify-between" style={{ borderColor: "#E8EAED" }}>
+          <a
+            href="/workspace-ai-gaps/methodology"
+            className="text-xs text-blue-500 hover:underline"
+          >
+            How this data was collected →
+          </a>
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-gray-400 hover:text-gray-600"
+          >
+            View code on GitHub
+          </a>
+        </div>
+      </div>
+    </>
+  );
+}
+
 // ── Heatmap ──
 
 function AppHeatmap({ themes }: { themes: PainPointTheme[] }) {
@@ -390,6 +589,7 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
   const [expandedTheme, setExpandedTheme] = useState<string | null>(null);
   const [filterApp, setFilterApp] = useState<WorkspaceApp | "all">("all");
   const [filterScope, setFilterScope] = useState<"all" | "platform" | "app-level">("all");
+  const [drawerTheme, setDrawerTheme] = useState<{ id: string; name: string } | null>(null);
 
   const filteredThemes = snapshot.themes.filter((t) => {
     if (filterApp !== "all" && !t.apps.includes(filterApp)) return false;
@@ -402,6 +602,13 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
 
   return (
     <div className="min-h-screen" style={{ background: "#FAFAFA" }}>
+      {drawerTheme && (
+        <DataDrawer
+          themeId={drawerTheme.id}
+          themeName={drawerTheme.name}
+          onClose={() => setDrawerTheme(null)}
+        />
+      )}
       {/* Hero */}
       <header className="bg-white border-b" style={{ borderColor: "#E8EAED" }}>
         <div className="max-w-5xl mx-auto px-6 py-12 md:py-16">
@@ -421,7 +628,7 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
             A data-driven opportunity map across Google Workspace AI surfaces —
             built from {snapshot.totalFeedback.toLocaleString()}+ public user signals.
           </p>
-          <div className="flex items-center gap-2 mt-5">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-5">
             <a
               href="https://www.linkedin.com/in/hannahschlacter"
               target="_blank"
@@ -430,8 +637,34 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
             >
               Hannah Schlacter
             </a>
-            <span className="text-gray-300">|</span>
-            <span className="text-sm text-gray-400">PM who ships</span>
+            <span className="text-gray-300 hidden md:inline">|</span>
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              Code on GitHub
+            </a>
+            <a
+              href={RAW_DATA_URL}
+              download
+              className="inline-flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full transition-colors"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+              </svg>
+              Raw data (JSON)
+            </a>
+            <a
+              href="/workspace-ai-gaps/methodology"
+              className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full transition-colors"
+            >
+              Methodology →
+            </a>
           </div>
 
           {/* Stats bar */}
@@ -506,6 +739,7 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
                 onToggle={() =>
                   setExpandedTheme(expandedTheme === theme.id ? null : theme.id)
                 }
+                onViewData={(id, name) => setDrawerTheme({ id, name })}
               />
             ))}
             {filteredThemes.length === 0 && (

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
   title: "How LLMs Work — Interactive Explainer | Hannah Schlacter",
@@ -11,6 +11,20 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://schlacter.me/llm-explainer",
   },
+  manifest: "/llm-explainer-manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "LLM Explainer",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#111827",
+  viewportFit: "cover",
 };
 
 export default function LLMExplainerLayout({

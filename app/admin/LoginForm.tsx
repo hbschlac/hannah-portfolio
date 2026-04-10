@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { loginAdmin, type ActionState } from "@/app/actions";
 
-export default function LoginForm() {
+export default function LoginForm({ redirectTo }: { redirectTo?: string } = {}) {
   const [state, action, pending] = useActionState<ActionState, FormData>(
     loginAdmin,
     {}
@@ -17,6 +17,7 @@ export default function LoginForm() {
       </div>
 
       <form action={action} className="bg-white rounded-2xl shadow-sm border border-stone-200 p-8 space-y-5">
+        {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-stone-700 mb-1.5">
             Password

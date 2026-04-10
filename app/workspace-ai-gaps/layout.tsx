@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Gemini Workspace AI Gap Analysis | Hannah Schlacter",
-  description: "User-driven analysis of Gemini for Google Workspace pain points, competitive alternatives, and strategic opportunities for the AI Foundations team.",
+  title: "Gemini Workspace AI — Opportunity Map | Hannah Schlacter",
+  description: "Where users say Gemini for Workspace could win next — a data-driven opportunity analysis across 1,000+ public feedback signals.",
   openGraph: {
-    title: "Gemini Workspace AI Gap Analysis",
-    description: "Real user feedback reveals where Gemini for Workspace falls short — and where the AI Foundations team should focus next.",
+    title: "Gemini Workspace AI — Opportunity Map",
+    description: "1,000+ user signals reveal where Gemini for Workspace has the biggest room to grow — and where the AI Foundations team can have the most impact.",
     type: "website",
     url: "https://schlacter.me/workspace-ai-gaps",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gemini Workspace AI Gap Analysis",
-    description: "Real user feedback reveals where Gemini for Workspace falls short.",
+    title: "Gemini Workspace AI — Opportunity Map",
+    description: "1,000+ user signals reveal where Gemini for Workspace has the biggest room to grow.",
   },
 };
 

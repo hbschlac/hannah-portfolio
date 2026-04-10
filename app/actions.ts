@@ -47,7 +47,8 @@ export async function loginAdmin(
     maxAge: 60 * 60 * 24 * 7, // 7 days
   });
 
-  redirect("/admin");
+  const redirectTo = (formData.get("redirectTo") as string) || "/admin";
+  redirect(redirectTo.startsWith("/") ? redirectTo : "/admin");
 }
 
 export async function createResume(

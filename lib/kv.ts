@@ -84,6 +84,50 @@ export async function getIdeasFromKVDirect(): Promise<Idea[]> {
   return JSON.parse(raw) as Idea[];
 }
 
+export type JobPriority = "high" | "medium" | "low";
+
+export type JobApplication = {
+  id: string;
+  company: string;
+  role: string;
+  jobUrl?: string;
+  cvReady: boolean;
+  outreachDone: boolean;
+  applied: boolean;
+  notes: string;
+  priority: JobPriority;
+  activeSession?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+const JOBS_KEY = "jobs";
+
+export async function getJobsFromKV(): Promise<JobApplication[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("jobs");
+
+  const redis = getRedis();
+  const raw = await redis.get<string>(JOBS_KEY);
+  if (!raw) return [];
+  if (typeof raw === "object") return raw as JobApplication[];
+  return JSON.parse(raw) as JobApplication[];
+}
+
+export async function getJobsFromKVDirect(): Promise<JobApplication[]> {
+  const redis = getRedis();
+  const raw = await redis.get<string>(JOBS_KEY);
+  if (!raw) return [];
+  if (typeof raw === "object") return raw as JobApplication[];
+  return JSON.parse(raw) as JobApplication[];
+}
+
+export async function saveJobsToKV(jobs: JobApplication[]): Promise<void> {
+  const redis = getRedis();
+  await redis.set(JOBS_KEY, JSON.stringify(jobs));
+}
+
 export async function listResumes(): Promise<ResumeEntry[]> {
   "use cache";
   cacheLife("hours");

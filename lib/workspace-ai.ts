@@ -571,22 +571,22 @@ export function getDefaultThemes(): PainPointTheme[] {
   return [
     {
       id: "hallucination",
-      name: "Hallucination & Trust",
-      description: "Gemini fabricates content not present in the source document, creating trust issues for business-critical work",
+      name: "Trust & Grounding",
+      description: "Opportunity to strengthen source-grounded AI output — users want reliable, citable results for business-critical work",
       severity: 5,
       frequency: 0,
       apps: ["docs", "gmail", "meet"],
       quotes: [],
       competitorAlternatives: [
-        { tool: "ChatGPT", reason: "Users report more reliable grounding and source citation" },
-        { tool: "Notion AI", reason: "Better at staying within document context without hallucinating" },
+        { tool: "ChatGPT", reason: "Users value its source grounding and citation approach" },
+        { tool: "Notion AI", reason: "Praised for staying within document context" },
       ],
       scope: "platform",
     },
     {
       id: "cross-app-memory",
-      name: "No Cross-App Context",
-      description: "Gemini side panel loses all context when switching between Workspace apps — no memory of previous interactions across surfaces",
+      name: "Cross-App Context & Memory",
+      description: "Users want Gemini to carry context across Workspace apps — a shared memory layer would unlock Workspace's unique integration advantage",
       severity: 5,
       frequency: 0,
       apps: ["general", "gmail", "docs", "sheets", "drive"],
@@ -599,22 +599,22 @@ export function getDefaultThemes(): PainPointTheme[] {
     },
     {
       id: "mobile-voice",
-      name: "Broken Mobile & Voice Experience",
-      description: "AI features are desktop-first — mobile side panel is cramped, voice input unreliable, no hands-free workflows",
+      name: "Mobile & Voice-First AI",
+      description: "Huge opportunity in mobile-native AI — voice workflows and on-the-go AI could reach frontline and field workers that desktop tools miss",
       severity: 4,
       frequency: 0,
       apps: ["general", "gmail", "docs", "meet"],
       quotes: [],
       competitorAlternatives: [
-        { tool: "ChatGPT mobile app", reason: "Superior voice mode and mobile-native AI interactions" },
-        { tool: "Apple Intelligence", reason: "System-level integration on mobile, voice-first design" },
+        { tool: "ChatGPT mobile app", reason: "Sets the bar for voice mode and mobile-native AI" },
+        { tool: "Apple Intelligence", reason: "Shows value of system-level mobile integration" },
       ],
       scope: "platform",
     },
     {
       id: "writing-quality",
-      name: "Generic, Context-Deaf Writing",
-      description: "'Help me write' generates bland corporate text — doesn't match document tone, user's style, or organizational context",
+      name: "Context-Aware Writing",
+      description: "Users want 'Help me write' to match their tone, style, and org context — personalized writing is the next quality bar",
       severity: 4,
       frequency: 0,
       apps: ["docs", "gmail"],
@@ -628,8 +628,8 @@ export function getDefaultThemes(): PainPointTheme[] {
     },
     {
       id: "formula-weakness",
-      name: "Weak Spreadsheet Intelligence",
-      description: "Gemini in Sheets can't handle complex formulas, array functions, or data analysis — users go to ChatGPT for formula help",
+      name: "Deeper Spreadsheet Intelligence",
+      description: "Room to grow in complex formula generation, array functions, and data analysis — users want Sheets AI to match their power-user workflows",
       severity: 3,
       frequency: 0,
       apps: ["sheets"],
@@ -642,8 +642,8 @@ export function getDefaultThemes(): PainPointTheme[] {
     },
     {
       id: "meeting-attribution",
-      name: "Inaccurate Meeting Intelligence",
-      description: "Meet summaries misattribute action items, miss side conversations, and produce unreliable notes — teams revert to manual note-taking",
+      name: "Meeting Intelligence Upgrade",
+      description: "Users want more accurate speaker attribution, better action-item extraction, and searchable meeting history — high-impact surface for AI",
       severity: 4,
       frequency: 0,
       apps: ["meet"],
@@ -657,15 +657,15 @@ export function getDefaultThemes(): PainPointTheme[] {
     },
     {
       id: "pricing-value",
-      name: "Price-to-Value Gap",
-      description: "Workspace AI tier costs $20-30/user/month but features aren't reliable enough to justify — teams consider dropping AI tier for standalone tools",
+      name: "Value Perception",
+      description: "Users want the Workspace AI tier to deliver clear, measurable ROI — closing the gap between pricing and perceived value drives retention",
       severity: 3,
       frequency: 0,
       apps: ["general"],
       quotes: [],
       competitorAlternatives: [
-        { tool: "ChatGPT Team", reason: "More capable AI at $25/user/month without Workspace lock-in" },
-        { tool: "Claude Pro", reason: "Better reasoning and document analysis at $20/month" },
+        { tool: "ChatGPT Team", reason: "Users compare value at $25/user/month" },
+        { tool: "Claude Pro", reason: "Users cite strong reasoning and document analysis at $20/month" },
       ],
       scope: "platform",
     },
@@ -674,7 +674,7 @@ export function getDefaultThemes(): PainPointTheme[] {
 
 // ── Analysis: match raw feedback to themes ──
 
-const THEME_KEYWORDS: Record<string, string[]> = {
+export const THEME_KEYWORDS: Record<string, string[]> = {
   hallucination: ["hallucinate", "hallucination", "made up", "fabricat", "incorrect", "wrong information", "inaccurate", "not true", "false", "imagin", "invented"],
   "cross-app-memory": ["context", "memory", "remember", "forget", "loses context", "switch", "cross-app", "between apps", "side panel", "persistent"],
   "mobile-voice": ["mobile", "phone", "voice", "hands-free", "android", "ios", "cramped", "small screen", "touch"],
@@ -683,6 +683,10 @@ const THEME_KEYWORDS: Record<string, string[]> = {
   "meeting-attribution": ["meeting", "summary", "action item", "transcript", "speaker", "attribution", "notes", "minutes", "meet"],
   "pricing-value": ["price", "pricing", "cost", "expensive", "worth", "value", "per user", "subscription", "tier", "pay"],
 };
+
+export function getThemeById(id: string): PainPointTheme | undefined {
+  return getDefaultThemes().find((t) => t.id === id);
+}
 
 export function analyzeFeedback(raw: RawFeedback[], themes: PainPointTheme[]): PainPointTheme[] {
   const updated = themes.map((t) => ({ ...t, quotes: [] as PainPointTheme["quotes"], frequency: 0 }));

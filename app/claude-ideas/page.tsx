@@ -1,20 +1,32 @@
-import { getIdeasFromKV } from "@/lib/kv";
-import IdeasTable from "./IdeasTable";
+import { Suspense } from "react";
+import Dashboard from "./Dashboard";
+import type { RedditPost, RunSummary } from "./types";
 
-export const metadata = { title: "Claude Ideas — schlacter.me" };
+export const metadata = { title: "Claude Wish List — schlacter.me" };
+
+const RAW_BASE =
+  "https://raw.githubusercontent.com/hbschlac/build-log/main/reddit-pulse";
+
+async function getData(): Promise<{ runs: RunSummary[]; allPosts: RedditPost[] }> {
+  try {
+    const [runsRes, postsRes] = await Promise.all([
+      fetch(`${RAW_BASE}/runs.json`, { next: { tags: ["reddit-pulse"] } }),
+      fetch(`${RAW_BASE}/all-posts.json`, { next: { tags: ["reddit-pulse"] } }),
+    ]);
+    const [runs, allPosts] = await Promise.all([runsRes.json(), postsRes.json()]);
+    return { runs: runs ?? [], allPosts: allPosts ?? [] };
+  } catch {
+    return { runs: [], allPosts: [] };
+  }
+}
 
 export default async function ClaudeIdeasPage() {
-  const initialIdeas = await getIdeasFromKV();
+  const { runs, allPosts } = await getData();
   return (
-    <main className="min-h-screen bg-white px-4 py-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <p className="text-xs tracking-widest uppercase text-stone-400 mb-1">schlacter.me</p>
-          <h1 className="text-2xl font-semibold text-stone-800">Claude Ideas</h1>
-          <p className="text-sm text-stone-500 mt-1">Feature ideas tracker</p>
-        </div>
-        <IdeasTable initialIdeas={initialIdeas} />
-      </div>
+    <main className="min-h-screen bg-[#0f0f13] text-white">
+      <Suspense fallback={<div className="p-12 text-stone-500">Loading…</div>}>
+        <Dashboard runs={runs} allPosts={allPosts} />
+      </Suspense>
     </main>
   );
 }

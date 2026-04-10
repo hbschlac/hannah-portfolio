@@ -1,0 +1,24 @@
+{
+  "name": "How LLMs Work",
+  "short_name": "LLM Explainer",
+  "description": "An interactive guide to how large language models work — no PhD required.",
+  "start_url": "/llm-explainer",
+  "scope": "/llm-explainer",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/llm-icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/llm-icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

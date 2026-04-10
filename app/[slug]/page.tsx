@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getResume } from "@/lib/kv";
 import { fetchGoogleDoc } from "@/lib/google";
 import ResumeLayout from "@/components/ResumeLayout";
+import DownloadPDFButton from "@/components/DownloadPDFButton";
 
 export default function ResumePage({ params }: PageProps<"/[slug]">) {
   return (
@@ -20,9 +21,11 @@ async function ResumeContent({ slug }: { slug: string }) {
   const entry = await getResume(slug);
   if (!entry) notFound();
 
+  const button = entry.docId ? <DownloadPDFButton slug={slug} /> : null;
+
   // Use inline content if present (no Google Doc needed)
   if (entry.content && entry.content.length > 0) {
-    return <ResumeLayout blocks={entry.content} />;
+    return <>{button}<ResumeLayout blocks={entry.content} /></>;
   }
 
   let blocks;
@@ -38,7 +41,7 @@ async function ResumeContent({ slug }: { slug: string }) {
     );
   }
 
-  return <ResumeLayout blocks={blocks} />;
+  return <>{button}<ResumeLayout blocks={blocks} /></>;
 }
 
 function ResumeSkeleton() {
