@@ -49,7 +49,7 @@ function BubbleChart({ themes }: { themes: PainPointTheme[] }) {
 
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-700 mb-1">Severity vs. Frequency</h3>
+      <h3 className="text-sm font-semibold text-gray-700 mb-1">Urgency vs. Frequency</h3>
       <p className="text-xs text-gray-400 mb-3">Bubble size = mention count. Blue = platform-level.</p>
       <div className="relative overflow-hidden">
         <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
@@ -69,7 +69,7 @@ function BubbleChart({ themes }: { themes: PainPointTheme[] }) {
           {[1, 2, 3, 4, 5].map((y) => (
             <text key={`yl-${y}`} x={PAD - 8} y={H - PAD - ((y / 5) * (H - 2 * PAD)) + 4} textAnchor="end" fontSize={10} fill="#9AA0A6">{y}</text>
           ))}
-          <text x={14} y={H / 2} textAnchor="middle" fontSize={10} fill="#9AA0A6" transform={`rotate(-90, 14, ${H / 2})`}>Severity</text>
+          <text x={14} y={H / 2} textAnchor="middle" fontSize={10} fill="#9AA0A6" transform={`rotate(-90, 14, ${H / 2})`}>Urgency</text>
           <text x={W / 2} y={H - 8} textAnchor="middle" fontSize={10} fill="#9AA0A6">Mentions</text>
           {/* Bubbles */}
           {themes.map((t) => {
@@ -94,7 +94,7 @@ function BubbleChart({ themes }: { themes: PainPointTheme[] }) {
               <p className="font-semibold text-sm text-gray-900">{t.name}</p>
               <p className="text-xs text-gray-500 mt-1">{t.description}</p>
               <div className="flex gap-3 mt-2 text-xs text-gray-600">
-                <span>Severity: <strong>{t.severity}/5</strong></span>
+                <span>Urgency: <strong>{t.severity}/5</strong></span>
                 <span>Mentions: <strong>{t.frequency}</strong></span>
               </div>
               <span className={`inline-block mt-2 text-xs px-2 py-0.5 rounded-full ${t.scope === "platform" ? "bg-blue-50 text-blue-700" : "bg-gray-100 text-gray-600"}`}>
@@ -193,7 +193,7 @@ function AppPainBars({
 
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-700 mb-1">Pain by App Surface</h3>
+      <h3 className="text-sm font-semibold text-gray-700 mb-1">Opportunity by App Surface</h3>
       <p className="text-xs text-gray-400 mb-4">Click a bar to filter the explorer below. Blue = platform, gray = app-level.</p>
       <div className="space-y-2">
         {data.map((d) => (
@@ -235,12 +235,12 @@ function ImpactBars({ themes }: { themes: PainPointTheme[] }) {
 
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-700 mb-1">Impact Score (Severity x Frequency)</h3>
-      <p className="text-xs text-gray-400 mb-4">Combined urgency ranking — higher = more critical for the team</p>
+      <h3 className="text-sm font-semibold text-gray-700 mb-1">Impact Score (Urgency x Frequency)</h3>
+      <p className="text-xs text-gray-400 mb-4">Combined opportunity ranking — higher = more user demand</p>
       <div className="space-y-2.5">
         {data.map((d) => (
           <div key={d.id} className="flex items-center gap-3">
-            <span className="text-xs text-gray-600 w-36 shrink-0 truncate" title={d.name}>{d.name}</span>
+            <span className="text-xs text-gray-600 w-20 sm:w-36 shrink-0 truncate" title={d.name}>{d.name}</span>
             <div className="flex-1 h-7 bg-gray-100 rounded-full overflow-hidden relative">
               <div
                 className="h-full rounded-full transition-all"
@@ -293,7 +293,7 @@ export function ChartsSection({
 
         {/* Switchable chart area */}
         <div className="lg:col-span-2 border rounded-xl p-5 bg-white" style={{ borderColor: "#E8EAED" }}>
-          <div className="flex gap-1 mb-4">
+          <div className="flex flex-wrap gap-1 mb-4">
             {(["bubble", "apps", "impact"] as const).map((tab) => (
               <button
                 key={tab}
@@ -304,7 +304,7 @@ export function ChartsSection({
                     : "text-gray-500 hover:bg-gray-50"
                 }`}
               >
-                {tab === "bubble" ? "Severity vs Frequency" : tab === "apps" ? "By App" : "Impact Score"}
+                {tab === "bubble" ? "Urgency vs Frequency" : tab === "apps" ? "By App" : "Impact Score"}
               </button>
             ))}
           </div>

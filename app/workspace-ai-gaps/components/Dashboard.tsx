@@ -76,7 +76,7 @@ function ScopeTag({ scope }: { scope: "platform" | "app-level" }) {
           : "bg-gray-100 text-gray-600"
       }`}
     >
-      {scope === "platform" ? "AI Foundations" : "App-Level"}
+      {scope === "platform" ? "Platform-Level" : "App-Level"}
     </span>
   );
 }
@@ -153,14 +153,14 @@ function ThemeCard({
           {/* Competitive alternatives */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
-              Where Users Go Instead
+              Competitive Benchmark
             </h4>
             <div className="space-y-2">
               {theme.competitorAlternatives.map((alt, i) => (
-                <div key={i} className="flex items-start gap-3 bg-red-50/50 rounded-lg p-3">
-                  <div className="shrink-0 w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#EA4335" strokeWidth="2">
-                      <path d="M7 17l9.2-9.2M17 17V7H7" />
+                <div key={i} className="flex items-start gap-3 bg-amber-50/50 rounded-lg p-3">
+                  <div className="shrink-0 w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                   </div>
                   <div>
@@ -186,21 +186,21 @@ function CompetitorSection({
     <section className="mt-12">
       <h2 className="text-xl font-bold text-gray-900 mb-1">Competitive Landscape</h2>
       <p className="text-sm text-gray-500 mb-6">
-        Tools users switch to when Gemini for Workspace falls short
+        Tools users benchmark Gemini against — and what they value most
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {competitors.slice(0, 6).map((c) => (
           <div key={c.name} className="border rounded-xl p-5" style={{ borderColor: "#E8EAED" }}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-gray-900">{c.name}</h3>
-              <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">
+              <span className="text-xs bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-medium">
                 {c.mentionCount} refs
               </span>
             </div>
             <ul className="space-y-2">
               {c.topReasons.map((r, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                  <span className="text-red-400 mt-0.5 shrink-0">-</span>
+                  <span className="text-amber-400 mt-0.5 shrink-0">→</span>
                   {r}
                 </li>
               ))}
@@ -220,17 +220,17 @@ function StrategicSynthesis({ themes }: { themes: PainPointTheme[] }) {
     <section className="mt-12">
       <h2 className="text-xl font-bold text-gray-900 mb-1">Strategic Synthesis</h2>
       <p className="text-sm text-gray-500 mb-6">
-        Prioritization framework for the AI Foundations team
+        Why fixing cross-app context unlocks every other feature
       </p>
 
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 mb-6">
         <h3 className="font-semibold text-blue-900 mb-2">Core Thesis</h3>
         <p className="text-sm text-blue-800 leading-relaxed">
-          The biggest gaps in Gemini for Workspace aren&apos;t feature gaps — they&apos;re <strong>platform gaps</strong>.
-          Individual apps can&apos;t fix cross-surface context loss, hallucination grounding, or mobile AI
-          architecture on their own. These require horizontal investment in the AI Foundations layer.
-          Until the platform solves trust and continuity, users will keep switching to standalone tools
-          that work reliably in one context rather than unreliably across many.
+          The biggest wins aren&apos;t inside individual apps — they&apos;re in the spaces between them.
+          When Gemini remembers what you were doing in Gmail as you move to Docs,
+          users stop switching to ChatGPT. Workspace is the only suite where email,
+          docs, sheets, and meetings all live under one roof. Fixing cross-app memory
+          and reliability turns that into an advantage no standalone tool can match.
         </p>
       </div>
 
@@ -238,7 +238,7 @@ function StrategicSynthesis({ themes }: { themes: PainPointTheme[] }) {
         <div>
           <h3 className="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-blue-500" />
-            AI Foundations Scope (Platform)
+            Platform Opportunities
           </h3>
           <div className="space-y-3">
             {platformThemes.map((t, i) => (
@@ -281,26 +281,25 @@ function StrategicSynthesis({ themes }: { themes: PainPointTheme[] }) {
         <h3 className="font-semibold text-gray-900 mb-3">Why This Prioritization</h3>
         <div className="space-y-4 text-sm text-gray-700">
           <div>
-            <span className="font-medium text-blue-600">1. Hallucination & Trust</span>
+            <span className="font-medium text-blue-600">1. Trust & Grounding</span>
             <span className="text-gray-400"> — </span>
-            This is the prerequisite for everything else. If users don&apos;t trust AI output in business
-            documents, no amount of feature work matters. The platform needs better grounding,
-            citation, and confidence calibration before app teams can build reliably on top.
+            This is the prerequisite that multiplies every other investment. Better grounding,
+            citation, and confidence calibration at the platform level lets every app team
+            build more ambitious features on a reliable foundation.
           </div>
           <div>
             <span className="font-medium text-blue-600">2. Cross-App Context</span>
             <span className="text-gray-400"> — </span>
-            This is Google&apos;s structural advantage that isn&apos;t being exploited. Workspace is the only
-            suite where email, docs, sheets, and meetings live under one roof — yet the AI treats
-            each app as an island. A shared context layer would be the single biggest moat against
-            standalone tools like ChatGPT.
+            This is Google&apos;s structural advantage — Workspace is the only suite where email, docs,
+            sheets, and meetings live under one roof. A shared context layer turns this into a
+            compounding moat that standalone tools can&apos;t replicate.
           </div>
           <div>
             <span className="font-medium text-blue-600">3. Mobile & Voice</span>
             <span className="text-gray-400"> — </span>
-            The JD explicitly calls out &ldquo;mobile form factors and voice native fulfillment&rdquo; as scope.
-            With mobile-first workers in frontline, sales, and field roles, a voice-native AI
-            assistant in Workspace could unlock entirely new user segments that desktop AI doesn&apos;t reach.
+            Mobile-first workers in frontline, sales, and field roles represent a massive
+            underserved segment. A voice-native AI assistant in Workspace could open
+            entirely new use cases that desktop-focused competitors aren&apos;t even targeting.
           </div>
         </div>
       </div>
@@ -368,10 +367,10 @@ function AppHeatmap({ themes }: { themes: PainPointTheme[] }) {
             <div
               className="rounded-lg p-3 mb-1 transition-colors"
               style={{
-                background: `rgba(234, 67, 53, ${0.08 + intensity * 0.42})`,
+                background: `rgba(66, 133, 244, ${0.08 + intensity * 0.42})`,
               }}
             >
-              <div className="text-lg font-bold" style={{ color: `rgba(234, 67, 53, ${0.4 + intensity * 0.6})` }}>
+              <div className="text-lg font-bold" style={{ color: `rgba(66, 133, 244, ${0.4 + intensity * 0.6})` }}>
                 {issueCount}
               </div>
             </div>
@@ -414,11 +413,11 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
-            Where Gemini for Workspace Falls Short
+            Where Gemini for Workspace Can Win Next
           </h1>
           <p className="text-lg text-gray-500 mt-3 max-w-2xl">
-            A data-driven analysis of user pain points across Google Workspace AI surfaces —
-            and where the AI Foundations team should focus next.
+            A data-driven opportunity map across Google Workspace AI surfaces —
+            built from {snapshot.totalFeedback.toLocaleString()}+ public user signals.
           </p>
           <div className="flex items-center gap-2 mt-5">
             <a
@@ -441,15 +440,15 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-gray-900">{snapshot.themes.length}</div>
-              <div className="text-xs text-gray-500 mt-0.5">Pain point themes</div>
+              <div className="text-xs text-gray-500 mt-0.5">Opportunity themes</div>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-blue-600">{platformCount}</div>
-              <div className="text-xs text-gray-500 mt-0.5">Platform-level gaps</div>
+              <div className="text-xs text-gray-500 mt-0.5">Platform-level opportunities</div>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-red-500">{snapshot.topCompetitors.length}</div>
-              <div className="text-xs text-gray-500 mt-0.5">Competing tools cited</div>
+              <div className="text-2xl font-bold text-amber-500">{snapshot.topCompetitors.length}</div>
+              <div className="text-xs text-gray-500 mt-0.5">Competitive benchmarks</div>
             </div>
           </div>
         </div>
@@ -466,8 +465,8 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
         <section className="mt-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Pain Point Explorer</h2>
-              <p className="text-sm text-gray-500 mt-0.5">Click any theme to see user quotes and competitive alternatives</p>
+              <h2 className="text-xl font-bold text-gray-900">Opportunity Explorer</h2>
+              <p className="text-sm text-gray-500 mt-0.5">Click any theme to see user signals and competitive benchmarks</p>
             </div>
             <div className="flex gap-2 flex-wrap">
               <select
@@ -490,7 +489,7 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
                 style={{ borderColor: "#E8EAED" }}
               >
                 <option value="all">All Scopes</option>
-                <option value="platform">AI Foundations</option>
+                <option value="platform">Platform-Level</option>
                 <option value="app-level">App-Level</option>
               </select>
             </div>
@@ -535,7 +534,7 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
           >
             Hannah Schlacter
           </a>{" "}
-          — PM applying to Google Workspace AI Foundations
+          — Product Manager
         </p>
         <p className="text-xs text-gray-300 mt-1">
           Data sourced from public forums. Analysis assisted by AI.
