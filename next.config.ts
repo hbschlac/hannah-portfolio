@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         source: "/google-workspace-ai-feedback",
         destination: "/workspace-ai-gaps",
       },
+      {
+        source: "/gmail-search-overview",
+        destination: "/gmail-search-ai",
+      },
     ];
   },
 };
