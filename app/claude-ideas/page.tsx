@@ -10,8 +10,8 @@ const RAW_BASE =
 async function getData(): Promise<{ runs: RunSummary[]; allPosts: RedditPost[] }> {
   try {
     const [runsRes, postsRes] = await Promise.all([
-      fetch(`${RAW_BASE}/runs.json`, { next: { tags: ["reddit-pulse"] } }),
-      fetch(`${RAW_BASE}/all-posts.json`, { next: { tags: ["reddit-pulse"] } }),
+      fetch(`${RAW_BASE}/runs.json`, { cache: "no-store" }),
+      fetch(`${RAW_BASE}/all-posts.json`, { cache: "no-store" }),
     ]);
     const [runs, allPosts] = await Promise.all([runsRes.json(), postsRes.json()]);
     return { runs: runs ?? [], allPosts: allPosts ?? [] };
@@ -20,12 +20,16 @@ async function getData(): Promise<{ runs: RunSummary[]; allPosts: RedditPost[] }
   }
 }
 
-export default async function ClaudeIdeasPage() {
+async function DashboardLoader() {
   const { runs, allPosts } = await getData();
+  return <Dashboard runs={runs} allPosts={allPosts} />;
+}
+
+export default function ClaudeIdeasPage() {
   return (
     <main className="min-h-screen bg-[#0f0f13] text-white">
       <Suspense fallback={<div className="p-12 text-stone-500">Loading…</div>}>
-        <Dashboard runs={runs} allPosts={allPosts} />
+        <DashboardLoader />
       </Suspense>
     </main>
   );
