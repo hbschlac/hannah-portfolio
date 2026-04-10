@@ -1,5 +1,5 @@
 import { revalidateTag } from "next/cache";
-import { getJobsFromKVDirect, saveJobsToKV, type JobApplication, type JobPriority } from "@/lib/kv";
+import { getJobsFromKVDirect, saveJobsToKV, type JobApplication, type JobPriority, type InterviewStage } from "@/lib/kv";
 
 export async function GET(request: Request) {
   const secret = process.env.SYNC_SECRET?.trim();
@@ -58,6 +58,9 @@ export async function POST(request: Request) {
       notes: job.notes ?? "",
       priority: (job.priority as JobPriority) ?? "medium",
       activeSession: job.activeSession ?? "",
+      ...(job.interviewStage && { interviewStage: job.interviewStage as InterviewStage }),
+      ...(job.interviewDate && { interviewDate: job.interviewDate }),
+      ...(job.interviewNotes && { interviewNotes: job.interviewNotes }),
       createdAt: now,
       updatedAt: now,
     };

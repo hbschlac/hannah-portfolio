@@ -85,6 +85,7 @@ export async function getIdeasFromKVDirect(): Promise<Idea[]> {
 }
 
 export type JobPriority = "high" | "medium" | "low";
+export type InterviewStage = "screening" | "onsite" | "offer" | "rejected";
 
 export type JobApplication = {
   id: string;
@@ -97,6 +98,9 @@ export type JobApplication = {
   notes: string;
   priority: JobPriority;
   activeSession?: string;
+  interviewStage?: InterviewStage;
+  interviewDate?: string;
+  interviewNotes?: string;
   createdAt: string;
   updatedAt: string;
 };
