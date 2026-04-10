@@ -226,11 +226,13 @@ function StrategicSynthesis({ themes }: { themes: PainPointTheme[] }) {
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 mb-6">
         <h3 className="font-semibold text-blue-900 mb-2">Core Thesis</h3>
         <p className="text-sm text-blue-800 leading-relaxed">
-          The biggest wins aren&apos;t inside individual apps — they&apos;re in the spaces between them.
-          When Gemini remembers what you were doing in Gmail as you move to Docs,
-          users stop switching to ChatGPT. Workspace is the only suite where email,
-          docs, sheets, and meetings all live under one roof. Fixing cross-app memory
-          and reliability turns that into an advantage no standalone tool can match.
+          Think: you ask Gemini to summarize an email thread in Gmail, then open Docs to write the follow-up.
+          Gemini starts from scratch — it has no idea you were just in Gmail. So you re-explain everything,
+          or you open ChatGPT, which remembers. That&apos;s what 192 of 1,096 users did.
+        </p>
+        <p className="text-sm text-blue-800 leading-relaxed mt-3">
+          The limit isn&apos;t Gemini&apos;s intelligence. It&apos;s that Workspace is the only suite where
+          email, docs, sheets, and meetings live under one roof — and Gemini doesn&apos;t act like it yet.
         </p>
       </div>
 
