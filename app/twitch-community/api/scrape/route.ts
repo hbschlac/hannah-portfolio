@@ -3,7 +3,7 @@ import { buildSnapshot } from "@/lib/twitch-research";
 
 export async function POST(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get("secret");
-  if (!secret || secret !== process.env.SYNC_SECRET) {
+  if (!secret || secret !== process.env.SYNC_SECRET?.trim()) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
