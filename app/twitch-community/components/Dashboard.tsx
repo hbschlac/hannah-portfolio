@@ -707,6 +707,12 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
               >
                 Methodology
               </a>
+              <a
+                href="/twitch-community/verification"
+                className="text-xs text-gray-400 hover:text-white bg-gray-800 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                Verify Data
+              </a>
             </div>
           </div>
         </div>
