@@ -146,6 +146,7 @@ function newBlankJob(columnId: string): JobApplication {
 
 export default function JobKanban({ initialJobs }: { initialJobs: JobApplication[] }) {
   const [jobs, setJobs]             = useState<JobApplication[]>(initialJobs);
+  const jobsRef                     = useRef<JobApplication[]>(initialJobs);
   const [typeFilter, setTypeFilter] = useState<CompanyType | "all">("all");
   const [sort, setSort]             = useState<SortOption>("priority");
   const [search, setSearch]         = useState("");
@@ -155,6 +156,20 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   const [completedTaskIds, setCompletedTaskIds] = useState<Set<string>>(new Set());
   const [dismissedTaskIds, setDismissedTaskIds] = useState<Set<string>>(new Set());
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  // Keep ref in sync so persistSave always reads the latest jobs
+  function setJobsAndRef(updater: JobApplication[] | ((prev: JobApplication[]) => JobApplication[])) {
+    if (typeof updater === "function") {
+      setJobsAndRef((prev) => {
+        const next = updater(prev);
+        jobsRef.current = next;
+        return next;
+      });
+    } else {
+      jobsRef.current = updater;
+      setJobsAndRef(updater);
+    }
+  }
 
   // Apply filter + search
   const displayed = jobs.filter((j) => {
@@ -171,7 +186,7 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   });
 
   function updateJob(id: string, field: keyof JobApplication, value: unknown) {
-    setJobs((prev) =>
+    setJobsAndRef((prev) =>
       prev.map((j) =>
         j.id === id ? { ...j, [field]: value, updatedAt: new Date().toISOString() } : j
       )
@@ -181,12 +196,12 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   }
 
   function deleteJob(id: string) {
-    setJobs((prev) => prev.filter((j) => j.id !== id));
+    setJobsAndRef((prev) => prev.filter((j) => j.id !== id));
     scheduleSave();
   }
 
   function addJob(columnId: string) {
-    setJobs((prev) => [...prev, newBlankJob(columnId)]);
+    setJobsAndRef((prev) => [...prev, newBlankJob(columnId)]);
   }
 
   function scheduleSave() {
@@ -197,15 +212,12 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   function persistSave() {
     setSaveStatus("saving");
     const now = new Date().toISOString();
-    // snapshot current jobs at time of save
-    setJobs((current) => {
-      const stamped = current.map((j) => ({ ...j, updatedAt: now }));
-      startTransition(async () => {
-        const result = await saveJobs(stamped);
-        setSaveStatus(result.error ? "error" : "saved");
-        if (!result.error) setTimeout(() => setSaveStatus("idle"), 2500);
-      });
-      return stamped;
+    const stamped = jobsRef.current.map((j) => ({ ...j, updatedAt: now }));
+    setJobsAndRef(stamped);
+    startTransition(async () => {
+      const result = await saveJobs(stamped);
+      setSaveStatus(result.error ? "error" : "saved");
+      if (!result.error) setTimeout(() => setSaveStatus("idle"), 2500);
     });
   }
 
@@ -228,7 +240,7 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
     const currentCol = getColumnId(job);
     if (currentCol === targetColumnId) { setDragOverCol(null); return; }
     const patch = applyColumnMove(job, targetColumnId);
-    setJobs((prev) =>
+    setJobsAndRef((prev) =>
       prev.map((j) =>
         j.id === jobId
           ? { ...j, ...patch, updatedAt: new Date().toISOString() }
