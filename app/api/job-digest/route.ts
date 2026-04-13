@@ -149,7 +149,7 @@ function buildHtmlEmail(jobs: JobApplication[]): string {
 
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get("secret");
-  if (secret !== process.env.SYNC_SECRET) {
+  if (secret !== process.env.SYNC_SECRET?.trim()) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
