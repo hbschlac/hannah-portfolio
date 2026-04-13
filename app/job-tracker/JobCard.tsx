@@ -212,6 +212,8 @@ type Props = {
 export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [newNote, setNewNote] = useState("");
+  const isCustomProject = !!job.projectSlug && !PROJECT_SLUGS.some((p) => p.slug === job.projectSlug);
+  const [showCustomProject, setShowCustomProject] = useState(isCustomProject);
 
   const latestNote: NoteEntry | undefined = job.noteLog?.[job.noteLog.length - 1];
 
@@ -303,9 +305,21 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
 
         {/* Next action */}
         <div className="mt-2">
-          <span className={`text-[10px] px-2 py-0.5 rounded-full leading-none ${nextActionColor(job)}`}>
-            → {nextActionLabel(job)}
-          </span>
+          {job.cvReady && !job.applied && job.jobUrl ? (
+            <a
+              href={job.jobUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className={`text-[10px] px-2 py-0.5 rounded-full leading-none ${nextActionColor(job)}`}
+            >
+              → {nextActionLabel(job)}
+            </a>
+          ) : (
+            <span className={`text-[10px] px-2 py-0.5 rounded-full leading-none ${nextActionColor(job)}`}>
+              → {nextActionLabel(job)}
+            </span>
+          )}
         </div>
 
         {/* Linked project */}
@@ -389,12 +403,12 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
           )}
 
           {/* Job URL + project */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-2">
             <div>
               <label className="text-[10px] text-stone-400 uppercase tracking-wider">Job URL</label>
-              <div className="flex items-center gap-1.5 mt-0.5">
+              <div className="flex items-center gap-1.5 mt-0.5 min-w-0">
                 <input
-                  className="flex-1 text-xs text-stone-700 border border-stone-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-stone-800"
+                  className="flex-1 min-w-0 text-xs text-stone-700 border border-stone-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-stone-800 truncate"
                   value={job.jobUrl ?? ""}
                   onChange={(e) => onUpdate(job.id, "jobUrl", e.target.value)}
                   placeholder="https://…"
@@ -413,12 +427,20 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
                 )}
               </div>
             </div>
-            <div>
+            <div className="min-w-0">
               <label className="text-[10px] text-stone-400 uppercase tracking-wider">Linked Project</label>
               <select
                 className="w-full text-sm border border-stone-200 rounded-lg px-2 py-1.5 mt-0.5 focus:outline-none focus:ring-2 focus:ring-stone-800 bg-white"
-                value={job.projectSlug ?? ""}
-                onChange={(e) => onUpdate(job.id, "projectSlug", e.target.value || undefined)}
+                value={showCustomProject ? "__custom__" : (job.projectSlug ?? "")}
+                onChange={(e) => {
+                  if (e.target.value === "__custom__") {
+                    setShowCustomProject(true);
+                    onUpdate(job.id, "projectSlug", undefined);
+                  } else {
+                    setShowCustomProject(false);
+                    onUpdate(job.id, "projectSlug", e.target.value || undefined);
+                  }
+                }}
               >
                 <option value="">— None —</option>
                 {PROJECT_SLUGS.map((p) => (
@@ -426,10 +448,18 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
                     {p.title}
                   </option>
                 ))}
+                <option value="__custom__">Other (type slug below)</option>
               </select>
+              {showCustomProject && (
+                <input
+                  className="w-full mt-1 text-xs border border-stone-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-stone-800"
+                  placeholder="e.g. workspace-ai-gaps"
+                  value={job.projectSlug ?? ""}
+                  onChange={(e) => onUpdate(job.id, "projectSlug", e.target.value || undefined)}
+                />
+              )}
             </div>
           </div>
-
           {/* Note history */}
           <div>
             <label className="text-[10px] text-stone-400 uppercase tracking-wider">Notes</label>
@@ -461,9 +491,20 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
                 })}
               </div>
             )}
-            {(!job.noteLog || job.noteLog.length === 0) && job.notes && (
-              <div className="mt-1.5 text-xs text-stone-600 bg-stone-50 rounded-lg px-3 py-2">
-                {job.notes}
+            {(!job.noteLog || job.noteLog.length === 0) && (
+              <div className="mt-1.5">
+                <textarea
+                  className="w-full text-xs text-stone-700 border border-stone-200 rounded-lg px-3 py-2 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-stone-800 resize-none"
+                  rows={3}
+                  placeholder="No notes yet…"
+                  defaultValue={job.notes ?? ""}
+                  onBlur={(e) => {
+                    const val = e.target.value.trim();
+                    if (val !== (job.notes ?? "").trim()) {
+                      onUpdate(job.id, "notes", val);
+                    }
+                  }}
+                />
               </div>
             )}
             <div className="mt-2 flex gap-2">
