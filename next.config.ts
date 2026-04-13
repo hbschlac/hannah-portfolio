@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
         source: "/gmail-search-overview",
         destination: "/gmail-search-ai",
       },
+      {
+        source: "/twitch-community-intelligence",
+        destination: "/twitch-community",
+      },
     ];
   },
 };
