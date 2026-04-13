@@ -122,6 +122,86 @@ function InlineEdit({
   );
 }
 
+// ── Note entry row: editable + deletable ──────────────────────────────────────
+function NoteEntryRow({
+  entry,
+  onEdit,
+  onDelete,
+}: {
+  entry: NoteEntry;
+  onEdit: (text: string) => void;
+  onDelete: () => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(entry.text);
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  function startEdit(e: React.MouseEvent) {
+    e.stopPropagation();
+    setDraft(entry.text);
+    setEditing(true);
+    setTimeout(() => ref.current?.focus(), 0);
+  }
+
+  function commit() {
+    setEditing(false);
+    const trimmed = draft.trim();
+    if (trimmed && trimmed !== entry.text) onEdit(trimmed);
+    else setDraft(entry.text);
+  }
+
+  return (
+    <div className="group flex items-start gap-1.5 bg-stone-50 rounded-lg px-3 py-2">
+      <div className="flex-1 min-w-0">
+        <span className="text-[10px] text-stone-400 font-medium mr-1.5">
+          {formatNoteDate(entry.date)}
+        </span>
+        {editing ? (
+          <textarea
+            ref={ref}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onBlur={commit}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); commit(); }
+              if (e.key === "Escape") { setEditing(false); setDraft(entry.text); }
+            }}
+            rows={2}
+            className="w-full mt-0.5 text-xs text-stone-700 bg-white border border-stone-300 rounded px-1.5 py-1 focus:outline-none focus:ring-2 focus:ring-stone-800 resize-none"
+            onClick={(e) => e.stopPropagation()}
+          />
+        ) : (
+          <span
+            className="text-xs text-stone-600 cursor-text"
+            onDoubleClick={startEdit}
+            title="Double-click to edit"
+          >
+            {entry.text}
+          </span>
+        )}
+      </div>
+      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5">
+        {!editing && (
+          <button
+            onClick={startEdit}
+            className="text-[10px] text-stone-400 hover:text-stone-700 leading-none"
+            title="Edit"
+          >
+            ✎
+          </button>
+        )}
+        <button
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+          className="text-[10px] text-stone-400 hover:text-red-500 leading-none"
+          title="Delete note"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+}
+
 type Props = {
   job: JobApplication;
   onUpdate: (id: string, field: keyof JobApplication, value: unknown) => void;
@@ -341,14 +421,30 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
             <label className="text-[10px] text-stone-400 uppercase tracking-wider">Notes</label>
             {job.noteLog && job.noteLog.length > 0 && (
               <div className="mt-1.5 space-y-1.5 max-h-40 overflow-y-auto pr-1">
-                {[...job.noteLog].reverse().map((entry, i) => (
-                  <div key={i} className="text-xs text-stone-600 bg-stone-50 rounded-lg px-3 py-2">
-                    <span className="text-[10px] text-stone-400 font-medium mr-1.5">
-                      {formatNoteDate(entry.date)}
-                    </span>
-                    {entry.text}
-                  </div>
-                ))}
+                {[...job.noteLog].map((_entry, i) => {
+                  const displayEntry = [...job.noteLog!].reverse()[i];
+                  return (
+                    <NoteEntryRow
+                      key={displayEntry.date + i}
+                      entry={displayEntry}
+                      onEdit={(text) => {
+                        const updated = job.noteLog!.map((e, idx) =>
+                          idx === job.noteLog!.length - 1 - i ? { ...e, text } : e
+                        );
+                        onUpdate(job.id, "noteLog", updated);
+                      }}
+                      onDelete={() => {
+                        const updated = job.noteLog!.filter(
+                          (_, idx) => idx !== job.noteLog!.length - 1 - i
+                        );
+                        onUpdate(job.id, "noteLog", updated);
+                        if (updated.length > 0) {
+                          onUpdate(job.id, "notes", updated[updated.length - 1].text);
+                        }
+                      }}
+                    />
+                  );
+                })}
               </div>
             )}
             {(!job.noteLog || job.noteLog.length === 0) && job.notes && (
