@@ -76,10 +76,10 @@ export default function ScreenshotStrip({ screenshots, title, captions }: Props)
                 src={src}
                 alt={captions?.[i] ?? `${title} screenshot ${i + 1}`}
                 onClick={() => setActive(i)}
-                className="rounded-xl h-64 w-auto object-contain cursor-zoom-in transition-opacity hover:opacity-80"
+                className="rounded-xl h-40 sm:h-48 md:h-64 w-auto object-contain cursor-zoom-in transition-opacity hover:opacity-80"
               />
               {captions?.[i] && (
-                <p className="text-[11px] text-muted/70 text-center leading-snug max-w-[240px] mx-auto px-1">
+                <p className="text-[11px] text-muted/70 text-center leading-snug max-w-[160px] sm:max-w-[240px] mx-auto px-1">
                   {captions[i]}
                 </p>
               )}
@@ -89,7 +89,7 @@ export default function ScreenshotStrip({ screenshots, title, captions }: Props)
 
         {/* Right-edge gradient — signals more content, fades out at end */}
         <div
-          className="absolute right-0 top-0 bottom-3 w-20 bg-gradient-to-l from-background to-transparent pointer-events-none transition-opacity duration-300"
+          className="absolute right-0 top-0 bottom-3 w-12 sm:w-20 bg-gradient-to-l from-background to-transparent pointer-events-none transition-opacity duration-300"
           style={{ opacity: showFade ? 1 : 0 }}
         />
       </div>

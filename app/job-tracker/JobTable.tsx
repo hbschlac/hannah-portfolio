@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect, useRef } from "react";
 import { saveJobs, type SaveJobsResult } from "./actions";
-import type { JobApplication, JobPriority } from "@/lib/kv";
+import type { JobApplication, JobPriority, CompanyType } from "@/lib/kv";
 
 function newBlankJob(): JobApplication {
   return {
@@ -18,6 +18,7 @@ function newBlankJob(): JobApplication {
     activeSession: "",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    noteLog: [],
   };
 }
 
@@ -137,6 +138,8 @@ export default function JobTable({ initialJobs }: { initialJobs: JobApplication[
             <col style={{ width: 160 }} />
             <col style={{ width: 180 }} />
             <col style={{ width: 100 }} />
+            <col style={{ width: 110 }} />
+            <col style={{ width: 100 }} />
             <col style={{ width: 60 }} />
             <col style={{ width: 80 }} />
             <col style={{ width: 70 }} />
@@ -155,6 +158,8 @@ export default function JobTable({ initialJobs }: { initialJobs: JobApplication[
               </th>
               <th className="px-2 py-3 text-left border-b border-stone-200">Role</th>
               <th className="px-2 py-3 text-left border-b border-stone-200">Priority</th>
+              <th className="px-2 py-3 text-left border-b border-stone-200">Type</th>
+              <th className="px-2 py-3 text-left border-b border-stone-200">Project</th>
               <th className="px-2 py-3 text-center border-b border-stone-200">CV ✓</th>
               <th className="px-2 py-3 text-center border-b border-stone-200">Outreach ✓</th>
               <th className="px-2 py-3 text-center border-b border-stone-200">Applied ✓</th>
@@ -212,6 +217,34 @@ export default function JobTable({ initialJobs }: { initialJobs: JobApplication[
                   </select>
                 </td>
 
+                {/* Company Type */}
+                <td className="px-2 py-2 align-top">
+                  <select
+                    value={job.companyType ?? ""}
+                    onChange={(e) => updateJob(job.id, "companyType", e.target.value as CompanyType || undefined)}
+                    className="text-xs rounded px-1 py-1 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-800 bg-white"
+                  >
+                    <option value="">—</option>
+                    <option value="big-tech">Big Tech</option>
+                    <option value="ai-lab">AI Lab</option>
+                    <option value="series-c">Series C</option>
+                    <option value="startup">Startup</option>
+                    <option value="other">Other</option>
+                  </select>
+                </td>
+
+                {/* Project Slug */}
+                <td className="px-1 py-1 align-top">
+                  <textarea
+                    className={textareaCls}
+                    value={job.projectSlug ?? ""}
+                    rows={1}
+                    placeholder="e.g. vantara-agent-studio"
+                    onChange={(e) => updateJob(job.id, "projectSlug", e.target.value || undefined)}
+                    onInput={(e) => autoResize(e.currentTarget)}
+                  />
+                </td>
+
                 {/* CV Ready */}
                 <td className="px-2 py-2 text-center align-top">
                   <input
@@ -257,15 +290,22 @@ export default function JobTable({ initialJobs }: { initialJobs: JobApplication[
                   />
                 </td>
 
-                {/* Notes */}
+                {/* Notes — adds dated entry to noteLog on blur */}
                 <td className="px-1 py-1 align-top">
                   <textarea
                     className={textareaCls}
-                    value={job.notes}
+                    defaultValue={job.notes}
                     rows={1}
                     placeholder="Notes"
-                    onChange={(e) => updateJob(job.id, "notes", e.target.value)}
                     onInput={(e) => autoResize(e.currentTarget)}
+                    onBlur={(e) => {
+                      const newText = e.currentTarget.value;
+                      if (newText === job.notes) return;
+                      const entry = { text: newText, date: new Date().toISOString() };
+                      const updatedLog = [...(job.noteLog ?? []), entry];
+                      updateJob(job.id, "notes", newText);
+                      updateJob(job.id, "noteLog", updatedLog);
+                    }}
                   />
                 </td>
 

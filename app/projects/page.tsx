@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Projects — Hannah Schlacter",
-  description: "PM building consumer products with AI. Four things I built because I wanted them to exist.",
+  description: "PM building consumer products with AI. Things I built because I wanted them to exist.",
 };
 
 export default function ProjectsPage() {
@@ -55,7 +55,7 @@ export default function ProjectsPage() {
         <p className="text-xs tracking-widest uppercase text-muted mb-1">
           Projects
         </p>
-        <p className="text-xs text-muted/70 mb-6">Four things I built because I wanted them to exist.</p>
+        <p className="text-xs text-muted/70 mb-6">Things I built because I wanted them to exist.</p>
         <div className="flex flex-col gap-3">
           {projects.map((project) => (
             <ProjectTile key={project.slug} project={project} />

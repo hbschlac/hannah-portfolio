@@ -59,7 +59,7 @@ export default async function ProjectPage({ params }: Props) {
             </span>
           ))}
         </div>
-        <h1 className="text-2xl font-medium tracking-tight text-foreground mb-2">
+        <h1 className="text-xl sm:text-2xl font-medium tracking-tight text-foreground mb-2">
           {project.title}
         </h1>
         <p className="text-sm text-muted leading-relaxed">{project.oneLiner}</p>

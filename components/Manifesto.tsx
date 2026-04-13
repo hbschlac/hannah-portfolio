@@ -5,7 +5,7 @@ import { useState } from "react";
 const sections = [
   {
     heading: "The bottleneck isn't the model. It's you.",
-    body: "I went in thinking the limitation was what the model could engineer. When I hit my usage limit and upgraded my plan, I realized: removing the ceiling just exposed the real one. Nothing moves unless you call the play — there's no autopilot, no off-switch. And the longer a session runs, the more the model degrades, which means more handholding, not less. Two Sundays in a row, noon became 2am.",
+    body: "I went in thinking the limitation was what the model could do. When I hit my usage limit and upgraded my plan, I realized: removing the ceiling just exposed the real one. Nothing moves unless you call the play — there's no autopilot, no off-switch. And the longer a session runs, the more the model degrades, which means more handholding, not less. Two Sundays in a row, noon became 2am.",
   },
   {
     heading: "Built isn't the same as trustworthy.",

@@ -37,12 +37,14 @@ export function QuestionRecorder({ conceptLabel }: { conceptLabel: string }) {
   const [transcript, setTranscript] = useState("");
   const [textInput, setTextInput] = useState("");
   const [speechSupported, setSpeechSupported] = useState(false);
+  const [shareSupported, setShareSupported] = useState(false);
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
     setQuestions(loadQuestions());
     const w = window as WindowWithSpeech;
     setSpeechSupported(!!(w.SpeechRecognition || w.webkitSpeechRecognition));
+    setShareSupported(typeof navigator !== "undefined" && typeof navigator.share === "function");
   }, []);
 
   const startListening = useCallback(() => {
@@ -154,6 +156,18 @@ export function QuestionRecorder({ conceptLabel }: { conceptLabel: string }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
+  }, [formatForExport]);
+
+  const shareQuestions = useCallback(async () => {
+    const md = formatForExport();
+    try {
+      await navigator.share({
+        title: "My LLM Learning Questions",
+        text: md,
+      });
+    } catch {
+      // User cancelled or share failed — silently ignore
+    }
   }, [formatForExport]);
 
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -316,15 +330,26 @@ export function QuestionRecorder({ conceptLabel }: { conceptLabel: string }) {
           {/* Action buttons */}
           {questions.length > 0 && (
             <div className="px-4 py-3 border-t border-gray-100 bg-gray-50 space-y-2">
+              {shareSupported && (
+                <button
+                  onClick={shareQuestions}
+                  className="w-full px-3 py-2 rounded-lg bg-gray-900 text-white text-xs font-medium hover:bg-gray-800 transition-all flex items-center justify-center gap-1.5"
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                  </svg>
+                  Share to ChatGPT, Notes, Messages…
+                </button>
+              )}
               <div className="flex gap-2">
                 <button
                   onClick={exportAsFile}
-                  className="flex-1 px-3 py-2 rounded-lg bg-gray-900 text-white text-xs font-medium hover:bg-gray-800 transition-all flex items-center justify-center gap-1.5"
+                  className="flex-1 px-3 py-2 rounded-lg bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-all flex items-center justify-center gap-1.5"
                 >
                   <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
-                  Export for ChatGPT
+                  {shareSupported ? "Download .md" : "Export for ChatGPT"}
                 </button>
                 <button
                   onClick={copyToClipboard}
