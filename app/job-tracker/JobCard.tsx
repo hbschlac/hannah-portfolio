@@ -392,12 +392,26 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-[10px] text-stone-400 uppercase tracking-wider">Job URL</label>
-              <input
-                className="w-full text-xs text-stone-700 border border-stone-200 rounded-lg px-2 py-1.5 mt-0.5 focus:outline-none focus:ring-2 focus:ring-stone-800"
-                value={job.jobUrl ?? ""}
-                onChange={(e) => onUpdate(job.id, "jobUrl", e.target.value)}
-                placeholder="https://…"
-              />
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <input
+                  className="flex-1 text-xs text-stone-700 border border-stone-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-stone-800"
+                  value={job.jobUrl ?? ""}
+                  onChange={(e) => onUpdate(job.id, "jobUrl", e.target.value)}
+                  placeholder="https://…"
+                />
+                {job.jobUrl && (
+                  <a
+                    href={job.jobUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-shrink-0 text-xs bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-lg px-2 py-1.5 transition-colors"
+                    title="Open job posting"
+                  >
+                    ↗
+                  </a>
+                )}
+              </div>
             </div>
             <div>
               <label className="text-[10px] text-stone-400 uppercase tracking-wider">Linked Project</label>
