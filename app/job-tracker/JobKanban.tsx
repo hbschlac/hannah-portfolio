@@ -153,6 +153,7 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [isPending, startTransition] = useTransition();
   const [completedTaskIds, setCompletedTaskIds] = useState<Set<string>>(new Set());
+  const [dismissedTaskIds, setDismissedTaskIds] = useState<Set<string>>(new Set());
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   // Apply filter + search
@@ -213,6 +214,10 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
     scheduleSave();
   }
 
+  function handleTaskDismiss(jobId: string, field: string) {
+    setDismissedTaskIds((prev) => new Set([...prev, `${jobId}:${field}`]));
+  }
+
   // ── Drag & drop ──────────────────────────────────────────────────────────────
   function handleDrop(e: React.DragEvent, targetColumnId: string) {
     e.preventDefault();
@@ -247,7 +252,9 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
         jobs={jobs}
         onUpdate={updateJob}
         completedTaskIds={completedTaskIds}
+        dismissedTaskIds={dismissedTaskIds}
         onTaskDone={handleTaskDone}
+        onTaskDismiss={handleTaskDismiss}
       />
 
       {/* Toolbar: search + type filter + sort + save */}
