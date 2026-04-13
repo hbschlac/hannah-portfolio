@@ -296,7 +296,7 @@ export async function scrapeHackerNews(): Promise<RawFeedback[]> {
 export async function scrapePlayStore(): Promise<RawFeedback[]> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const gplay = require("google-play-scraper");
+    const gplay = require("google-play-scraper").default ?? require("google-play-scraper");
     const results: RawFeedback[] = [];
 
     // Twitch Android app
@@ -349,7 +349,7 @@ export async function scrapePlayStore(): Promise<RawFeedback[]> {
 export async function scrapeAppStore(): Promise<RawFeedback[]> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const store = require("app-store-scraper");
+    const store = require("app-store-scraper").default ?? require("app-store-scraper");
     const results: RawFeedback[] = [];
 
     // Twitch iOS app ID: 460177396
