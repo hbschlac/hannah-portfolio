@@ -101,6 +101,15 @@ export type Contact = {
   dmContext?: string;
 };
 
+export type Artifact = {
+  id: string;
+  title: string;
+  kind?: string; // free-text tag e.g. "intro-call", "transcript", "research", "pre-read"
+  content: string; // markdown
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type JobApplication = {
   id: string;
   company: string;
@@ -119,6 +128,7 @@ export type JobApplication = {
   projectSlug?: string;
   noteLog?: NoteEntry[];
   contacts?: Contact[];
+  artifacts?: Artifact[];
   createdAt: string;
   updatedAt: string;
 };

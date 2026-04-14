@@ -61,6 +61,11 @@ export async function POST(request: Request) {
       ...(job.interviewStage && { interviewStage: job.interviewStage as InterviewStage }),
       ...(job.interviewDate && { interviewDate: job.interviewDate }),
       ...(job.interviewNotes && { interviewNotes: job.interviewNotes }),
+      ...(job.companyType && { companyType: job.companyType }),
+      ...(job.projectSlug && { projectSlug: job.projectSlug }),
+      ...(job.noteLog && { noteLog: job.noteLog }),
+      ...(job.contacts && { contacts: job.contacts }),
+      ...(job.artifacts && { artifacts: job.artifacts }),
       createdAt: now,
       updatedAt: now,
     };

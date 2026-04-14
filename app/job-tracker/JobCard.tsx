@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef } from "react";
-import type { JobApplication, JobPriority, CompanyType, InterviewStage, NoteEntry, Contact } from "@/lib/kv";
+import type { JobApplication, JobPriority, CompanyType, InterviewStage, NoteEntry, Contact, Artifact } from "@/lib/kv";
+import ArtifactsModal from "./ArtifactsModal";
 
 export const PROJECT_SLUGS: { slug: string; title: string; url?: string }[] = [
   { slug: "muse", title: "Muse Shopping" },
@@ -389,9 +390,11 @@ type Props = {
 
 export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props) {
   const [expanded, setExpanded] = useState(false);
+  const [artifactsOpen, setArtifactsOpen] = useState(false);
   const [newNote, setNewNote] = useState("");
   const [newContactName, setNewContactName] = useState("");
   const [newContactUrl, setNewContactUrl] = useState("");
+  const artifactCount = job.artifacts?.length ?? 0;
   const isCustomProject = !!job.projectSlug && !PROJECT_SLUGS.some((p) => p.slug === job.projectSlug);
   const [showCustomProject, setShowCustomProject] = useState(isCustomProject);
 
@@ -458,6 +461,25 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
             <span className="text-stone-300 text-xs">{expanded ? "▲" : "▼"}</span>
           </div>
         </div>
+
+        {/* Artifacts button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setArtifactsOpen(true);
+          }}
+          className={`mt-2 inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full leading-none border transition-colors ${
+            artifactCount > 0
+              ? "bg-violet-50 text-violet-700 border-violet-200 hover:bg-violet-100"
+              : "bg-stone-50 text-stone-500 border-stone-200 hover:bg-stone-100"
+          }`}
+          title="Open artifacts"
+        >
+          <span>📎</span>
+          <span>
+            Artifacts{artifactCount > 0 ? ` (${artifactCount})` : ""}
+          </span>
+        </button>
 
         {/* Progress chips */}
         <div className="flex flex-wrap gap-1 mt-2">
@@ -817,6 +839,19 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
             </div>
           </div>
 
+          {/* Artifacts (expanded shortcut) */}
+          <div>
+            <label className="text-[10px] text-stone-400 uppercase tracking-wider">Artifacts</label>
+            <button
+              onClick={() => setArtifactsOpen(true)}
+              className="mt-1 w-full text-xs text-stone-600 border border-dashed border-stone-300 rounded-lg px-3 py-2 hover:border-stone-800 hover:text-stone-900 transition-colors"
+            >
+              {artifactCount === 0
+                ? "+ Add artifact (intro-call notes, transcripts, pre-reads…)"
+                : `Open ${artifactCount} artifact${artifactCount === 1 ? "" : "s"}`}
+            </button>
+          </div>
+
           {/* Delete */}
           <div className="flex justify-end pt-1">
             <button
@@ -829,6 +864,15 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
             </button>
           </div>
         </div>
+      )}
+
+      {artifactsOpen && (
+        <ArtifactsModal
+          company={job.company}
+          artifacts={job.artifacts ?? []}
+          onChange={(next: Artifact[]) => onUpdate(job.id, "artifacts", next)}
+          onClose={() => setArtifactsOpen(false)}
+        />
       )}
     </div>
   );
