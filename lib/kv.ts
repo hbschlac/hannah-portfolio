@@ -93,6 +93,14 @@ export type NoteEntry = {
   date: string; // ISO date string
 };
 
+export type Contact = {
+  name: string;
+  linkedinUrl?: string;
+  messaged: boolean;
+  dmText?: string;
+  dmContext?: string;
+};
+
 export type JobApplication = {
   id: string;
   company: string;
@@ -110,6 +118,7 @@ export type JobApplication = {
   companyType?: CompanyType;
   projectSlug?: string;
   noteLog?: NoteEntry[];
+  contacts?: Contact[];
   createdAt: string;
   updatedAt: string;
 };
@@ -139,6 +148,27 @@ export async function getJobsFromKVDirect(): Promise<JobApplication[]> {
 export async function saveJobsToKV(jobs: JobApplication[]): Promise<void> {
   const redis = getRedis();
   await redis.set(JOBS_KEY, JSON.stringify(jobs));
+}
+
+export type CustomTask = {
+  id: string;
+  label: string;
+  createdAt: string;
+};
+
+const CUSTOM_TASKS_KEY = "custom_tasks";
+
+export async function getCustomTasksFromKV(): Promise<CustomTask[]> {
+  const redis = getRedis();
+  const raw = await redis.get<string>(CUSTOM_TASKS_KEY);
+  if (!raw) return [];
+  if (typeof raw === "object") return raw as CustomTask[];
+  return JSON.parse(raw) as CustomTask[];
+}
+
+export async function saveCustomTasksToKV(tasks: CustomTask[]): Promise<void> {
+  const redis = getRedis();
+  await redis.set(CUSTOM_TASKS_KEY, JSON.stringify(tasks));
 }
 
 export async function listResumes(): Promise<ResumeEntry[]> {

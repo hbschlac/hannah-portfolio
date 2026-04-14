@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import type { JobApplication, JobPriority, CompanyType, InterviewStage, NoteEntry } from "@/lib/kv";
+import type { JobApplication, JobPriority, CompanyType, InterviewStage, NoteEntry, Contact } from "@/lib/kv";
 
 export const PROJECT_SLUGS: { slug: string; title: string; url?: string }[] = [
   { slug: "muse", title: "Muse Shopping" },
@@ -203,6 +203,183 @@ function NoteEntryRow({
   );
 }
 
+// ── Contact row: checkbox + name (linked) + DM draft + delete ────────────────
+function ContactRow({
+  contact,
+  onUpdate,
+  onToggleMessaged,
+  onDelete,
+}: {
+  contact: Contact;
+  onUpdate: (patch: Partial<Contact>) => void;
+  onToggleMessaged: () => void;
+  onDelete: () => void;
+}) {
+  const [expanded, setExpanded] = useState(!!contact.dmText);
+  const [copied, setCopied] = useState(false);
+  const [editingDm, setEditingDm] = useState(false);
+  const [dmDraft, setDmDraft] = useState(contact.dmText ?? "");
+  const [editingUrl, setEditingUrl] = useState(false);
+  const [urlDraft, setUrlDraft] = useState(contact.linkedinUrl ?? "");
+
+  async function handleCopy(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (!contact.dmText) return;
+    try {
+      await navigator.clipboard.writeText(contact.dmText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  return (
+    <div className="group bg-stone-50 rounded-lg">
+      <div className="flex items-center gap-2 px-3 py-1.5">
+        <input
+          type="checkbox"
+          checked={contact.messaged}
+          onChange={(e) => { e.stopPropagation(); onToggleMessaged(); }}
+          className="accent-stone-800 flex-shrink-0"
+          title={contact.messaged ? "Messaged" : "Not messaged"}
+        />
+        <div className="flex-1 min-w-0 truncate">
+          {contact.linkedinUrl ? (
+            <a
+              href={contact.linkedinUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className={`text-xs hover:underline underline-offset-2 ${
+                contact.messaged ? "text-stone-400 line-through" : "text-sky-700"
+              }`}
+            >
+              {contact.name} ↗
+            </a>
+          ) : (
+            <span className={`text-xs ${contact.messaged ? "text-stone-400 line-through" : "text-stone-700"}`}>
+              {contact.name}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }}
+          className="text-[10px] text-stone-400 hover:text-stone-700 leading-none flex-shrink-0"
+          title={expanded ? "Hide DM" : "Show DM"}
+        >
+          {expanded ? "▲" : "▼"}
+        </button>
+        <button
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+          className="text-[10px] text-stone-400 hover:text-red-500 leading-none opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+          title="Remove contact"
+        >
+          ✕
+        </button>
+      </div>
+      {expanded && (
+        <div className="px-3 pb-2 space-y-1.5" onClick={(e) => e.stopPropagation()}>
+          {/* LinkedIn URL editor */}
+          {!contact.linkedinUrl || editingUrl ? (
+            <div className="flex gap-1.5">
+              <input
+                value={urlDraft}
+                onChange={(e) => setUrlDraft(e.target.value)}
+                placeholder="LinkedIn URL…"
+                className="flex-1 text-[11px] border border-stone-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-stone-800"
+              />
+              <button
+                onClick={() => {
+                  onUpdate({ linkedinUrl: urlDraft.trim() || undefined });
+                  setEditingUrl(false);
+                }}
+                className="text-[10px] bg-stone-800 text-white rounded px-2 py-1 hover:bg-stone-700"
+              >
+                Save
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => { setUrlDraft(contact.linkedinUrl ?? ""); setEditingUrl(true); }}
+              className="text-[10px] text-stone-400 hover:text-stone-700"
+            >
+              ✎ Edit LinkedIn URL
+            </button>
+          )}
+
+          {/* DM context / hook */}
+          {contact.dmContext && (
+            <p className="text-[10px] text-stone-500 italic leading-snug">
+              Hook: {contact.dmContext}
+            </p>
+          )}
+
+          {/* DM text + copy */}
+          {editingDm ? (
+            <div className="space-y-1.5">
+              <textarea
+                value={dmDraft}
+                onChange={(e) => setDmDraft(e.target.value)}
+                rows={6}
+                className="w-full text-xs text-stone-700 bg-white border border-stone-300 rounded px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-stone-800 resize-y"
+              />
+              <div className="flex gap-1.5 justify-end">
+                <button
+                  onClick={() => { setDmDraft(contact.dmText ?? ""); setEditingDm(false); }}
+                  className="text-[10px] text-stone-500 hover:text-stone-800 px-2 py-1"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    onUpdate({ dmText: dmDraft.trim() || undefined });
+                    setEditingDm(false);
+                  }}
+                  className="text-[10px] bg-stone-800 text-white rounded px-2 py-1 hover:bg-stone-700"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          ) : contact.dmText ? (
+            <div className="relative">
+              <pre className="text-[11px] text-stone-700 bg-white border border-stone-200 rounded px-2 py-2 whitespace-pre-wrap font-sans leading-snug">
+                {contact.dmText}
+              </pre>
+              <div className="flex gap-1.5 mt-1.5 justify-end">
+                <button
+                  onClick={(e) => { e.stopPropagation(); setDmDraft(contact.dmText ?? ""); setEditingDm(true); }}
+                  className="text-[10px] text-stone-500 hover:text-stone-800 px-2 py-1"
+                >
+                  ✎ Edit
+                </button>
+                <button
+                  onClick={handleCopy}
+                  className={`text-[10px] rounded px-2 py-1 transition-colors ${
+                    copied
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-stone-800 text-white hover:bg-stone-700"
+                  }`}
+                >
+                  {copied ? "✓ Copied" : "Copy DM"}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => { setDmDraft(""); setEditingDm(true); }}
+              className="text-[10px] text-stone-500 hover:text-stone-800 border border-dashed border-stone-300 rounded px-2 py-1 w-full"
+            >
+              + Add DM draft
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 type Props = {
   job: JobApplication;
   onUpdate: (id: string, field: keyof JobApplication, value: unknown) => void;
@@ -213,6 +390,8 @@ type Props = {
 export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [newNote, setNewNote] = useState("");
+  const [newContactName, setNewContactName] = useState("");
+  const [newContactUrl, setNewContactUrl] = useState("");
   const isCustomProject = !!job.projectSlug && !PROJECT_SLUGS.some((p) => p.slug === job.projectSlug);
   const [showCustomProject, setShowCustomProject] = useState(isCustomProject);
 
@@ -346,6 +525,13 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
             {formatNoteDate(latestNote.date)}: {latestNote.text}
           </p>
         )}
+
+        {/* Contacts indicator */}
+        {job.contacts && job.contacts.length > 0 && !expanded && (
+          <p className="mt-1 text-[10px] text-stone-400 leading-snug">
+            {job.contacts.filter((c) => c.messaged).length}/{job.contacts.length} contacts messaged
+          </p>
+        )}
       </div>
 
       {/* Expanded panel */}
@@ -465,6 +651,101 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
               )}
             </div>
           </div>
+
+          {/* Contacts */}
+          <div>
+            <label className="text-[10px] text-stone-400 uppercase tracking-wider">
+              Contacts
+              {job.contacts && job.contacts.length > 0 && (
+                <span className="ml-1.5 normal-case text-stone-300 font-normal">
+                  {job.contacts.filter((c) => c.messaged).length}/{job.contacts.length} messaged
+                </span>
+              )}
+            </label>
+            {job.contacts && job.contacts.length > 0 && (
+              <div className="mt-1.5 space-y-1">
+                {job.contacts.map((contact, i) => (
+                  <ContactRow
+                    key={i}
+                    contact={contact}
+                    onUpdate={(patch) => {
+                      const updated = job.contacts!.map((c, idx) =>
+                        idx === i ? { ...c, ...patch } : c
+                      );
+                      onUpdate(job.id, "contacts", updated);
+                    }}
+                    onToggleMessaged={() => {
+                      const updated = job.contacts!.map((c, idx) =>
+                        idx === i ? { ...c, messaged: !c.messaged } : c
+                      );
+                      onUpdate(job.id, "contacts", updated);
+                      // Auto-set outreachDone when first contact is messaged
+                      if (!job.outreachDone && !contact.messaged) {
+                        onUpdate(job.id, "outreachDone", true);
+                      }
+                    }}
+                    onDelete={() => {
+                      const updated = job.contacts!.filter((_, idx) => idx !== i);
+                      onUpdate(job.id, "contacts", updated);
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+            <div className="mt-2 space-y-1.5">
+              <input
+                className="w-full text-xs border border-stone-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-stone-800"
+                placeholder="Name"
+                value={newContactName}
+                onChange={(e) => setNewContactName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    const name = newContactName.trim();
+                    if (!name) return;
+                    const newContact: Contact = { name, linkedinUrl: newContactUrl.trim() || undefined, messaged: false };
+                    onUpdate(job.id, "contacts", [...(job.contacts ?? []), newContact]);
+                    setNewContactName("");
+                    setNewContactUrl("");
+                  }
+                }}
+              />
+              <div className="flex gap-1.5">
+                <input
+                  className="flex-1 text-xs border border-stone-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-stone-800"
+                  placeholder="LinkedIn URL (optional)"
+                  value={newContactUrl}
+                  onChange={(e) => setNewContactUrl(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      const name = newContactName.trim();
+                      if (!name) return;
+                      const newContact: Contact = { name, linkedinUrl: newContactUrl.trim() || undefined, messaged: false };
+                      onUpdate(job.id, "contacts", [...(job.contacts ?? []), newContact]);
+                      setNewContactName("");
+                      setNewContactUrl("");
+                    }
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    const name = newContactName.trim();
+                    if (!name) return;
+                    const newContact: Contact = { name, linkedinUrl: newContactUrl.trim() || undefined, messaged: false };
+                    onUpdate(job.id, "contacts", [...(job.contacts ?? []), newContact]);
+                    setNewContactName("");
+                    setNewContactUrl("");
+                  }}
+                  disabled={!newContactName.trim()}
+                  className="text-xs bg-stone-800 text-white rounded-lg px-3 py-1.5 hover:bg-stone-700 disabled:opacity-40 flex-shrink-0"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* Note history */}
           <div>
             <label className="text-[10px] text-stone-400 uppercase tracking-wider">Notes</label>
