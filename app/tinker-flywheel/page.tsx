@@ -187,8 +187,12 @@ function Stat({ value, label }: { value: string; label: string }) {
 
 export default function TinkerFlywheelPage() {
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <Memo />
-    </Suspense>
+    <>
+      {/* Match body bg to the page bg so overscroll / scroll-bounce doesn't reveal a white seam. */}
+      <style>{`html,body{background:#fafafa}`}</style>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <Memo />
+      </Suspense>
+    </>
   );
 }
