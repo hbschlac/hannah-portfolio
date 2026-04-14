@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
 // Sprinkle positions — fixed so they don't shift on hydration
 const SPRINKLES = [
   { left: "4%",  top: "18px", color: "#E8A5B4", rotate: 20,  width: 14, height: 5 },
@@ -23,29 +21,7 @@ const SPRINKLES = [
   { left: "88%", top: "30px", color: "#F9C74F", rotate: 55,  width: 8,  height: 4 },
 ];
 
-// ── Replace these with real photos once available ──────────────────────────
-// Drop photos into public/baked/ and update the paths below.
-// Photos should be roughly square or portrait orientation for best results.
-const PHOTOS = [
-  "/baked/photo-1.jpg",
-  "/baked/photo-2.jpg",
-  "/baked/photo-3.jpg",
-  "/baked/photo-4.jpg",
-];
-// ──────────────────────────────────────────────────────────────────────────
-
 export default function BakedPage() {
-  const [current, setCurrent] = useState(0);
-  const [hasPhotos] = useState(false); // flip to true once real photos are added
-
-  useEffect(() => {
-    if (!hasPhotos) return;
-    const timer = setInterval(() => {
-      setCurrent((c) => (c + 1) % PHOTOS.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [hasPhotos]);
-
   return (
     <main
       className="min-h-screen flex flex-col"
@@ -77,13 +53,14 @@ export default function BakedPage() {
       {/* Main content */}
       <div className="flex-grow max-w-xl mx-auto w-full px-6 pt-8 pb-10">
 
-        {/* "baked by hannah" wordmark */}
-        <p
-          className="text-xs tracking-widest uppercase mb-6"
-          style={{ color: "#8A8A8A" }}
-        >
-          baked by hannah
-        </p>
+        {/* Logo */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/baked/logo.png"
+          alt="baked by hannah — sugar is my love language"
+          className="mb-8 mx-auto"
+          style={{ width: "180px", height: "180px", objectFit: "contain" }}
+        />
 
         {/* Headline */}
         <h1
@@ -95,51 +72,6 @@ export default function BakedPage() {
             🧁
           </span>
         </h1>
-
-        {/* Photo carousel */}
-        {hasPhotos ? (
-          <div
-            className="relative mb-8 overflow-hidden"
-            style={{
-              borderRadius: "12px",
-              aspectRatio: "4/3",
-              background: "#E5E1D8",
-            }}
-          >
-            {PHOTOS.map((src, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={src}
-                src={src}
-                alt={`Hannah baking, photo ${i + 1}`}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  opacity: i === current ? 1 : 0,
-                  transition: "opacity 0.7s ease-in-out",
-                }}
-              />
-            ))}
-          </div>
-        ) : (
-          /* Placeholder shown until real photos are added */
-          <div
-            className="mb-8 flex items-center justify-center"
-            style={{
-              aspectRatio: "4/3",
-              background: "#F0EDE8",
-              borderRadius: "12px",
-              border: "1px dashed #C8C4BC",
-            }}
-          >
-            <p className="text-xs" style={{ color: "#B0AA9F" }}>
-              photos coming soon 📸
-            </p>
-          </div>
-        )}
 
         {/* Body copy */}
         <div
