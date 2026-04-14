@@ -345,7 +345,18 @@ export const projects: Project[] = [
     nextSteps: "The brand is validated. The business model isn't. A waitlist with a $10 deposit would tell me more than any survey — if 50 people put down money before the product ships, the business case is real.",
     keyLearning: "You can describe a feeling to a model — modern but rooted, accessible but considered. Translating that into actual design decisions is the work that can't be delegated.",
     artifacts: {
-      screenshots: [],
+      screenshots: [
+        "/projects/ldor/hero.png",
+        "/projects/ldor/site-collection.png",
+        "/projects/ldor/site-product.png",
+        "/projects/ldor/site-bundle.png",
+      ],
+      screenshotCaptions: [
+        "Landing: Judaica, reimagined for you — pricing anchored at $22 and $88",
+        "The collection: six pieces for the Shabbat table — Every Holiday. Every Shabbat.",
+        "Shabbat Candleholder Set PDP — $48 anchor product, warm editorial photography",
+        "Starter Bundle: $88 gift-mode entry with three of the most-requested pieces",
+      ],
       liveUrl: undefined,
     },
   },
