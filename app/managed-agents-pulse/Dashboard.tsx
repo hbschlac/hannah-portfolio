@@ -478,7 +478,7 @@ function LaunchIntel({
     <section className="bg-white/5 border border-white/8 rounded-2xl p-6 space-y-5">
       <div>
         <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Launch Intel</p>
-        <h2 className="text-xl font-bold text-white">What the Managed Agents Team Should Know</h2>
+        <h2 className="text-xl font-bold text-white">What the Product Team Should Know</h2>
         <p className="text-sm text-stone-400 mt-1">
           AI-generated prioritization from developer conversations about Managed Agents. Click any metric to see the raw posts behind the claim.
         </p>
@@ -519,9 +519,9 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
         <div className="flex items-start justify-between flex-wrap gap-4">
           <div>
             <p className="text-xs tracking-widest uppercase text-stone-500 mb-1">schlacter.me</p>
-            <h1 className="text-3xl font-bold text-white">Managed Agents Pulse</h1>
-            <p className="text-stone-400 mt-1 text-sm">Developer feedback intelligence for Anthropic&apos;s Managed Agents API launch (April 10, 2026)</p>
-            <p className="text-xs text-stone-500 mt-1">Reddit + Hacker News · auto-updated every 30 minutes</p>
+            <h1 className="text-3xl font-bold text-white">Managed Agents API — Developer Pulse</h1>
+            <p className="text-stone-400 mt-1 text-sm">What developers are saying about the Managed Agents API launch (April 10, 2026)</p>
+            <p className="text-xs text-stone-500 mt-1">Sources: Reddit + Hacker News · auto-updated</p>
             {latestRun && <p className="text-xs text-stone-600 mt-1">Last updated {latestRun.run_date}</p>}
           </div>
           <a
@@ -572,7 +572,7 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
         {/* footer */}
         <footer className="text-center py-8 border-t border-white/5">
           <p className="text-xs text-stone-600">
-            Built by Hannah Schlacter · Tracking developer conversation about Anthropic&apos;s Managed Agents API
+            Built by Hannah Schlacter · Independent developer feedback analysis
           </p>
         </footer>
       </div>
