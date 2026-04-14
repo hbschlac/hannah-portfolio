@@ -48,16 +48,12 @@ export const projects: Project[] = [
       screenshots: [
         "/projects/muse/welcome.png",
         "/projects/muse/home-feed.png",
-        "/projects/muse/home-carousels.png",
         "/projects/muse/chat.png",
-        "/projects/muse/inspire.png",
       ],
       screenshotCaptions: [
         "Welcome: sign in or browse as guest",
         "Home feed: follow brands like you follow people",
-        "Personalized recommendations across retailers",
         "Talk with Muse: AI stylist that learns your taste",
-        "Inspire: visual discovery grid across 200+ brands",
       ],
       liveUrl: "https://muse.shopping",
     },
@@ -77,7 +73,14 @@ export const projects: Project[] = [
     nextSteps: "Verify the share sheet on a real iPhone. Add more concepts as the CME 295 course progresses. The question archive is already a record of where AI education actually breaks down — a PM's field notes on learning each concept from scratch.",
     keyLearning: "Building the tool forced me to understand each concept well enough to explain it. That's a different test than reading a paper — and a harder one to fake.",
     artifacts: {
-      screenshots: [],
+      screenshots: [
+        "/projects/llm-explainer/mobile-hero.png",
+        "/projects/llm-explainer/desktop-full.png",
+      ],
+      screenshotCaptions: [
+        "Mobile hero — saves to your phone home screen as a standalone app",
+        "Full walkthrough: six concepts from Stanford CME 295, each with an interactive playground",
+      ],
       liveUrl: "https://schlacter.me/llm-explainer",
     },
   },
