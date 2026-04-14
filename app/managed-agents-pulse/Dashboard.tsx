@@ -578,9 +578,19 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
         <MostQuoted latestRun={latestRun} openDrawer={openDrawer} />
 
         {/* footer */}
-        <footer className="text-center py-8 border-t border-white/5">
+        <footer className="text-center py-8 border-t border-white/5 space-y-1">
           <p className="text-xs text-stone-600">
             Built by Hannah Schlacter · Independent developer feedback analysis
+          </p>
+          <p className="text-xs text-stone-600">
+            <a
+              href="https://github.com/hbschlac/managed-agents-pulse"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-stone-500 hover:text-stone-300 underline underline-offset-2 transition-colors"
+            >
+              View source on GitHub
+            </a>
           </p>
         </footer>
       </div>
