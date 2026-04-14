@@ -1110,14 +1110,14 @@ export async function rebuildSnapshotFromStored(): Promise<AnalysisSnapshot> {
     sources[item.source] = (sources[item.source] ?? 0) + 1;
   }
 
-  const evalTheme = themes.find((t) => t.id === "evaluation");
   const denom = evaluateCount + iterateCount;
-  const evalPct = evalTheme && denom > 0 ? Math.round((evalTheme.frequency / denom) * 100) : 0;
+  // "Did it work? Did it break? Was the data clean?" = the evaluate-phase cluster
+  const singleRunPct = denom > 0 ? Math.round((evaluateCount / denom) * 100) : 0;
   const thesis =
     `Across ${allFeedback.length.toLocaleString()} public signals from fine-tuning developers, ` +
-    `${evalPct}% of theme-matched feedback is about one question \u2014 \u201cdid it actually get better?\u201d ` +
-    `Developers can\u2019t answer it after a fine-tuning run, so they retrain less often than they want to, ` +
-    `and the flywheel stalls.`;
+    `${singleRunPct}% of theme-matched feedback is about what happened inside one run \u2014 ` +
+    `did it get better, is the data clean, did anything break. Iteration questions barely register. ` +
+    `Developers can\u2019t see past the first checkpoint, so the flywheel never starts its second loop.`;
 
   const snapshot: AnalysisSnapshot = {
     lastUpdated: new Date().toISOString(),
@@ -1170,14 +1170,14 @@ export async function buildSnapshot(): Promise<AnalysisSnapshot> {
     else iterateCount += theme.frequency;
   }
 
-  const evalTheme = themes.find((t) => t.id === "evaluation");
   const denom = evaluateCount + iterateCount;
-  const evalPct = evalTheme && denom > 0 ? Math.round((evalTheme.frequency / denom) * 100) : 0;
+  // "Did it work? Did it break? Was the data clean?" = the evaluate-phase cluster
+  const singleRunPct = denom > 0 ? Math.round((evaluateCount / denom) * 100) : 0;
   const thesis =
     `Across ${allFeedback.length.toLocaleString()} public signals from fine-tuning developers, ` +
-    `${evalPct}% of theme-matched feedback is about one question \u2014 \u201cdid it actually get better?\u201d ` +
-    `Developers can\u2019t answer it after a fine-tuning run, so they retrain less often than they want to, ` +
-    `and the flywheel stalls.`;
+    `${singleRunPct}% of theme-matched feedback is about what happened inside one run \u2014 ` +
+    `did it get better, is the data clean, did anything break. Iteration questions barely register. ` +
+    `Developers can\u2019t see past the first checkpoint, so the flywheel never starts its second loop.`;
 
   const snapshot: AnalysisSnapshot = {
     lastUpdated: new Date().toISOString(),

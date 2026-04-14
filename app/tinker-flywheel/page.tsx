@@ -23,7 +23,13 @@ async function Memo() {
   const snapshot = await getSnapshot();
   const total = snapshot?.totalFeedback ?? 0;
   const evalTheme = snapshot?.themes.find((t) => t.id === "evaluation");
-  const evalPct = total > 0 && evalTheme ? Math.round((evalTheme.frequency / (snapshot?.phaseBreakdown.evaluate ?? 1 + (snapshot?.phaseBreakdown.iterate ?? 0))) * 100) : 50;
+  const forgetTheme = snapshot?.themes.find((t) => t.id === "catastrophic-forgetting");
+  const themeTotal = (snapshot?.phaseBreakdown.evaluate ?? 0) + (snapshot?.phaseBreakdown.iterate ?? 0);
+  const evalPct = themeTotal > 0 && evalTheme ? Math.round((evalTheme.frequency / themeTotal) * 100) : 0;
+  const forgetPct = themeTotal > 0 && forgetTheme ? Math.round((forgetTheme.frequency / themeTotal) * 100) : 0;
+  // "Did it work? Did it break?" = evaluate-phase themes (evaluation + data-quality + catastrophic-forgetting)
+  const singleRunPct = themeTotal > 0 ? Math.round(((snapshot?.phaseBreakdown.evaluate ?? 0) / themeTotal) * 100) : 0;
+  const iteratePct = 100 - singleRunPct;
   const sourceCount = snapshot ? Object.keys(snapshot.sources).filter((k) => (snapshot.sources as Record<string, number>)[k] > 0).length : 5;
 
   return (
@@ -55,9 +61,10 @@ async function Memo() {
             The finding
           </p>
           <p className="text-lg md:text-xl text-neutral-900 leading-relaxed font-medium">
-            &ldquo;Did it actually get better?&rdquo; is the question developers can&apos;t answer
-            after a fine-tuning run. Until they can, they retrain less often than they want to —
-            and the flywheel stalls.
+            {singleRunPct}% of post-fine-tuning pain is about one run — did it get better, is the
+            data clean, did anything break. Iteration questions — when to retrain, how to compare
+            versions — barely register. Developers can&apos;t see past the first checkpoint, so
+            there&apos;s no second.
           </p>
         </section>
 
@@ -68,16 +75,19 @@ async function Memo() {
           </p>
           <p className="text-[15px] text-neutral-700 leading-relaxed">
             Across {total.toLocaleString()}+ public signals — Reddit, Hacker News, GitHub Issues,
-            Stack Overflow, Hugging Face Forums, and X/Twitter — evaluation is the dominant pain point
-            after a fine-tuning job finishes. <strong>{evalPct}% of theme-matched feedback</strong> is
-            about one question: <em>&ldquo;Did it actually get better?&rdquo;</em>
+            Stack Overflow, Hugging Face Forums, and X — the distribution is lopsided.{" "}
+            <strong>{evalPct}%</strong> of theme-matched feedback is evaluation:{" "}
+            <em>&ldquo;did the new model actually get better?&rdquo;</em> Another{" "}
+            <strong>{forgetPct}%</strong> is the adjacent fear —{" "}
+            <em>&ldquo;did fine-tuning break something that used to work?&rdquo;</em> (catastrophic
+            forgetting). Data quality rounds it out. Together they&apos;re {singleRunPct}% of the
+            signal.
           </p>
           <p className="text-[15px] text-neutral-700 leading-relaxed mt-4">
-            The second cluster is about what happens next: when to retrain, how to compare versions,
-            how to iterate without starting over. These are lifecycle problems.
-            Tinker solves the hardest part — distributed training. But training is a one-time event.
-            The loop that brings a customer back for a second run, a tenth run, a hundredth run is{" "}
-            <em>iteration</em> — and iteration has friction Tinker hasn&apos;t shipped against yet.
+            The other {iteratePct}% spans four themes developers know matter but can&apos;t fully
+            articulate yet: when to retrain, how to update without starting over, which version to
+            keep, the cost of another run. All real. None loud. Because &ldquo;did it get
+            better?&rdquo; is the gate that comes first — and Tinker hasn&apos;t shipped against it.
           </p>
         </section>
 
@@ -111,7 +121,8 @@ async function Memo() {
             <span className="text-neutral-300 text-xs">repeat</span>
           </div>
           <p className="text-xs text-neutral-400 mt-2">
-            Train is solved. Evaluate and Iterate are where developers get stuck.{" "}
+            Train is solved. Evaluate is where developers get stuck. Iterate is the room they
+            haven&apos;t walked into yet.{" "}
             <span className="text-neutral-300">(Hover the chips for definitions.)</span>
           </p>
           <UserDefinition />
@@ -132,11 +143,10 @@ async function Memo() {
             The so what
           </p>
           <p className="text-[15px] text-neutral-800 leading-relaxed">
-            Every theme in this data is a reason someone skipped a training run they&apos;d
-            otherwise have shipped. A fine-tuning API that also answers{" "}
-            <em>&ldquo;did it get better?&rdquo;</em> turns one-time jobs into loops — and loops
-            compound. The gap between a training tool and a training <em>platform</em> is
-            iteration.
+            Every theme in this data ladders back to one question. A fine-tuning API that also
+            answers <em>&ldquo;did it get better?&rdquo;</em> closes the loop developers can&apos;t
+            close today — and loops compound. The gap between a training tool and a training{" "}
+            <em>platform</em> is evaluation.
           </p>
         </section>
 
