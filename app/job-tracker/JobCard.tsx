@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import type { JobApplication, JobPriority, CompanyType, InterviewStage, NoteEntry } from "@/lib/kv";
 
-export const PROJECT_SLUGS = [
+export const PROJECT_SLUGS: { slug: string; title: string; url?: string }[] = [
   { slug: "muse", title: "Muse Shopping" },
   { slug: "llm-explainer", title: "LLM Explainer" },
   { slug: "claude-skills", title: "Claude Skills" },
@@ -12,6 +12,7 @@ export const PROJECT_SLUGS = [
   { slug: "claude-wishlist", title: "Claude Wishlist" },
   { slug: "vantara-agent-studio", title: "Vantara Agent Studio" },
   { slug: "ldor", title: "LDOR" },
+  { slug: "tinker-flywheel", title: "Tinker Flywheel", url: "/tinker-flywheel" },
 ];
 
 export const COMPANY_TYPE_LABELS: Record<CompanyType, string> = {
@@ -323,17 +324,21 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
         </div>
 
         {/* Linked project */}
-        {job.projectSlug && (
-          <a
-            href={`/projects/${job.projectSlug}`}
-            target="_blank"
-            rel="noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="mt-1.5 inline-flex items-center gap-1 text-[10px] text-stone-500 hover:text-stone-800 underline underline-offset-2"
-          >
-            ↗ {PROJECT_SLUGS.find((p) => p.slug === job.projectSlug)?.title ?? job.projectSlug}
-          </a>
-        )}
+        {job.projectSlug && (() => {
+          const linked = PROJECT_SLUGS.find((p) => p.slug === job.projectSlug);
+          const href = linked?.url ?? `/projects/${job.projectSlug}`;
+          return (
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="mt-1.5 inline-flex items-center gap-1 text-[10px] text-stone-500 hover:text-stone-800 underline underline-offset-2"
+            >
+              ↗ {linked?.title ?? job.projectSlug}
+            </a>
+          );
+        })()}
 
         {/* Latest note */}
         {latestNote && !expanded && (
