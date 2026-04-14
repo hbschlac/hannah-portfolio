@@ -4,8 +4,9 @@ import { buildSnapshot, rebuildSnapshotFromStored } from "@/lib/tinker-flywheel"
 export const maxDuration = 300; // 5 min for scraping
 
 export async function POST(req: NextRequest) {
-  const secret = req.nextUrl.searchParams.get("secret") || req.headers.get("x-sync-secret");
-  if (secret !== process.env.SYNC_SECRET) {
+  const provided = (req.nextUrl.searchParams.get("secret") || req.headers.get("x-sync-secret") || "").trim();
+  const expected = process.env.SYNC_SECRET?.trim();
+  if (!expected || provided !== expected) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
