@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { getSnapshot } from "@/lib/tinker-flywheel";
+import { ThemeDrill, PhaseLegend, UserDefinition } from "./ThemeDrill";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -85,23 +86,34 @@ async function Memo() {
             The lifecycle
           </p>
           <div className="flex flex-wrap items-center gap-2 text-sm font-mono">
-            <span className="px-3 py-1.5 bg-neutral-200 text-neutral-400 rounded">
+            <span
+              className="px-3 py-1.5 bg-neutral-200 text-neutral-400 rounded"
+              title="Run a fine-tuning job — what Tinker does today."
+            >
               Train
             </span>
             <span className="text-neutral-300">&rarr;</span>
-            <span className="px-3 py-1.5 bg-amber-100 text-amber-700 rounded border border-amber-200">
+            <span
+              className="px-3 py-1.5 bg-amber-100 text-amber-700 rounded border border-amber-200 cursor-help"
+              title="After a run: did the new model actually get better? Benchmarks, baseline comparisons, data-quality checks, regression detection."
+            >
               Evaluate
             </span>
             <span className="text-neutral-300">&rarr;</span>
-            <span className="px-3 py-1.5 bg-amber-100 text-amber-700 rounded border border-amber-200">
+            <span
+              className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded border border-blue-200 cursor-help"
+              title="Between runs: what do I train next? When to retrain, how to update without starting over, which version to keep."
+            >
               Iterate
             </span>
             <span className="text-neutral-300">&rarr;</span>
             <span className="text-neutral-300 text-xs">repeat</span>
           </div>
           <p className="text-xs text-neutral-400 mt-2">
-            Train is solved. Evaluate and Iterate are where developers get stuck.
+            Train is solved. Evaluate and Iterate are where developers get stuck.{" "}
+            <span className="text-neutral-300">(Hover the chips for definitions.)</span>
           </p>
+          <UserDefinition />
         </section>
 
         {/* Theme breakdown */}
@@ -109,45 +121,8 @@ async function Memo() {
           <p className="text-xs font-mono text-neutral-400 tracking-widest uppercase mb-4">
             Where the friction lives
           </p>
-          <div className="space-y-2">
-            {(snapshot?.themes ?? [])
-              .sort((a, b) => b.frequency - a.frequency)
-              .map((theme) => (
-                <div key={theme.id} className="flex items-center justify-between py-2">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2 h-2 rounded-full ${
-                        theme.phase === "evaluate" ? "bg-amber-500" : "bg-blue-500"
-                      }`}
-                    />
-                    <span className="text-sm text-neutral-700">{theme.name}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-24 h-1.5 bg-neutral-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${
-                          theme.phase === "evaluate" ? "bg-amber-400" : "bg-blue-400"
-                        }`}
-                        style={{
-                          width: `${Math.min(100, (theme.frequency / (evalTheme?.frequency ?? 1)) * 100)}%`,
-                        }}
-                      />
-                    </div>
-                    <span className="text-xs font-mono text-neutral-400 w-8 text-right">
-                      {theme.frequency}
-                    </span>
-                  </div>
-                </div>
-              ))}
-          </div>
-          <div className="flex gap-4 mt-3 text-xs text-neutral-400">
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-amber-500" /> Evaluate
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-blue-500" /> Iterate
-            </span>
-          </div>
+          <ThemeDrill themes={snapshot?.themes ?? []} />
+          <PhaseLegend />
         </section>
 
         {/* So what */}
