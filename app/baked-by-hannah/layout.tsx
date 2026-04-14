@@ -4,6 +4,19 @@ export const metadata: Metadata = {
   title: "baked by hannah",
   description:
     "hi, i'm Hannah Schlacter — looking for applied AI and native AI product roles.",
+  openGraph: {
+    title: "baked by hannah",
+    description:
+      "hi, i'm Hannah Schlacter — looking for applied AI and native AI product roles.",
+    url: "https://schlacter.me/baked-by-hannah",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "baked by hannah",
+    description:
+      "hi, i'm Hannah Schlacter — looking for applied AI and native AI product roles.",
+  },
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧁</text></svg>",
   },
