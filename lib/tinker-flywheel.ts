@@ -104,6 +104,11 @@ const NOISE_PATTERNS = [
   "who is hiring", "who's hiring", "ask hn: who is hiring",
   "freelancer? seeking freelancer",
   "seeking work", "looking for contract",
+  // Resume/job-post shapes common on HN
+  "remote: yes", "remote: no",
+  "location:", "résumé:", "resume:", "resume/cv:",
+  "technologies:",
+  "mid-level & senior", "mid-level and senior",
   // Self-promo / marketing
   "subscribe to our newsletter", "use my referral",
   "check out my course", "enroll now", "limited time offer",
@@ -880,39 +885,65 @@ export const THEME_KEYWORDS: Record<string, string[]> = {
     "data format", "data preparation", "data pipeline",
   ],
   "catastrophic-forgetting": [
-    "catastrophic forgetting", "forgot how to", "lost capability",
-    "regression", "broke", "worse at", "degraded", "forgetting",
-    "worse than base", "lost ability", "capabilities reduced",
-    "base model better", "ruined", "destroyed", "unlearned",
-    "general capability", "instruction following worse",
+    // Explicit named phenomenon
+    "catastrophic forgetting", "forgetting",
+    // "X after training/fine-tuning"-shaped phrases
+    "forgot how to", "forgot the", "lost capability", "lost ability",
+    "capabilities reduced", "unlearned",
+    "worse than base", "worse than the base", "base model better",
+    "general capability", "general capabilities",
+    "instruction following worse",
+    "regressed on", "capability regression",
+    "worse after training", "worse after fine-tun",
+    "degraded after", "broke after", "ruined after",
+    "damaged the base", "damage the base",
   ],
   "retraining-triggers": [
-    "when to retrain", "retrain frequency", "how often retrain",
-    "stale model", "drift", "performance dropped", "model decay",
-    "retraining schedule", "when should i", "model outdated",
-    "data freshness", "concept drift", "distribution shift",
-    "monitoring", "production performance", "degraded over time",
+    "when to retrain", "when should i retrain", "should i retrain",
+    "how often retrain", "how often do you retrain",
+    "retrain frequency", "retraining frequency",
+    "retraining schedule", "retraining cadence",
+    "stale model", "model outdated", "model decay",
+    "concept drift", "data drift", "model drift", "performance drift",
+    "distribution shift",
+    "data freshness",
+    "degraded over time", "performance degraded",
+    "time to retrain",
   ],
   "incremental-training": [
-    "incremental", "continue training", "add data", "update model",
-    "without starting over", "lora merge", "adapter composition",
-    "continual learning", "resume training", "extend training",
-    "add new data", "curriculum", "multi-stage", "progressive",
-    "warm start", "from checkpoint",
+    // Explicit named techniques / phrases
+    "incremental training", "incremental fine-tun", "incremental learning",
+    "continual learning", "continue training", "continue fine-tun",
+    "resume training", "resume fine-tun", "extend training",
+    "without starting over", "without retraining from scratch",
+    "lora merge", "merge loras", "adapter composition", "compose adapters",
+    "warm start", "from checkpoint", "from the checkpoint",
+    "add new training data", "add more data to",
+    "update the model without", "update model without",
   ],
   "version-comparison": [
-    "compare versions", "a/b test", "rollback", "which model is better",
-    "v1 vs v2", "model registry", "track experiments", "experiment tracking",
-    "wandb", "mlflow", "model selection", "which checkpoint",
-    "best checkpoint", "model comparison", "side by side",
-    "previous version", "model management",
+    "compare versions", "compare the versions", "compare checkpoints",
+    "compare my model", "compare two models",
+    "which model is better", "which version is better",
+    "which checkpoint", "best checkpoint",
+    "v1 vs v2", "v2 vs v3",
+    "a/b test", "a/b comparison",
+    "rollback", "revert to previous",
+    "model registry", "model management",
+    "track experiments", "experiment tracking",
+    "wandb", "mlflow",
+    "previous version", "previous checkpoint",
   ],
   "iteration-overhead": [
-    "cost of retraining", "too expensive", "pipeline setup",
-    "how long does training take", "compute cost", "data pipeline",
-    "training time", "gpu hours", "training budget", "cost per run",
-    "infrastructure", "overhead", "setup time", "reproduce",
-    "expensive to train", "compute budget", "gpu cost",
+    "cost of retraining", "cost to retrain", "expensive to retrain",
+    "expensive to train", "too expensive to",
+    "training cost", "compute cost", "gpu cost", "gpu hours",
+    "training budget", "compute budget", "cost per run",
+    "training time", "how long does training take", "how long does fine-tun",
+    "time to retrain",
+    "pipeline setup", "setup time",
+    "retraining overhead", "training overhead", "fine-tuning overhead",
+    "data pipeline",
   ],
 };
 
@@ -976,6 +1007,19 @@ function hasProximityMatch(lower: string, themeKws: string[], window = 150): boo
     }
   }
   return false;
+}
+
+// Shared check: an item matches a theme iff it passes the fine-tune context
+// gate AND the theme keyword sits within proximity window of a context word.
+// Used by both analyzeFeedback (for snapshot frequency counts) and the
+// /api/feedback drawer endpoint, so drawer contents == counted items.
+export function itemMatchesTheme(text: string, themeId: string): boolean {
+  const keywords = THEME_KEYWORDS[themeId];
+  if (!keywords) return false;
+  const lower = text.toLowerCase();
+  if (!hasFineTuneContext(lower)) return false;
+  if (!keywords.some((kw) => lower.includes(kw))) return false;
+  return hasProximityMatch(lower, keywords);
 }
 
 export function analyzeFeedback(raw: RawFeedback[], themes: FlywheelTheme[]): FlywheelTheme[] {

@@ -1,24 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRawFeedback } from "@/lib/tinker-flywheel";
-import { THEME_KEYWORDS } from "@/lib/tinker-flywheel";
+import { getRawFeedback, itemMatchesTheme, THEME_KEYWORDS } from "@/lib/tinker-flywheel";
 
 export async function GET(req: NextRequest) {
   const themeId = req.nextUrl.searchParams.get("themeId");
   if (!themeId) {
     return NextResponse.json({ error: "Missing themeId" }, { status: 400 });
   }
+  if (!THEME_KEYWORDS[themeId]) {
+    return NextResponse.json({ error: "Unknown themeId" }, { status: 400 });
+  }
 
   try {
     const all = await getRawFeedback();
-    const keywords = THEME_KEYWORDS[themeId];
-    if (!keywords) {
-      return NextResponse.json({ error: "Unknown themeId" }, { status: 400 });
-    }
-
-    const matched = all.filter((item) => {
-      const lower = item.text.toLowerCase();
-      return keywords.some((kw: string) => lower.includes(kw));
-    });
+    // Use the same proximity + fine-tune-context gate that drives snapshot
+    // frequency counts, so drawer contents line up with the headline numbers.
+    const matched = all.filter((item) => itemMatchesTheme(item.text, themeId));
 
     return NextResponse.json({
       ok: true,
