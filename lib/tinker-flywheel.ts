@@ -1091,6 +1091,47 @@ export function deduplicateFeedback(items: RawFeedback[]): RawFeedback[] {
   });
 }
 
+// ── Rebuild snapshot from already-stored raw feedback ──
+// Useful after keyword/analysis changes — avoids re-scraping every source.
+export async function rebuildSnapshotFromStored(): Promise<AnalysisSnapshot> {
+  const allFeedback = await getRawFeedback();
+  const themes = analyzeFeedback(allFeedback, getDefaultThemes());
+
+  let evaluateCount = 0;
+  let iterateCount = 0;
+  for (const theme of themes) {
+    if (theme.phase === "evaluate") evaluateCount += theme.frequency;
+    else iterateCount += theme.frequency;
+  }
+
+  // Bucket sources from stored raw
+  const sources: Partial<Record<FeedbackSource, number>> = {};
+  for (const item of allFeedback) {
+    sources[item.source] = (sources[item.source] ?? 0) + 1;
+  }
+
+  const evalTheme = themes.find((t) => t.id === "evaluation");
+  const denom = evaluateCount + iterateCount;
+  const evalPct = evalTheme && denom > 0 ? Math.round((evalTheme.frequency / denom) * 100) : 0;
+  const thesis =
+    `Across ${allFeedback.length.toLocaleString()} public signals from fine-tuning developers, ` +
+    `${evalPct}% of theme-matched feedback is about one question \u2014 \u201cdid it actually get better?\u201d ` +
+    `Developers can\u2019t answer it after a fine-tuning run, so they retrain less often than they want to, ` +
+    `and the flywheel stalls.`;
+
+  const snapshot: AnalysisSnapshot = {
+    lastUpdated: new Date().toISOString(),
+    totalFeedback: allFeedback.length,
+    sources,
+    themes,
+    phaseBreakdown: { evaluate: evaluateCount, iterate: iterateCount },
+    thesis,
+  };
+
+  await saveSnapshot(snapshot);
+  return snapshot;
+}
+
 // ── Build full snapshot ──
 
 export async function buildSnapshot(): Promise<AnalysisSnapshot> {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildSnapshot } from "@/lib/tinker-flywheel";
+import { buildSnapshot, rebuildSnapshotFromStored } from "@/lib/tinker-flywheel";
 
 export const maxDuration = 300; // 5 min for scraping
 
@@ -9,11 +9,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // ?analyzeOnly=1 skips the fetch and re-analyzes already-stored raw feedback
+  // with the current theme keywords. Use after tuning keywords.
+  const analyzeOnly = req.nextUrl.searchParams.get("analyzeOnly") === "1";
+
   try {
-    const snapshot = await buildSnapshot();
+    const snapshot = analyzeOnly ? await rebuildSnapshotFromStored() : await buildSnapshot();
 
     return NextResponse.json({
       ok: true,
+      mode: analyzeOnly ? "analyze-only" : "full-scrape",
       totalFeedback: snapshot.totalFeedback,
       sources: snapshot.sources,
       themes: snapshot.themes.map((t) => ({
@@ -23,6 +28,7 @@ export async function POST(req: NextRequest) {
         frequency: t.frequency,
       })),
       phaseBreakdown: snapshot.phaseBreakdown,
+      thesis: snapshot.thesis,
     });
   } catch (error) {
     return NextResponse.json(
