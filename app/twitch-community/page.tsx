@@ -48,8 +48,12 @@ function LoadingSkeleton() {
 
 export default function TwitchCommunityPage() {
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <DashboardLoader />
-    </Suspense>
+    <>
+      {/* Match body bg to the page bg so overscroll / scroll-bounce doesn't reveal a white seam. */}
+      <style>{`html,body{background:#fafafa}`}</style>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <DashboardLoader />
+      </Suspense>
+    </>
   );
 }
