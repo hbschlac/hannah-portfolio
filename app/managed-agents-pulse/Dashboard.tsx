@@ -20,8 +20,6 @@ const CAT_LABEL: Record<PostCategory, string> = {
   use_case: "Use Case",
   feature_request: "Feature Request",
 };
-const IMPACT_COLOR = { High: "#ef4444", Medium: "#f59e0b", Low: "#22c55e" };
-
 // ─── lazy post fetching ───────────────────────────────────────────────────────
 function buildPostsUrl(params: Record<string, string>) {
   const q = new URLSearchParams(params);
@@ -404,99 +402,109 @@ function CumulativeTrends({
   );
 }
 
-// ─── module 3: launch intel ─────────────────────────────────────────────────
-function LaunchIntel({
+// ─── module 3: most-quoted ──────────────────────────────────────────────────
+function MostQuoted({
   latestRun,
   openDrawer,
 }: {
   latestRun: RunSummary | null;
   openDrawer: (label: string, query: string) => void;
 }) {
-  if (!latestRun?.pm_analysis) {
-    return (
-      <section className="bg-white/5 border border-white/8 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-white mb-2">Launch Intel</h2>
-        <p className="text-stone-500 text-sm">PM analysis pending — available after first data collection run.</p>
-      </section>
-    );
-  }
+  const [posts, setPosts] = useState<PulsePost[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const { top_priority, secondary_priorities } = latestRun.pm_analysis;
+  useEffect(() => {
+    if (!latestRun) return;
+    setLoading(true);
+    fetchPosts(buildPostsUrl({ run_date: latestRun.run_date }))
+      .then((p) => { setPosts(p); setLoading(false); });
+  }, [latestRun?.run_date]);
 
-  function PriorityCard({ priority, rank }: { priority: typeof top_priority; rank: "top" | "secondary" }) {
-    const supportingQuery = buildPostsUrl({ ids: priority.supporting_post_ids.join(",") });
-    return (
-      <div className={`rounded-xl border p-5 ${rank === "top" ? "border-blue-500/30 bg-blue-500/5" : "border-white/8 bg-white/3"}`}>
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div>
-            {rank === "top" && <span className="text-xs text-blue-300 uppercase tracking-widest font-medium block mb-1">Top Priority</span>}
-            <h3 className="text-base font-bold text-white">{priority.title}</h3>
-          </div>
-          <div className="flex gap-1.5 shrink-0">
-            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: IMPACT_COLOR[priority.impact_level] + "22", color: IMPACT_COLOR[priority.impact_level] }}>
-              {priority.impact_level} impact
-            </span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-white/8 text-stone-300">{priority.effort_level} effort</span>
-          </div>
-        </div>
+  if (!latestRun) return null;
 
-        <ul className="space-y-1 mb-3">
-          {priority.why.map((bullet, i) => (
-            <li key={i} className="text-sm text-stone-300 flex gap-2">
-              <span className="text-blue-400 shrink-0">·</span>
-              <span>{bullet}</span>
-            </li>
-          ))}
-        </ul>
-
-        <button
-          onClick={() => openDrawer(`Data behind: "${priority.title}"`, supportingQuery)}
-          className="w-full text-left bg-white/5 hover:bg-white/8 border border-white/8 hover:border-white/15 rounded-lg px-3 py-2 transition-colors group mb-3"
-        >
-          <p className="text-xs text-stone-400 uppercase tracking-widest mb-0.5">Supporting metric</p>
-          <p className="text-sm text-white">{priority.metric}</p>
-          <p className="text-xs text-blue-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            click to see source posts + verify →
-          </p>
-        </button>
-
-        <button
-          onClick={() => openDrawer(`ROI evidence: "${priority.title}"`, supportingQuery)}
-          className="w-full text-left bg-white/5 hover:bg-white/8 border border-white/8 hover:border-white/15 rounded-lg px-3 py-2 transition-colors group"
-        >
-          <p className="text-xs text-stone-400 uppercase tracking-widest mb-0.5">ROI & impact</p>
-          <p className="text-sm text-white">{priority.roi_estimate}</p>
-          <p className="text-xs text-blue-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            click to verify with source posts →
-          </p>
-        </button>
-      </div>
-    );
-  }
+  const cats: PostCategory[] = ["momentum", "friction", "use_case", "feature_request"];
+  const byCat = (cat: PostCategory) =>
+    posts.filter((p) => p.category === cat).sort((a, b) => b.score - a.score).slice(0, 2);
 
   return (
-    <section className="bg-white/5 border border-white/8 rounded-2xl p-6 space-y-5">
-      <div>
-        <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Launch Intel</p>
-        <h2 className="text-xl font-bold text-white">What the Product Team Should Know</h2>
+    <section className="bg-white/5 border border-white/8 rounded-2xl p-6">
+      <div className="mb-5">
+        <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Signal</p>
+        <h2 className="text-xl font-bold text-white">Most-quoted this run</h2>
         <p className="text-sm text-stone-400 mt-1">
-          AI-generated prioritization from developer conversations about Managed Agents. Click any metric to see the raw posts behind the claim.
-        </p>
-        <p className="text-xs text-stone-600 mt-2 border border-white/5 rounded-lg px-3 py-2 bg-white/3">
-          Based on Reddit + HN posts about Managed Agents (n={latestRun.total_new_posts}). Public developer forums skew toward early adopters and vocal users — use as directional signal, not a verdict.
+          Top-scoring posts in each bucket, with the actual quotes. No prescription — just the raw signal.
         </p>
       </div>
 
-      <PriorityCard priority={top_priority} rank="top" />
-
-      {secondary_priorities.length > 0 && (
-        <div>
-          <p className="text-xs text-stone-400 uppercase tracking-widest mb-3">Also on the radar</p>
-          <div className="space-y-3">
-            {secondary_priorities.map((p, i) => <PriorityCard key={i} priority={p} rank="secondary" />)}
-          </div>
+      {loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="rounded-xl border border-white/5 bg-white/3 p-5 animate-pulse h-40" />
+          ))}
         </div>
       )}
+
+      {!loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {cats.map((cat) => {
+            const top = byCat(cat);
+            return (
+              <div key={cat} className="rounded-xl border border-white/8 bg-white/3 p-5 flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <span
+                    className="text-xs px-2 py-0.5 rounded-full font-medium"
+                    style={{ background: CAT_COLOR[cat] + "22", color: CAT_COLOR[cat] }}
+                  >
+                    {CAT_LABEL[cat]} ({latestRun.categories[cat] ?? 0})
+                  </span>
+                  {(latestRun.categories[cat] ?? 0) > 0 && (
+                    <button
+                      onClick={() => openDrawer(`${CAT_LABEL[cat]} · latest run`, buildPostsUrl({ run_date: latestRun.run_date, category: cat }))}
+                      className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      See all →
+                    </button>
+                  )}
+                </div>
+
+                {top.length === 0 ? (
+                  <p className="text-xs text-stone-500">Nothing in this bucket yet.</p>
+                ) : (
+                  <div className="space-y-4 flex-1">
+                    {top.map((post) => (
+                      <div key={post.id}>
+                        <a
+                          href={post.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-white hover:text-blue-300 transition-colors block mb-1 leading-snug"
+                        >
+                          {post.title} {"\u2197"}
+                        </a>
+                        {post.selftext_snippet && (
+                          <blockquote
+                            className="text-sm text-stone-300 border-l-2 pl-3 my-2 leading-relaxed"
+                            style={{ borderColor: CAT_COLOR[cat] + "66" }}
+                          >
+                            &ldquo;{post.selftext_snippet.trim()}&rdquo;
+                          </blockquote>
+                        )}
+                        <p className="text-xs text-stone-500">
+                          &mdash; {post.source === "hackernews" ? "Hacker News" : `r/${post.subreddit}`} &middot; {"\u2191"}{post.score} &middot; {post.num_comments} comment{post.num_comments !== 1 ? "s" : ""}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <p className="text-xs text-stone-600 mt-5 border border-white/5 rounded-lg px-3 py-2 bg-white/3">
+        Based on Reddit + HN posts about Managed Agents (n={latestRun.total_new_posts}). Public forums skew toward early adopters and vocal users &mdash; directional signal, not a verdict.
+      </p>
     </section>
   );
 }
@@ -567,7 +575,7 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
 
         <LatestFindings latestRun={latestRun} openDrawer={openDrawer} />
         <CumulativeTrends runs={runs} openDrawer={openDrawer} />
-        <LaunchIntel latestRun={latestRun} openDrawer={openDrawer} />
+        <MostQuoted latestRun={latestRun} openDrawer={openDrawer} />
 
         {/* footer */}
         <footer className="text-center py-8 border-t border-white/5">
