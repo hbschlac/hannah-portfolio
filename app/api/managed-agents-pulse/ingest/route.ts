@@ -146,12 +146,11 @@ export async function POST(request: Request) {
     const updatedRuns = [...existingRuns, run_summary as RunSummary];
 
     const runDate = (run_summary as RunSummary).run_date;
-    await Promise.all([
-      putFile("all-posts.json", updatedPosts, allPostsFile.sha,
-        `data: managed-agents-pulse run ${runDate} (+${newPosts.length} posts)`),
-      putFile("runs.json", updatedRuns, runsFile.sha,
-        `data: managed-agents-pulse run summary ${runDate}`),
-    ]);
+    // Sequential writes to avoid GitHub SHA race condition on same directory
+    await putFile("all-posts.json", updatedPosts, allPostsFile.sha,
+      `data: managed-agents-pulse run ${runDate} (+${newPosts.length} posts)`);
+    await putFile("runs.json", updatedRuns, runsFile.sha,
+      `data: managed-agents-pulse run summary ${runDate}`);
 
     revalidateTag("managed-agents-pulse", "max");
 
