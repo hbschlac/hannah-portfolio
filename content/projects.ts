@@ -139,7 +139,14 @@ export const projects: Project[] = [
     nextSteps: "I'd build the missing audit layer — a plain-language explanation of what the code accesses and why, generated before first run. That's what I'd want to hand to a non-technical user, and it doesn't exist yet in any AI-assisted build tool.",
     keyLearning: "I asked about the security implications before connecting this to my Amazon account. Claude started building anyway — the security layer had to be explicitly requested, and what came back is still code I can't fully audit.",
     artifacts: {
-      screenshots: [],
+      screenshots: [
+        "/projects/kindle-libby/dashboard-scroll.png",
+        "/projects/kindle-libby/libby-loans.png",
+      ],
+      screenshotCaptions: [
+        "The monitoring dashboard — active holds, currently reading, check-for-updates trigger, and a text-based add-books form",
+        "The source: Libby showing 14 real library loans the automation watches for Kindle-compatible availability",
+      ],
       liveUrl: undefined,
     },
   },
