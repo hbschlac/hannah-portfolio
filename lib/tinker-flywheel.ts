@@ -1085,6 +1085,15 @@ export async function buildSnapshot(): Promise<AnalysisSnapshot> {
     else iterateCount += theme.frequency;
   }
 
+  const evalTheme = themes.find((t) => t.id === "evaluation");
+  const denom = evaluateCount + iterateCount;
+  const evalPct = evalTheme && denom > 0 ? Math.round((evalTheme.frequency / denom) * 100) : 0;
+  const thesis =
+    `Across ${allFeedback.length.toLocaleString()} public signals from fine-tuning developers, ` +
+    `${evalPct}% of theme-matched feedback is about one question \u2014 \u201cdid it actually get better?\u201d ` +
+    `Developers can\u2019t answer it after a fine-tuning run, so they retrain less often than they want to, ` +
+    `and the flywheel stalls.`;
+
   const snapshot: AnalysisSnapshot = {
     lastUpdated: new Date().toISOString(),
     totalFeedback: allFeedback.length,
@@ -1098,7 +1107,7 @@ export async function buildSnapshot(): Promise<AnalysisSnapshot> {
     },
     themes,
     phaseBreakdown: { evaluate: evaluateCount, iterate: iterateCount },
-    thesis: "", // Written after data analysis
+    thesis,
   };
 
   await saveRawFeedback(allFeedback);
