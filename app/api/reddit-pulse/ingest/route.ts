@@ -145,12 +145,14 @@ export async function POST(request: Request) {
     const updatedRuns = [...existingRuns, run_summary as RunSummary];
 
     const runDate = (run_summary as RunSummary).run_date;
-    await Promise.all([
-      putFile("all-posts.json", updatedPosts, allPostsFile.sha,
-        `data: reddit-pulse run ${runDate} (+${newPosts.length} posts)`),
-      putFile("runs.json", updatedRuns, runsFile.sha,
-        `data: reddit-pulse run summary ${runDate}`),
-    ]);
+    // Sequential PUTs: GitHub's content API advances the parent commit on each
+    // write. Firing both in parallel (Promise.all) causes the second PUT's
+    // parent ref to go stale mid-flight, yielding intermittent 409s. Awaiting
+    // the first PUT before starting the second is the documented fix.
+    await putFile("all-posts.json", updatedPosts, allPostsFile.sha,
+      `data: reddit-pulse run ${runDate} (+${newPosts.length} posts)`);
+    await putFile("runs.json", updatedRuns, runsFile.sha,
+      `data: reddit-pulse run summary ${runDate}`);
 
     revalidateTag("reddit-pulse", "max");
 
