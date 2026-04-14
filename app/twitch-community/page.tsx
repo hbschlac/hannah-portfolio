@@ -37,10 +37,10 @@ async function DashboardLoader() {
 
 function LoadingSkeleton() {
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "#FAFAFA" }}>
       <div className="text-center">
-        <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-sm text-gray-400 mt-3">Loading research...</p>
+        <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin mx-auto" style={{ borderColor: "#9146FF transparent transparent transparent" }} />
+        <p className="text-sm mt-3" style={{ color: "#999" }}>Loading research...</p>
       </div>
     </div>
   );

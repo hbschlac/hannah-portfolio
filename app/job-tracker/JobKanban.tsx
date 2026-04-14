@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition, useRef } from "react";
+import { useState, useTransition, useRef, useEffect } from "react";
 import { saveJobs } from "./actions";
-import type { JobApplication, CompanyType, InterviewStage } from "@/lib/kv";
+import type { JobApplication, CompanyType, InterviewStage, CustomTask } from "@/lib/kv";
 import JobCard from "./JobCard";
 import TodayFocus from "./TodayFocus";
 
@@ -155,19 +155,27 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   const [isPending, startTransition] = useTransition();
   const [completedTaskIds, setCompletedTaskIds] = useState<Set<string>>(new Set());
   const [dismissedTaskIds, setDismissedTaskIds] = useState<Set<string>>(new Set());
+  const [customTasks, setCustomTasks] = useState<CustomTask[]>([]);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => {
+    fetch("/api/tasks")
+      .then((r) => r.json())
+      .then((data) => { if (data.ok) setCustomTasks(data.tasks); })
+      .catch(() => {});
+  }, []);
 
   // Keep ref in sync so persistSave always reads the latest jobs
   function setJobsAndRef(updater: JobApplication[] | ((prev: JobApplication[]) => JobApplication[])) {
     if (typeof updater === "function") {
-      setJobsAndRef((prev) => {
+      setJobs((prev) => {
         const next = updater(prev);
         jobsRef.current = next;
         return next;
       });
     } else {
       jobsRef.current = updater;
-      setJobsAndRef(updater);
+      setJobs(updater);
     }
   }
 
@@ -230,6 +238,25 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
     setDismissedTaskIds((prev) => new Set([...prev, `${jobId}:${field}`]));
   }
 
+  async function handleCustomTaskAdd(label: string) {
+    const res = await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "create", label }),
+    });
+    const data = await res.json();
+    if (data.ok) setCustomTasks(data.tasks);
+  }
+
+  function handleCustomTaskDelete(id: string) {
+    setCustomTasks((prev) => prev.filter((t) => t.id !== id));
+    fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "delete", id }),
+    }).catch(() => {});
+  }
+
   // ── Drag & drop ──────────────────────────────────────────────────────────────
   function handleDrop(e: React.DragEvent, targetColumnId: string) {
     e.preventDefault();
@@ -267,6 +294,9 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
         dismissedTaskIds={dismissedTaskIds}
         onTaskDone={handleTaskDone}
         onTaskDismiss={handleTaskDismiss}
+        customTasks={customTasks}
+        onCustomTaskAdd={handleCustomTaskAdd}
+        onCustomTaskDelete={handleCustomTaskDelete}
       />
 
       {/* Toolbar: search + type filter + sort + save */}
