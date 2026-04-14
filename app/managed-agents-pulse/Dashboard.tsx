@@ -593,8 +593,7 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
             <h1 className="text-3xl font-bold text-white">Managed Agents API — Developer Pulse</h1>
             <p className="text-stone-300 mt-2 text-sm leading-relaxed max-w-2xl">
               Live feed of developer conversation about the Managed Agents API.
-              Categorized every 2 hours since launch day. Sources: Hacker News, Reddit,
-              Twitter snapshot from launch week.
+              Categorized every 2 hours since launch day. Sources: Hacker News and Reddit.
             </p>
           </div>
           <a
