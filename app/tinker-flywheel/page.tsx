@@ -84,10 +84,10 @@ async function Memo() {
             signal.
           </p>
           <p className="text-[15px] text-neutral-700 leading-relaxed mt-4">
-            The other {iteratePct}% spans four themes developers know matter but can&apos;t fully
-            articulate yet: when to retrain, how to update without starting over, which version to
-            keep, the cost of another run. All real. None loud. Because &ldquo;did it get
-            better?&rdquo; is the gate that comes first — and Tinker hasn&apos;t shipped against it.
+            The other {iteratePct}% spans four themes developers feel but haven&apos;t named: when
+            to retrain, how to update without starting over, which version to keep, the cost of
+            another run. All real. None loud. Because &ldquo;did it get better?&rdquo; is the gate
+            that comes first — and Tinker hasn&apos;t shipped against it.
           </p>
         </section>
 
