@@ -55,8 +55,9 @@ async function Memo() {
             The finding
           </p>
           <p className="text-lg md:text-xl text-neutral-900 leading-relaxed font-medium">
-            Developers aren&apos;t avoiding retraining because training is hard.
-            They&apos;re avoiding it because they can&apos;t tell if the last round worked.
+            &ldquo;Did it actually get better?&rdquo; is the question developers can&apos;t answer
+            after a fine-tuning run. Until they can, they retrain less often than they want to —
+            and the flywheel stalls.
           </p>
         </section>
 
@@ -74,9 +75,9 @@ async function Memo() {
           <p className="text-[15px] text-neutral-700 leading-relaxed mt-4">
             The second cluster is about what happens next: when to retrain, how to compare versions,
             how to iterate without starting over. These are lifecycle problems.
-            Tinker solves the hardest part — distributed training. But the flywheel that turns a
-            one-time training job into a platform developers never leave is <em>iteration</em>,
-            and iteration has friction Tinker hasn&apos;t addressed.
+            Tinker solves the hardest part — distributed training. But training is a one-time event.
+            The loop that brings a customer back for a second run, a tenth run, a hundredth run is{" "}
+            <em>iteration</em> — and iteration has friction Tinker hasn&apos;t shipped against yet.
           </p>
         </section>
 
@@ -131,10 +132,11 @@ async function Memo() {
             The so what
           </p>
           <p className="text-[15px] text-neutral-800 leading-relaxed">
-            A fine-tuning API that also closes the evaluation loop doesn&apos;t just make
-            developers&apos; lives easier — it makes them retrain more often. More training jobs
-            = more compute consumed = compounding revenue. The gap between a training tool and
-            a training <em>platform</em> is the iteration layer.
+            Every theme in this data is a reason someone skipped a training run they&apos;d
+            otherwise have shipped. A fine-tuning API that also answers{" "}
+            <em>&ldquo;did it get better?&rdquo;</em> turns one-time jobs into loops — and loops
+            compound. The gap between a training tool and a training <em>platform</em> is
+            iteration.
           </p>
         </section>
 

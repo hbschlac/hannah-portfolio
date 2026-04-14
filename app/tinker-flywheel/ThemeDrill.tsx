@@ -207,8 +207,8 @@ export function UserDefinition() {
         ML engineers and researchers fine-tuning open-weight models (Llama, Qwen, Gemma, Mistral) on
         their own data — using Tinker, Axolotl, Unsloth, or raw Hugging Face transformers. They ship
         trained models into production apps, research projects, or internal tools. They&apos;re the
-        exact developer Tinker&apos;s API targets: fluent enough to run a fine-tune, but not resourced
-        to build their own eval and iteration infrastructure.
+        exact developer Tinker&apos;s API targets: fluent enough to run a fine-tune, but without a
+        team to build eval and iteration infrastructure for them.
       </p>
     </details>
   );
