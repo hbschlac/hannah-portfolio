@@ -20,6 +20,29 @@ const CAT_LABEL: Record<PostCategory, string> = {
   use_case: "Use Case",
   feature_request: "Feature Request",
 };
+const CAT_DEF: Record<PostCategory, string> = {
+  momentum: "Praise, excitement, success stories, \u201cwe shipped with it\u201d",
+  friction: "Errors, confusion, setup pain, things breaking",
+  use_case: "What developers are building \u2014 specific applications and workflows",
+  feature_request: "Missing capabilities, wishlist items",
+};
+
+// ─── source labels ────────────────────────────────────────────────────────────
+function sourceShort(post: { source: string; subreddit: string }): string {
+  if (post.source === "hackernews") return "HN";
+  if (post.source === "twitter") return post.subreddit || "Twitter";
+  return `r/${post.subreddit}`;
+}
+function sourceLong(post: { source: string; subreddit: string }): string {
+  if (post.source === "hackernews") return "Hacker News";
+  if (post.source === "twitter") return `Twitter ${post.subreddit}`.trim();
+  return `r/${post.subreddit}`;
+}
+function sourceViewTarget(source: string): string {
+  if (source === "hackernews") return "HN";
+  if (source === "twitter") return "Twitter";
+  return "Reddit";
+}
 // ─── lazy post fetching ───────────────────────────────────────────────────────
 function buildPostsUrl(params: Record<string, string>) {
   const q = new URLSearchParams(params);
@@ -101,7 +124,7 @@ function DrilldownDrawer({
                   {CAT_LABEL[post.category]}
                 </span>
                 <span className="text-xs text-stone-500 shrink-0">
-                  {post.source === "hackernews" ? "HN" : `r/${post.subreddit}`} · {"\u2191"}{post.score}
+                  {sourceShort(post)} · {"\u2191"}{post.score}
                 </span>
               </div>
               <a
@@ -123,7 +146,7 @@ function DrilldownDrawer({
                   rel="noopener noreferrer"
                   className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
                 >
-                  View on {post.source === "hackernews" ? "HN" : "Reddit"} →
+                  View on {sourceViewTarget(post.source)} →
                 </a>
               </div>
             </div>
@@ -162,6 +185,7 @@ function LatestFindings({
   const [filter, setFilter] = useState<PostCategory | "all">("all");
   const [previewPosts, setPreviewPosts] = useState<PulsePost[]>([]);
   const [loadingPreview, setLoadingPreview] = useState(false);
+  const [showLegend, setShowLegend] = useState(false);
 
   useEffect(() => {
     if (!latestRun) return;
@@ -199,6 +223,32 @@ function LatestFindings({
         >
           {"\u2193"} Download raw data
         </a>
+      </div>
+
+      {/* category legend */}
+      <div className="mb-3">
+        <button
+          onClick={() => setShowLegend((v) => !v)}
+          className="text-xs text-stone-400 hover:text-stone-200 transition-colors flex items-center gap-1"
+        >
+          <span>{showLegend ? "\u25BE" : "\u25B8"}</span>
+          <span>What do these categories mean?</span>
+        </button>
+        {showLegend && (
+          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-[#0f0f13] border border-white/5 rounded-lg p-3">
+            {(["momentum", "friction", "use_case", "feature_request"] as PostCategory[]).map((cat) => (
+              <div key={cat} className="flex items-start gap-2">
+                <span
+                  className="px-1.5 py-0.5 rounded text-[10px] font-medium shrink-0 mt-0.5"
+                  style={{ background: CAT_COLOR[cat] + "22", color: CAT_COLOR[cat] }}
+                >
+                  {CAT_LABEL[cat]}
+                </span>
+                <span className="text-stone-400 leading-snug">{CAT_DEF[cat]}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* category filter badges */}
@@ -249,7 +299,7 @@ function LatestFindings({
                 {CAT_LABEL[post.category]}
               </span>
               <span className="text-xs text-stone-500">
-                {post.source === "hackernews" ? "HN" : `r/${post.subreddit}`} · {"\u2191"}{post.score}
+                {sourceShort(post)} · {"\u2191"}{post.score}
               </span>
               <span className="ml-auto text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">view source →</span>
             </div>
@@ -490,7 +540,10 @@ function MostQuoted({
                           </blockquote>
                         )}
                         <p className="text-xs text-stone-500">
-                          &mdash; {post.source === "hackernews" ? "Hacker News" : `r/${post.subreddit}`} &middot; {"\u2191"}{post.score} &middot; {post.num_comments} comment{post.num_comments !== 1 ? "s" : ""}
+                          &mdash; {sourceLong(post)} &middot; {"\u2191"}{post.score}
+                          {post.source !== "twitter" && (
+                            <> &middot; {post.num_comments} comment{post.num_comments !== 1 ? "s" : ""}</>
+                          )}
                         </p>
                       </div>
                     ))}
@@ -503,7 +556,7 @@ function MostQuoted({
       )}
 
       <p className="text-xs text-stone-600 mt-5 border border-white/5 rounded-lg px-3 py-2 bg-white/3">
-        Based on Reddit + HN posts about Managed Agents (n={latestRun.total_new_posts}). Public forums skew toward early adopters and vocal users &mdash; directional signal, not a verdict.
+        Based on public posts about Managed Agents (n={latestRun.total_new_posts}). Public forums skew toward early adopters and vocal users &mdash; directional signal, not a verdict.
       </p>
     </section>
   );
@@ -516,7 +569,17 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
   const closeDrawer = useCallback(() => setDrawer(null), []);
 
   const latestRun = runs[runs.length - 1] ?? null;
+  const firstRun = runs[0] ?? null;
   const totalPosts = latestRun?.cumulative_total ?? 0;
+
+  // Days since launch (April 10, 2026)
+  const LAUNCH_DATE = "2026-04-10";
+  const daysSinceLaunch = (() => {
+    if (!latestRun) return 0;
+    const launch = new Date(LAUNCH_DATE + "T00:00:00Z").getTime();
+    const latest = new Date(latestRun.run_date + "T00:00:00Z").getTime();
+    return Math.max(0, Math.round((latest - launch) / 86400000));
+  })();
 
   return (
     <>
@@ -528,9 +591,11 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
           <div>
             <p className="text-xs tracking-widest uppercase text-stone-500 mb-1">schlacter.me</p>
             <h1 className="text-3xl font-bold text-white">Managed Agents API — Developer Pulse</h1>
-            <p className="text-stone-400 mt-1 text-sm">What developers are saying about the Managed Agents API launch (April 10, 2026)</p>
-            <p className="text-xs text-stone-500 mt-1">Sources: Reddit + Hacker News · auto-updated</p>
-            {latestRun && <p className="text-xs text-stone-600 mt-1">Last updated {latestRun.run_date}</p>}
+            <p className="text-stone-300 mt-2 text-sm leading-relaxed max-w-2xl">
+              Live feed of developer conversation about the Managed Agents API.
+              Categorized every 2 hours since launch day. Sources: Hacker News, Reddit,
+              Twitter snapshot from launch week.
+            </p>
           </div>
           <a
             href="https://raw.githubusercontent.com/hbschlac/build-log/main/managed-agents-pulse/all-posts.json"
@@ -542,40 +607,59 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
           </a>
         </div>
 
+        {/* time context strip */}
+        <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-stone-400 border-y border-white/5 py-3">
+          <div>
+            <span className="text-stone-600 uppercase tracking-widest mr-2">Launched</span>
+            <span className="text-stone-200">April 10, 2026</span>
+          </div>
+          <div>
+            <span className="text-stone-600 uppercase tracking-widest mr-2">Tracking since</span>
+            <span className="text-stone-200">{firstRun?.run_date ?? "—"}</span>
+          </div>
+          <div>
+            <span className="text-stone-600 uppercase tracking-widest mr-2">Last refresh</span>
+            <span className="text-stone-200">{latestRun?.run_date ?? "—"}</span>
+            {runs.length > 0 && (
+              <span className="text-stone-500 ml-1">· run #{runs.length}</span>
+            )}
+          </div>
+        </div>
+
         {/* stat cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <StatCard
-            label="Total posts"
+            label="Posts since launch"
             value={totalPosts}
-            sub="since launch"
+            sub={daysSinceLaunch === 1 ? "1 day tracked" : `${daysSinceLaunch} days tracked`}
             onClick={() => openDrawer("All posts — since launch", buildPostsUrl({}))}
           />
           <StatCard
             label="Momentum"
             value={latestRun?.categories.momentum ?? 0}
-            sub="latest run"
+            sub="this run"
             color={CAT_COLOR.momentum}
             onClick={() => latestRun && openDrawer("Momentum · latest run", buildPostsUrl({ run_date: latestRun.run_date, category: "momentum" }))}
           />
           <StatCard
             label="Friction"
             value={latestRun?.categories.friction ?? 0}
-            sub="latest run"
+            sub="this run"
             color={CAT_COLOR.friction}
             onClick={() => latestRun && openDrawer("Friction · latest run", buildPostsUrl({ run_date: latestRun.run_date, category: "friction" }))}
           />
           <StatCard
             label="Use cases"
             value={latestRun?.categories.use_case ?? 0}
-            sub="latest run"
+            sub="this run"
             color={CAT_COLOR.use_case}
             onClick={() => latestRun && openDrawer("Use Cases · latest run", buildPostsUrl({ run_date: latestRun.run_date, category: "use_case" }))}
           />
         </div>
 
+        <MostQuoted latestRun={latestRun} openDrawer={openDrawer} />
         <LatestFindings latestRun={latestRun} openDrawer={openDrawer} />
         <CumulativeTrends runs={runs} openDrawer={openDrawer} />
-        <MostQuoted latestRun={latestRun} openDrawer={openDrawer} />
 
         {/* footer */}
         <footer className="text-center py-8 border-t border-white/5 space-y-1">

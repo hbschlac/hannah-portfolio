@@ -1,12 +1,12 @@
 export type PostCategory = "momentum" | "friction" | "use_case" | "feature_request";
 export type Sentiment = "negative" | "positive" | "neutral";
-export type PostSource = "reddit" | "hackernews";
+export type PostSource = "reddit" | "hackernews" | "twitter";
 
 export interface PulsePost {
   id: string;
   collected_run: string; // "YYYY-MM-DD"
   title: string;
-  subreddit: string; // or "hackernews" for HN posts
+  subreddit: string; // or "hackernews" for HN; "@handle" for twitter
   source: PostSource;
   score: number;
   num_comments: number;

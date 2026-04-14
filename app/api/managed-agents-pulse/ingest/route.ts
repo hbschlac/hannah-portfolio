@@ -31,7 +31,13 @@ function validatePost(p: unknown): { ok: boolean; reason?: string } {
     return { ok: false, reason: "tags must be array" };
   const badTag = (post.tags as unknown[]).find((t) => !VALID_TAGS.has(t as string));
   if (badTag) return { ok: false, reason: `unknown tag: ${badTag}` };
-  if (typeof post.url !== "string" || (!post.url.includes("reddit") && !post.url.includes("ycombinator")))
+  if (
+    typeof post.url !== "string" ||
+    (!post.url.includes("reddit") &&
+      !post.url.includes("ycombinator") &&
+      !post.url.includes("twitter.com") &&
+      !post.url.includes("x.com"))
+  )
     return { ok: false, reason: `invalid url: ${post.url}` };
   return { ok: true };
 }
