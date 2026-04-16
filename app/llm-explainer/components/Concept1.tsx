@@ -380,33 +380,35 @@ function JourneyStage({ onNext, onBack }: { onNext: () => void; onBack: () => vo
                     const px = x * 80 + 10;
                     const py = (1 - y) * 80 + 10;
                     return (
-                      <Whisper
+                      <div
                         key={i}
-                        text={`"${JOURNEY_TOKENS[i]}" landed here because of the contexts it appeared in across billions of sentences. ${
-                          i >= 1 && i <= 3
-                            ? "It's near the other descriptive/object words."
-                            : i >= 5
-                            ? "Action words cluster in a different region."
-                            : ""
-                        }`}
-                        position={py < 50 ? "bottom" : "top"}
+                        className="absolute"
+                        style={{ left: `${px}%`, top: `${py}%`, transform: "translate(-50%, -50%)" }}
                       >
-                        <div
-                          className="absolute flex flex-col items-center cursor-help"
-                          style={{ left: `${px}%`, top: `${py}%`, transform: "translate(-50%, -50%)" }}
+                        <Whisper
+                          text={`"${JOURNEY_TOKENS[i]}" landed here because of the contexts it appeared in across billions of sentences. ${
+                            i >= 1 && i <= 3
+                              ? "It's near the other descriptive/object words."
+                              : i >= 5
+                              ? "Action words cluster in a different region."
+                              : ""
+                          }`}
+                          position={py < 50 ? "bottom" : "top"}
                         >
-                          <div
-                            className="w-3.5 h-3.5 rounded-full shadow-sm hover:scale-150 transition-transform"
-                            style={{ background: TOKEN_COLORS[i % TOKEN_COLORS.length] }}
-                          />
-                          <span
-                            className="text-[11px] font-mono font-medium mt-0.5"
-                            style={{ color: TOKEN_COLORS[i % TOKEN_COLORS.length] }}
-                          >
-                            {JOURNEY_TOKENS[i]}
+                          <span className="flex flex-col items-center cursor-help">
+                            <span
+                              className="w-3.5 h-3.5 rounded-full shadow-sm hover:scale-150 transition-transform"
+                              style={{ background: TOKEN_COLORS[i % TOKEN_COLORS.length] }}
+                            />
+                            <span
+                              className="text-[11px] font-mono font-medium mt-0.5"
+                              style={{ color: TOKEN_COLORS[i % TOKEN_COLORS.length] }}
+                            >
+                              {JOURNEY_TOKENS[i]}
+                            </span>
                           </span>
-                        </div>
-                      </Whisper>
+                        </Whisper>
+                      </div>
                     );
                   })}
                 </div>

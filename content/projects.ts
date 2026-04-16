@@ -74,10 +74,12 @@ export const projects: Project[] = [
     keyLearning: "Building the tool forced me to understand each concept well enough to explain it. That's a different test than reading a paper — and a harder one to fake.",
     artifacts: {
       screenshots: [
+        "/projects/llm-explainer/playground.gif",
         "/projects/llm-explainer/mobile-hero.png",
         "/projects/llm-explainer/desktop-full.png",
       ],
       screenshotCaptions: [
+        "The Text-as-Numbers playground: sentence → tokens → IDs → embeddings in meaning space",
         "Mobile hero — saves to your phone home screen as a standalone app",
         "Full walkthrough: six concepts from Stanford CME 295, each with an interactive playground",
       ],
@@ -304,10 +306,14 @@ export const projects: Project[] = [
     ],
     artifacts: {
       screenshots: [
+        "/projects/claude-wishlist/dashboard-full.png",
+        "/projects/claude-wishlist/drilldown.gif",
         "/projects/claude-wishlist/dashboard.png",
       ],
       screenshotCaptions: [
-        "Dashboard after the first successful run: 11 posts, 6 pain points, 3 feature requests, top tag: ux",
+        "The full dashboard: headline stats, Fresh Findings (filterable by category), Trends, and PM Today — agent-autonomy guardrails ranked top priority",
+        "Every stat is clickable — a drilldown drawer opens with the raw Reddit posts backing the number",
+        "Earlier view — first successful run: 11 posts, 6 pain points, 3 feature requests, top tag: ux",
       ],
       liveUrl: "https://schlacter.me/claude-ideas",
     },
@@ -347,18 +353,12 @@ export const projects: Project[] = [
     artifacts: {
       screenshots: [
         "/projects/vantara-agent-studio/landing.png",
-        "/projects/vantara-agent-studio/wizard-step1.png",
-        "/projects/vantara-agent-studio/wizard-step2.png",
-        "/projects/vantara-agent-studio/wizard-step3.png",
-        "/projects/vantara-agent-studio/wizard-step4.png",
+        "/projects/vantara-agent-studio/wizard-flow.gif",
         "/projects/vantara-agent-studio/dashboard.png",
       ],
       screenshotCaptions: [
         "Landing: build agents your team can use — no engineering required",
-        "Wizard step 1: pick a starting point or describe your own in plain English",
-        "Wizard step 2: a few quick questions to configure the agent correctly",
-        "Wizard step 3: plain-English preview of exactly what your agent will do",
-        "Wizard step 4: deployed — v1.0, Active, Edge runtime",
+        "The 4-step wizard end-to-end: starting point → clarifying questions → preview → deployed",
         "Dashboard: 3 agents deployed, version history, schedule, and status",
       ],
       liveUrl: "https://vantara-agent-studio.vercel.app",
