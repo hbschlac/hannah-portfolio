@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import statsJson from "../../public/claude-code-stats.json";
+import { CopyBlock } from "./CopyBlock";
+
+const COPY_PROMPT = `Clone https://github.com/hbschlac/claude-code-insights-dashboard to /tmp, run aggregator.py against my local ~/.claude/projects/ JSONL transcripts, and show me a summary of total hours, sessions, commits, and monthly breakdown. Then install Pillow if needed and run render_social_image.py to generate a 1200x1200 PNG at ~/claude-code-stats.png. Report the final path when done.`;
 
 export const metadata: Metadata = {
   title: "Claude Code — schlacter.me",
@@ -179,6 +182,35 @@ export default function ClaudeCodePage() {
             </div>
           </section>
         )}
+
+        <section
+          className="mt-14 pt-8"
+          style={{ borderTop: "1px solid #E5E1D8" }}
+        >
+          <p
+            className="text-xs tracking-widest uppercase mb-3"
+            style={{ color: "#8A8A8A" }}
+          >
+            Want to see yours?
+          </p>
+          <p className="text-sm mb-4" style={{ color: "#1A1A1A" }}>
+            Paste this into a new Claude Code session. It clones the open-source aggregator,
+            runs it against your local transcripts, and drops a shareable PNG in your home folder.
+          </p>
+          <CopyBlock text={COPY_PROMPT} />
+          <p className="text-xs mt-3" style={{ color: "#8A8A8A" }}>
+            Source:{" "}
+            <a
+              href="https://github.com/hbschlac/claude-code-insights-dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:opacity-70"
+            >
+              github.com/hbschlac/claude-code-insights-dashboard
+            </a>{" "}
+            · MIT · macOS/Linux · Python 3.9+
+          </p>
+        </section>
 
         <section
           className="mt-14 pt-8 text-xs"
