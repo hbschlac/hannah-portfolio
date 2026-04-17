@@ -1,6 +1,8 @@
 import Link from "next/link";
+import stats from "../public/claude-code-stats.json";
 
 export default function Home() {
+  const claudeHours = Math.round(stats?.total?.hours ?? 0);
   return (
     <div
       className="min-h-screen flex flex-col"
@@ -90,6 +92,31 @@ export default function Home() {
             vibe coding projects →
           </Link>
         </div>
+
+        {claudeHours > 0 && (
+          <div className="mt-3">
+            <Link
+              href="/claude-code"
+              className="inline-flex items-center gap-1.5 text-xs transition-opacity hover:opacity-50"
+              style={{ color: "#8A8A8A" }}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z" />
+              </svg>
+              {claudeHours}h in Claude Code →
+            </Link>
+          </div>
+        )}
       </main>
 
       <footer

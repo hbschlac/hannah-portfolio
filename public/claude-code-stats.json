@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-04-17T00:29:05+00:00",
+  "total": {
+    "hours": 767.8,
+    "sessions": 286,
+    "commits": 314,
+    "days_active": 40,
+    "first_month": "2026-02",
+    "latest_month": "2026-04"
+  },
+  "months": [
+    {
+      "month": "2026-02",
+      "sessions": 36,
+      "hours": 29.4,
+      "avg_per_week_hours": 7.4,
+      "max_session_hours": 6.0,
+      "days_active": 13,
+      "avg_length_min": 49,
+      "commits": 0,
+      "top_projects": [
+        {
+          "label": "personal shopping site",
+          "hours": 13.0,
+          "share": 44.2
+        },
+        {
+          "label": "reading automation tool",
+          "hours": 10.4,
+          "share": 35.4
+        },
+        {
+          "label": "side e-commerce project",
+          "hours": 6.0,
+          "share": 20.4
+        },
+        {
+          "label": "LinkedIn research tool",
+          "hours": 0.0,
+          "share": 0.0
+        }
+      ],
+      "partial": false
+    },
+    {
+      "month": "2026-03",
+      "sessions": 55,
+      "hours": 203.6,
+      "avg_per_week_hours": 46.0,
+      "max_session_hours": 6.0,
+      "days_active": 14,
+      "avg_length_min": 222,
+      "commits": 94,
+      "top_projects": [
+        {
+          "label": "personal portfolio & tools",
+          "hours": 194.0,
+          "share": 95.3
+        },
+        {
+          "label": "personal stylist project",
+          "hours": 6.0,
+          "share": 2.9
+        },
+        {
+          "label": "one-off side project",
+          "hours": 3.6,
+          "share": 1.8
+        }
+      ],
+      "partial": false
+    },
+    {
+      "month": "2026-04",
+      "sessions": 195,
+      "hours": 534.8,
+      "avg_per_week_hours": 220.2,
+      "max_session_hours": 6.0,
+      "days_active": 13,
+      "avg_length_min": 165,
+      "commits": 220,
+      "top_projects": [
+        {
+          "label": "personal portfolio & tools",
+          "hours": 355.6,
+          "share": 66.5
+        },
+        {
+          "label": "home design tool",
+          "hours": 115.7,
+          "share": 21.6
+        },
+        {
+          "label": "AI course learning",
+          "hours": 16.8,
+          "share": 3.1
+        },
+        {
+          "label": "personal stylist project",
+          "hours": 14.8,
+          "share": 2.8
+        },
+        {
+          "label": "other personal project",
+          "hours": 12.0,
+          "share": 2.2
+        }
+      ],
+      "partial": true
+    }
+  ],
+  "suggestions": []
+}
