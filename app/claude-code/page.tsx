@@ -87,7 +87,11 @@ export default function ClaudeCodePage() {
         >
           <Kpi label="hours" value={total.hours.toLocaleString(undefined, { maximumFractionDigits: 0 })} />
           <Kpi label="sessions" value={total.sessions.toLocaleString()} />
-          <Kpi label="commits" value={total.commits.toLocaleString()} />
+          <Kpi
+            label="commits"
+            value={total.commits.toLocaleString()}
+            href="https://github.com/hbschlac"
+          />
           <Kpi label="days active" value={total.days_active.toLocaleString()} />
         </div>
 
@@ -200,9 +204,9 @@ export default function ClaudeCodePage() {
   );
 }
 
-function Kpi({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
+function Kpi({ label, value, href }: { label: string; value: string; href?: string }) {
+  const inner = (
+    <>
       <p className="text-2xl tabular-nums" style={{ color: "#1A1A1A" }}>
         {value}
       </p>
@@ -211,7 +215,21 @@ function Kpi({ label, value }: { label: string; value: string }) {
         style={{ color: "#8A8A8A" }}
       >
         {label}
+        {href && <span aria-hidden="true"> →</span>}
       </p>
-    </div>
+    </>
   );
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block transition-opacity hover:opacity-50"
+      >
+        {inner}
+      </a>
+    );
+  }
+  return <div>{inner}</div>;
 }
