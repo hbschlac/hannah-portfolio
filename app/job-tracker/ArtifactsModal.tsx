@@ -262,13 +262,16 @@ function ArtifactFullView({
         >
           ← Back to list
         </button>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onBlur={saveIfChanged}
-          placeholder="Artifact title…"
-          className="w-full text-base font-medium text-stone-900 bg-transparent focus:outline-none"
-        />
+        <label className="block">
+          <span className="text-[10px] uppercase tracking-widest text-stone-400">Title</span>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onBlur={saveIfChanged}
+            placeholder="Artifact title…"
+            className="mt-0.5 w-full text-base font-medium text-stone-900 bg-white border border-stone-200 rounded-md px-2 py-1.5 hover:border-stone-400 focus:border-stone-800 focus:outline-none focus:ring-1 focus:ring-stone-800"
+          />
+        </label>
         <input
           value={kind}
           onChange={(e) => setKind(e.target.value)}

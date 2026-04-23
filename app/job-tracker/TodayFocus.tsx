@@ -62,6 +62,15 @@ export default function TodayFocus({
   const [adding, setAdding] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  function jumpToJob(jobId: string) {
+    const el = document.getElementById(`job-tile-${jobId}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    const flashClasses = ["ring-2", "ring-amber-400", "ring-offset-2"];
+    el.classList.add(...flashClasses);
+    window.setTimeout(() => el.classList.remove(...flashClasses), 1500);
+  }
+
   const allJobTasks = computeTasks(jobs);
   const jobTasks = allJobTasks.filter((t) => !dismissedTaskIds.has(`${t.jobId}:${t.field}`));
   const totalTasks = jobTasks.length + customTasks.length;
@@ -131,7 +140,7 @@ export default function TodayFocus({
   }
 
   const doneJobCount = jobTasks.filter((t) => completedTaskIds.has(`${t.jobId}:${t.field}`)).length;
-  const doneCustomCount = customTasks.filter((t) => completedTaskIds.has(`custom:${t.id}`)).length;
+  const doneCustomCount = customTasks.filter((t) => completedTaskIds.has(`custom:${t.id}:custom`)).length;
   const doneCount = doneJobCount + doneCustomCount;
   const allDone = totalTasks > 0 && doneCount === totalTasks;
 
@@ -151,7 +160,7 @@ export default function TodayFocus({
       <div className="space-y-2">
         {/* Custom tasks */}
         {customTasks.map((task) => {
-          const key = `custom:${task.id}`;
+          const key = `custom:${task.id}:custom`;
           const done = completedTaskIds.has(key);
           return (
             <div
@@ -202,11 +211,19 @@ export default function TodayFocus({
                     onTaskDone(task.jobId, task.field);
                   }
                 }}
+                onClick={(e) => e.stopPropagation()}
                 className="accent-stone-800 w-4 h-4 flex-shrink-0 cursor-pointer"
               />
-              <span className={`text-sm flex-1 ${done ? "line-through text-stone-400" : "text-stone-700"}`}>
+              <button
+                type="button"
+                onClick={() => jumpToJob(task.jobId)}
+                className={`text-sm flex-1 text-left truncate hover:text-stone-900 hover:underline underline-offset-2 ${
+                  done ? "line-through text-stone-400" : "text-stone-700"
+                }`}
+                title={`Jump to ${task.company}`}
+              >
                 {task.label}
-              </span>
+              </button>
               {task.jobUrl && !done && (
                 <a
                   href={task.jobUrl}
