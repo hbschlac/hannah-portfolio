@@ -145,8 +145,8 @@ async function Memo() {
           <p className="text-[15px] text-neutral-800 leading-relaxed">
             Every theme in this data ladders back to one question. A fine-tuning API that also
             answers <em>&ldquo;did it get better?&rdquo;</em> closes the loop developers can&apos;t
-            close today — and loops compound. The gap between a training tool and a training{" "}
-            <em>platform</em> is evaluation.
+            close today. Evaluation is what turns Tinker from a training tool into a{" "}
+            <em>platform</em>.
           </p>
         </section>
 
