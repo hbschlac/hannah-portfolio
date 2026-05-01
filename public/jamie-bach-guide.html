@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newport Bachelorette 🥂 Food & Bar Guide</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Georgia', serif;
+      background: #fdf8f4;
+      color: #2d2d2d;
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    header h1 {
+      font-size: 2.6rem;
+      color: #8b3a5a;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    header p {
+      font-size: 1rem;
+      color: #888;
+      font-style: italic;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      margin: 48px 0 20px;
+    }
+    .section-title.nice { background: #8b3a5a; }
+    .section-title.fun { background: #c47d3e; }
+    .section-title.bars { background: #3a6b8b; }
+
+    /* Stack rank table */
+    .rank-section {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+    .rank-section h2 {
+      font-size: 1.2rem;
+      color: #8b3a5a;
+      margin-bottom: 18px;
+      letter-spacing: 0.5px;
+    }
+    .rank-table { width: 100%; border-collapse: collapse; }
+    .rank-table tr { border-bottom: 1px solid #f0ebe6; }
+    .rank-table tr:last-child { border-bottom: none; }
+    .rank-table td { padding: 9px 10px; font-size: 0.88rem; vertical-align: middle; }
+    .rank-table td:first-child { width: 44px; }
+    .rank-table td:nth-child(3) { color: #e8b84b; font-weight: bold; white-space: nowrap; }
+    .rank-table td:last-child { color: #777; font-style: italic; font-size: 0.82rem; }
+    .rank-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 50%;
+      font-weight: bold; font-size: 0.85rem; color: #fff;
+    }
+    .rank-num.top3 { background: #8b3a5a; }
+    .rank-num.mid { background: #c47d3e; }
+    .rank-num.low { background: #999; }
+    .rank-name { font-weight: bold; color: #2d2d2d; }
+
+    /* Rank badge on card */
+    .card { position: relative; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 28px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Photo gallery */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 140px 140px;
+      gap: 2px;
+      height: 282px;
+      background: #e8e0d8;
+    }
+    .photo-grid.single {
+      grid-template-columns: 1fr;
+      grid-template-rows: 200px;
+      height: 200px;
+    }
+    .photo-grid.two {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 200px;
+      height: 200px;
+    }
+    .photo-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-grid img.main {
+      grid-row: 1 / 3;
+    }
+    .photo-placeholder {
+      background: linear-gradient(135deg, #e8ddd5, #d4c5b8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      grid-row: 1 / 3;
+    }
+    .photo-placeholder a {
+      color: #8b3a5a;
+      font-size: 0.82rem;
+      text-decoration: none;
+      border: 1px solid #8b3a5a;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+    .photo-placeholder a:hover { background: #f7eef3; }
+
+    .card-header {
+      padding: 16px 18px 10px;
+      border-bottom: 1px solid #f0ebe6;
+    }
+    .card-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #2d2d2d;
+      margin-bottom: 5px;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.83rem;
+      color: #666;
+    }
+    .stars { color: #e8b84b; font-weight: bold; }
+    .price-tag {
+      background: #f3ede8; color: #8b3a5a;
+      font-size: 0.75rem; padding: 2px 8px; border-radius: 20px; font-weight: bold;
+    }
+    .cuisine-tag {
+      background: #eef3f7; color: #3a6b8b;
+      font-size: 0.75rem; padding: 2px 8px; border-radius: 20px;
+    }
+    .card-body {
+      padding: 14px 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+    .row { display: flex; gap: 10px; }
+    .row-icon { font-size: 1rem; width: 20px; flex-shrink: 0; margin-top: 1px; }
+    .row-content { font-size: 0.86rem; line-height: 1.5; color: #444; }
+    .row-content strong {
+      color: #999; display: block; font-size: 0.74rem;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;
+    }
+    .badge {
+      display: inline-block; font-size: 0.74rem; padding: 2px 10px;
+      border-radius: 20px; font-weight: bold; margin-top: 3px;
+    }
+    .badge.yes { background: #e3f7e8; color: #2a7a3a; }
+    .badge.no { background: #fce8e8; color: #8b2a2a; }
+    .badge.call { background: #fff4e0; color: #a06020; }
+    .email-link { color: #8b3a5a; text-decoration: none; font-weight: bold; }
+    .email-link:hover { text-decoration: underline; }
+    .card-rank-badge {
+      position: absolute; top: 10px; left: 10px; z-index: 10;
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 0.9rem; color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .card-rank-badge.top3 { background: #8b3a5a; }
+    .card-rank-badge.mid { background: #c47d3e; }
+    .card-rank-badge.low { background: #999; }
+    .card-footer {
+      padding: 8px 18px 14px;
+      font-size: 0.76rem; color: #aaa;
+      border-top: 1px solid #f0ebe6;
+    }
+    .note {
+      background: #fff8f0; border-left: 3px solid #e8b84b;
+      padding: 5px 9px; font-size: 0.8rem; color: #7a5a20;
+      border-radius: 0 6px 6px 0; margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🥂 Newport Bachelorette Guide</h1>
+  <p>July · Party of 9 · All you need to eat, drink & celebrate</p>
+</header>
+
+<!-- ===== ITINERARY ===== -->
+<div class="rank-section">
+  <h2>📅 Current Plan <span style="font-size: 0.75rem; color: #999; font-weight: normal;">(Ellie is booking reservations)</span></h2>
+  <table class="rank-table">
+    <tr>
+      <td><span class="rank-num mid">FRI</span></td>
+      <td><span class="rank-name">Lunch · Beach Picnic</span></td>
+      <td></td>
+      <td>Casual picnic on the beach.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num top3">FRI</span></td>
+      <td><span class="rank-name">Dinner · Pasta Beach</span></td>
+      <td>⭐ 4.4</td>
+      <td>Group dinner.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num mid">SAT</span></td>
+      <td><span class="rank-name">Brunch · Wally's Wieners</span></td>
+      <td>⭐ 4.3</td>
+      <td>Espresso martini towers.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num top3">SAT</span></td>
+      <td><span class="rank-name">Dinner · The Mooring</span></td>
+      <td>⭐ 4.6</td>
+      <td>The big dinner.</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ===== STACK RANK ===== -->
+<div class="rank-section">
+  <h2>🏆 Stack Rank — Vibe + Stars</h2>
+  <table class="rank-table">
+    <tr>
+      <td><span class="rank-num top3">1</span></td>
+      <td><span class="rank-name">The Mooring</span></td>
+      <td>⭐ 4.6</td>
+      <td>Highest rated + most elevated waterfront experience. The dinner.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num top3">2</span></td>
+      <td><span class="rank-name">Midtown Oyster Bar</span></td>
+      <td>⭐ 4.3</td>
+      <td>The Midtown Loft is built for group celebrations. Rooftop + harbor = perfect.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num top3">3</span></td>
+      <td><span class="rank-name">Pasta Beach</span></td>
+      <td>⭐ 4.4</td>
+      <td>High stars, gorgeous colorful interior, great group energy.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num mid">4</span></td>
+      <td><span class="rank-name">The Red Parrot</span></td>
+      <td>⭐ 4.4</td>
+      <td>Festive & celebratory by design, 3 levels, great for big groups.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num mid">5</span></td>
+      <td><span class="rank-name">The Landing</span></td>
+      <td>⭐ 3.9</td>
+      <td>Lower stars but outdoor waterfront + live bands = peak summer bach energy.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num mid">6</span></td>
+      <td><span class="rank-name">Diego's</span></td>
+      <td>⭐ 4.3</td>
+      <td>Harbor views, margaritas, fun without being too precious.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num mid">7</span></td>
+      <td><span class="rank-name">Wally's Wieners</span></td>
+      <td>⭐ 4.3</td>
+      <td>Espresso martini towers made for this. Perfect mid-day bach stop.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num mid">8</span></td>
+      <td><span class="rank-name">The Reef</span></td>
+      <td>⭐ 4.2</td>
+      <td>Solid waterfront, good stars — more casual/generic vs. top picks.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num low">9</span></td>
+      <td><span class="rank-name">O'Brien's Pub</span></td>
+      <td>⭐ 4.4</td>
+      <td>Great stars but just a pub — low vibe ceiling for a bach party.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num low">10</span></td>
+      <td><span class="rank-name">Ma's Donuts</span></td>
+      <td>⭐ 4.5</td>
+      <td>Highest rated but a donut counter — grab-and-go, not an experience.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num low">11</span></td>
+      <td><span class="rank-name">Smugglers Waterfront Bar</span></td>
+      <td>⭐ 4.0</td>
+      <td>Fun dive bar but smaller, hidden entrance, limited group options.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num low">12</span></td>
+      <td><span class="rank-name">IL Forno Italiano</span></td>
+      <td>⭐ 3.6</td>
+      <td>Lowest stars + cash-only pizza. Late-night carb stop at best.</td>
+    </tr>
+    <tr>
+      <td><span class="rank-num low">13</span></td>
+      <td><span class="rank-name">The Dockside</span></td>
+      <td>⭐ 3.5</td>
+      <td>Only open Fri–Sat nights, fewest reviews. Too risky to plan around.</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ===== NICE RESTAURANTS ===== -->
+<div class="section-title nice">🍽️ Nice Restaurants — Sit-Down Group Dinners</div>
+<div class="cards">
+
+  <!-- The Mooring -->
+  <div class="card">
+    <div class="card-rank-badge top3">1</div>
+    <div class="photo-grid two">
+      <img src="https://www.mooringrestaurant.com/assets/sites/2/91870900-752x400.jpg" alt="The Mooring" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://www.mooringrestaurant.com/assets/sites/2/MOO-South-Deck--scaled.jpg" alt="The Mooring South Deck" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">The Mooring Seafood Kitchen & Bar</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.6</span>
+        <span style="color:#999">(4,428 reviews)</span>
+        <span class="price-tag">$$$</span>
+        <span class="cuisine-tag">Seafood</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🌅</div>
+        <div class="row-content"><strong>Vibe</strong>Most upscale on the list. Stunning Narragansett Bay views, polished service, outdoor patio. Special-occasion dinner feel. This is your sit-down sunset dinner spot.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge yes">✅ Book Online (up to 20)</span><br>Reserve directly at mooringrestaurant.com</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong>No public email — <a class="email-link" href="https://www.mooringrestaurant.com" target="_blank">mooringrestaurant.com</a> · (401) 846-2260</div>
+      </div>
+    </div>
+    <div class="card-footer">1 Sayers Wharf, Newport, RI · Daily 11:30 AM–9/10 PM</div>
+  </div>
+
+  <!-- The Red Parrot -->
+  <div class="card">
+    <div class="card-rank-badge mid">4</div>
+    <div class="photo-grid">
+      <img class="main" src="https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/ktjvyoms/9e41892f-d723-4448-993c-ce0bcd174bbf" alt="The Red Parrot" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://popmenucloud.com/cdn-cgi/image/width%3D600%2Cheight%3D600%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/ktjvyoms/95dfc057-4f1c-4f7d-811f-231c96cae6d5" alt="The Red Parrot interior" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://popmenucloud.com/cdn-cgi/image/width%3D600%2Cheight%3D600%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/ktjvyoms/68025ae2-90f1-44ed-920e-b84c708d98d0" alt="The Red Parrot food" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">The Red Parrot Restaurant</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.4</span>
+        <span style="color:#999">(4,973 reviews)</span>
+        <span class="price-tag">$$</span>
+        <span class="cuisine-tag">American / Seafood</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🏛️</div>
+        <div class="row-content"><strong>Vibe</strong>Historic 1898 building, 3 spacious levels, festive & celebratory atmosphere. Wide menu — pasta, pizza, surf n turf. Good for <em>lunch or dinner</em>. More casual-lively than The Mooring.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge yes">✅ Yes — Reserve Online</span><br>Book via redparrotrestaurant.com</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong>No public email — <a class="email-link" href="https://www.redparrotrestaurant.com" target="_blank">redparrotrestaurant.com</a> · (401) 847-3800</div>
+      </div>
+    </div>
+    <div class="card-footer">348 Thames St, Newport, RI · Closes 9 PM</div>
+  </div>
+
+  <!-- The Reef -->
+  <div class="card">
+    <div class="card-rank-badge mid">8</div>
+    <div class="photo-grid">
+      <img class="main" src="https://res.cloudinary.com/spothopper/image/fetch/f_auto,q_auto:best,c_fit,h_600/http://static.spotapps.co/spots/9b/d99d1f5c134edfbc9868ce935e7c21/:original" alt="The Reef exterior" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://static.spotapps.co/spots/2d/2f2c294586400e9b0a98799f56fa82/full" alt="The Reef dining" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://static.spotapps.co/spots/9c/a7ec2266764a6587d4ad52a4972f60/full" alt="The Reef food" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">The Reef</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.2</span>
+        <span style="color:#999">(1,046 reviews)</span>
+        <span class="price-tag">$$</span>
+        <span class="cuisine-tag">Waterside Seafood</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🌴</div>
+        <div class="row-content"><strong>Vibe</strong>Casual waterside with harbor patio, <em>real palm trees</em>, heated igloos, and live music weekends. Great sunset dinner spot — also solid for lunch. More relaxed than The Mooring.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge yes">✅ Yes — Email Events Team</span><br>Dedicated private events space (up to 500).</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong><a class="email-link" href="mailto:events@thereefnewport.com">events@thereefnewport.com</a><br>General: <a class="email-link" href="mailto:info@thereefnewport.com">info@thereefnewport.com</a> · (401) 324-5852</div>
+      </div>
+    </div>
+    <div class="card-footer">10 Howard Wharf, Newport, RI · Daily 11 AM–9/10 PM</div>
+  </div>
+
+  <!-- Midtown Oyster Bar -->
+  <div class="card">
+    <div class="card-rank-badge top3">2</div>
+    <div class="photo-grid">
+      <img class="main" src="https://images.getbento.com/accounts/473213cbef27f3309bb34941552b9e34/media/images/60979MidtownEvents_UpstairsEventRoom4.jpg" alt="Midtown Oyster loft" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://images.getbento.com/accounts/473213cbef27f3309bb34941552b9e34/media/images/79612MidtownEvents_UpstairsEventRoom1.jpg" alt="Midtown Oyster interior" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://images.getbento.com/accounts/473213cbef27f3309bb34941552b9e34/media/images/30453MidtownEvents_UpstairsEventRoom6.jpg" alt="Midtown Oyster rooftop" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">Midtown Oyster Bar</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.3</span>
+        <span style="color:#999">(2,221 reviews)</span>
+        <span class="price-tag">$$$</span>
+        <span class="cuisine-tag">Seafood</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🦪</div>
+        <div class="row-content"><strong>Vibe</strong>Upscale-casual multi-level seafood. Rooftop deck with harbor views, exposed beams, intimate bar — <em>The Midtown Loft</em> (3rd floor) is perfect for a group of 9. Destination dinner feel.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge yes">✅ Yes — The Midtown Loft</span><br>Private 3rd-floor space with rooftop deck. Inquire via their events form.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong><a class="email-link" href="mailto:info@midtownoyster.com">info@midtownoyster.com</a> · (401) 619-4100<br><a class="email-link" href="https://www.midtownoyster.com/private-events-venue/the-midtown-loft/" target="_blank">→ Private Events Inquiry Form</a></div>
+      </div>
+    </div>
+    <div class="card-footer">345 Thames St, Newport, RI</div>
+  </div>
+
+  <!-- IL Forno -->
+  <div class="card">
+    <div class="card-rank-badge low">12</div>
+    <div class="photo-grid two">
+      <img src="https://slicelife.imgix.net/56083/photos/original/product-spaghetti-with-meatballs-pasta-12738784.jpeg?auto=compress&auto=format&w=600&h=400&fit=crop" alt="IL Forno pasta" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://shop-logos.imgix.net/shops/56083/original/download_(10).jpg?auto=compress,format&w=400&h=400&fit=crop" alt="IL Forno exterior" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">IL Forno Italiano</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 3.6</span>
+        <span style="color:#999">(449 reviews)</span>
+        <span class="price-tag">$</span>
+        <span class="cuisine-tag">Pizza / Italian</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🍕</div>
+        <div class="row-content"><strong>Vibe</strong>Casual late-night pizza joint, open until 2AM. Brick oven pizzas, pasta, subs. More of a <em>late-night carb stop</em> than a sit-down dinner. Lowest rated on the list.
+          <div class="note">⚠️ Cash only! Not really a "nice sit-down" — more useful as a late-night option.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge no">❌ No Reservation System</span><br>Walk in or call ahead.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong>(401) 848-5555 · <a class="email-link" href="https://www.instagram.com/ilfornonewport/" target="_blank">@ilfornonewport</a></div>
+      </div>
+    </div>
+    <div class="card-footer">372 Thames St, Newport, RI · Daily 11 AM–2 AM · Cash Only</div>
+  </div>
+
+</div>
+
+<!-- ===== LESS-NICE BUT FUN ===== -->
+<div class="section-title fun">🌮 Less-Fancy But Amazing</div>
+<div class="cards">
+
+  <!-- Diego's -->
+  <div class="card">
+    <div class="card-rank-badge mid">6</div>
+    <div class="photo-grid">
+      <img class="main" src="https://images.squarespace-cdn.com/content/v1/5d0e9210d48e4200015c8c66/1769615792632-PG0ZSCEKYVT21PVM4ZWQ/unsplash-image-6WHl6T-fxU0.jpg" alt="Diego's interior" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://images.squarespace-cdn.com/content/v1/5d0e9210d48e4200015c8c66/3aab8f21-fe67-434a-a8cc-4ff1b3c9c0e8/NACHO+POST+NEW+PIC.jpg" alt="Diego's nachos" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://images.squarespace-cdn.com/content/v1/5d0e9210d48e4200015c8c66/732b26b8-3677-4aec-90e5-7c7eb8c5c8f8/DOGS+OF+DIEGOS+SQ.jpg" alt="Diego's dog-friendly patio" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">Diego's</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.3</span>
+        <span style="color:#999">(1,648 reviews)</span>
+        <span class="price-tag">$$</span>
+        <span class="cuisine-tag">Mexican</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🌮</div>
+        <div class="row-content"><strong>Vibe</strong>Laid-back "punk-rock" Mexican on Bowens Wharf with harbor views. Dog-friendly patio, great margaritas. Women-owned, LGBTQ+ friendly. Good for <em>lunch or dinner</em>. Taco Tuesdays = $22 all-you-can-eat.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge yes">✅ Yes — Via Toast</span></div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong>No email — <a class="email-link" href="https://diegosnewport.com" target="_blank">diegosnewport.com</a> · (401) 619-2640</div>
+      </div>
+    </div>
+    <div class="card-footer">11 Bowens Wharf, Newport, RI · Daily 11:30 AM–9/10 PM</div>
+  </div>
+
+  <!-- Wally's Wieners -->
+  <div class="card">
+    <div class="card-rank-badge mid">7</div>
+    <div class="photo-grid">
+      <img class="main" src="https://static.spotapps.co/spots/be/db3e748572447f80ba5104b3664f58/full" alt="Wally's interior bar" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://static.spotapps.co/spots/e3/bb41fd990b48f68cdbbb20e95fb334/full" alt="Wally's exterior" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://static.spotapps.co/spots/6a/87fea3697c407cbb459a13c11d0eeb/full" alt="Wally's hot dogs" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">Wally's Wieners</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.3</span>
+        <span style="color:#999">(624 reviews)</span>
+        <span class="price-tag">$</span>
+        <span class="cuisine-tag">American / Hot Dogs</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🌭</div>
+        <div class="row-content"><strong>Vibe</strong>Vibrant, trendy, very bachelorette-friendly. Creative hot dogs, espresso martini towers, craft cocktails, amazing merch. Opens at 8AM — perfect <em>day drinking</em> stop.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge call">📞 Private Events Available</span></div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong><a class="email-link" href="mailto:info@wallyswieners.com">info@wallyswieners.com</a> · (401) 236-1760</div>
+      </div>
+    </div>
+    <div class="card-footer">464 Thames St, Newport, RI · Sun–Thu 8AM–10PM · Fri–Sat 8AM–1AM</div>
+  </div>
+
+  <!-- Pasta Beach -->
+  <div class="card">
+    <div class="card-rank-badge top3">3</div>
+    <div class="photo-grid">
+      <img class="main" src="https://cdn.prod.website-files.com/621e88b6ed68fc6e1074bdce/641f141d915522543281c6e0_Newport_Interior_10.jpg" alt="Pasta Beach interior" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://cdn.prod.website-files.com/621e88b6ed68fc6e1074bdce/645216e47dd89d10976a9b39_Tandem%20x%20Pasta%20Beach%20-%20Newport%20Interior%203.jpg" alt="Pasta Beach dining room" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://cdn.prod.website-files.com/621e88b6ed68fc6e1074bdce/645216e49767ce2af1580b51_Tandem%20x%20Pasta%20Beach%20-%20Newport%20Interior%201.jpg" alt="Pasta Beach bar" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">Pasta Beach</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.4</span>
+        <span style="color:#999">(1,301 reviews)</span>
+        <span class="price-tag">$$</span>
+        <span class="cuisine-tag">Italian</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🍝</div>
+        <div class="row-content"><strong>Vibe</strong>Fresh and colorful Italian on Bellevue Ave. Italian straw lamps from Turin, marble counter, banana peel wallpaper bar, outdoor patio. Contemporary and cute — good for <em>lunch or dinner</em>.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge yes">✅ Yes — Via Resy</span></div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong><a class="email-link" href="mailto:newport@pastabeach.com">newport@pastabeach.com</a></div>
+      </div>
+    </div>
+    <div class="card-footer">Bellevue Ave, Newport, RI · Sun–Thu 11:30AM–9PM · Fri–Sat 11:30AM–9:30PM</div>
+  </div>
+
+  <!-- Ma's Donuts -->
+  <div class="card">
+    <div class="card-rank-badge low">10</div>
+    <div class="photo-grid">
+      <img class="main" src="https://images.squarespace-cdn.com/content/v1/5e3e0b6392099002a5e547a0/4d25cd3b-f8b2-46fb-9a84-c43a0ddad41d/DSC00581.jpg" alt="Ma's Donuts" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://images.squarespace-cdn.com/content/v1/5e3e0b6392099002a5e547a0/1582571934426-JV06K0M2O4LADKVPVMWO/Ma%27s_Donuts_Fall_Set_23.JPG" alt="Donuts assortment" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://images.squarespace-cdn.com/content/v1/5e3e0b6392099002a5e547a0/1582571920498-2HH5WNI9D1O0MFP8NIT4/Ma%27s_Donuts_Fall_Set_14.JPG" alt="Sprinkled donut" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">Ma's Donuts and More</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.5</span>
+        <span style="color:#999">(1,208 reviews)</span>
+        <span class="price-tag">$</span>
+        <span class="cuisine-tag">Donuts / Breakfast</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🍩</div>
+        <div class="row-content"><strong>Vibe</strong>Highest-rated on this list! 24/7 donut shop with drive-through. Classic donuts, pastries, bagels, sandwiches, coffee. <em>Not sit-down</em> — grab-and-go only. In Middletown (~5 min away). Perfect morning-after fuel.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge no">❌ No — Walk In / Drive Through</span></div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong>(401) 841-5750 · <a class="email-link" href="https://www.masdonuts.com" target="_blank">masdonuts.com</a></div>
+      </div>
+    </div>
+    <div class="card-footer">78 W Main Rd, Middletown, RI (5 min from Newport) · Open 24/7</div>
+  </div>
+
+</div>
+
+<!-- ===== BARS ===== -->
+<div class="section-title bars">🍹 Bars / Dancing / Fun</div>
+<div class="cards">
+
+  <!-- Smugglers -->
+  <div class="card">
+    <div class="card-rank-badge low">11</div>
+    <div class="photo-grid single">
+      <img src="https://smugglersnewport.com/wp-content/uploads/2024/05/DSC01135.webp" alt="Smugglers Waterfront Bar" onerror="this.style.background='#e8ddd5';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">Smugglers Waterfront Bar</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.0</span>
+        <span style="color:#999">(117 reviews)</span>
+        <span class="price-tag">$</span>
+        <span class="cuisine-tag">Bar</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🌊</div>
+        <div class="row-content"><strong>Vibe</strong>Relaxed waterfront bar with Adirondack chairs, sunset views, pool table, ping pong, and darts. Large drink selection, food at the bar. Spacious and chill.
+          <div class="note">📍 Entrance is through a parking garage — a little hard to find!</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge no">❌ Walk-In Only</span></div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong><a class="email-link" href="https://smugglersnewport.com" target="_blank">smugglersnewport.com</a> · 359 Thames St</div>
+      </div>
+    </div>
+    <div class="card-footer">359 Thames St, Newport, RI · Thu–Wed 4PM–1AM · Sat–Sun opens 11AM</div>
+  </div>
+
+  <!-- The Landing -->
+  <div class="card">
+    <div class="card-rank-badge mid">5</div>
+    <div class="photo-grid">
+      <img class="main" src="https://static.wixstatic.com/media/1b8aee_70491a954cf04df0ab178b1b8455672e~mv2.jpg" alt="The Landing venue" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://static.wixstatic.com/media/1b8aee_28d5b1c0cde6434a84e67af11acc39b3~mv2.jpg" alt="The Landing interior" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://static.wixstatic.com/media/1b8aee_d76251326d7d4498b617034e35d44c2c~mv2.jpg" alt="The Landing waterfront" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">The Landing Restaurant</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 3.9</span>
+        <span style="color:#999">(1,240 reviews)</span>
+        <span class="price-tag">$$</span>
+        <span class="cuisine-tag">Seafood / Live Music</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🎶</div>
+        <div class="row-content"><strong>Vibe</strong>Outdoor waterfront deck on Bowens Wharf with live music all day, raw bar, boats going by. Very outdoorsy and summery. A reviewer said large groups are easily accommodated. Best for <em>afternoon into evening</em>.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge yes">✅ Yes — Via Resy</span><br>Reviews confirm large groups welcomed.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong>(401) 847-4514 · <a class="email-link" href="https://thelandingrestaurantnewport.com" target="_blank">thelandingrestaurantnewport.com</a></div>
+      </div>
+    </div>
+    <div class="card-footer">30 Bowens Wharf, Newport, RI</div>
+  </div>
+
+  <!-- O'Briens Pub -->
+  <div class="card">
+    <div class="card-rank-badge low">9</div>
+    <div class="photo-grid">
+      <img class="main" src="https://static.wixstatic.com/media/e8a0e3_823ab911afd04336814dda8fe2124bad~mv2.jpg/v1/crop/x_21,y_1245,w_3987,h_1779/fill/w_800,h_500,al_c,q_85,enc_avif,quality_auto/IMG_1752_JPG.jpg" alt="O'Briens interior" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://static.wixstatic.com/media/e8a0e3_08872289e1a04f75b5540baf8a98ac01~mv2.jpg/v1/fit/w_313,h_417,q_90,enc_avif,quality_auto/e8a0e3_08872289e1a04f75b5540baf8a98ac01~mv2.jpg" alt="O'Briens patio" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://static.wixstatic.com/media/e8a0e3_34fd123f4a3c42aba14c83a50228a0c0~mv2.jpg/v1/crop/x_0,y_62,w_3024,h_2611/fill/w_489,h_417,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_8657_JPG.jpg" alt="O'Briens garden" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">O'Brien's Pub</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 4.4</span>
+        <span style="color:#999">(1,477 reviews)</span>
+        <span class="price-tag">$</span>
+        <span class="cuisine-tag">Irish Pub</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🍺</div>
+        <div class="row-content"><strong>Vibe</strong>Classic pub with a big all-ages garden patio, pool tables, TVs, live music, cheap comfort food. Open until 1AM. LGBTQ+ friendly. Not fancy — very pub-y. Great mudslides per reviewers.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge call">📞 Call Ahead</span><br>No formal online reservation system.</div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong>(401) 849-6623 · <a class="email-link" href="https://theobrienspub.net" target="_blank">theobrienspub.net</a></div>
+      </div>
+    </div>
+    <div class="card-footer">501 Thames St, Newport, RI · Open until 1AM daily</div>
+  </div>
+
+  <!-- Dockside -->
+  <div class="card">
+    <div class="card-rank-badge low">13</div>
+    <div class="photo-grid">
+      <img class="main" src="https://res.cloudinary.com/spothopper/image/fetch/f_auto,q_auto:best,c_fit,h_600/http://static.spotapps.co/spots/99/1b68f894e6465e8d201077fff946f1/:original" alt="Dockside venue" onerror="this.style.background='#e8ddd5';this.src=''">
+      <img src="https://res.cloudinary.com/spothopper/image/fetch/f_auto,q_auto:best,c_fit,h_300/http://static.spotapps.co/spots/0c/0bbfa0660e4a929c3b3512c1a49ac5/:original" alt="Dockside stage" onerror="this.style.background='#d4c5b8';this.src=''">
+      <img src="https://res.cloudinary.com/spothopper/image/fetch/f_auto,q_auto:best,c_fit,h_300/http://static.spotapps.co/spots/b7/1b8f7d726e46a6873d3c5733012e5e/:original" alt="Dockside outdoor" onerror="this.style.background='#d4c5b8';this.src=''">
+    </div>
+    <div class="card-header">
+      <div class="card-name">The Dockside</div>
+      <div class="card-meta">
+        <span class="stars">⭐ 3.5</span>
+        <span style="color:#999">(33 reviews)</span>
+        <span class="price-tag">$</span>
+        <span class="cuisine-tag">Bar / Live Music</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="row-icon">🎸</div>
+        <div class="row-content"><strong>Vibe</strong>Late-night live music bar on Waites Wharf. Reviews mention great atmosphere for parties and wedding groups. Outdoor and indoor space.
+          <div class="note">⚠️ Only open Fri–Sat, 9:30PM–1AM. Plan accordingly for July weekends!</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-icon">📅</div>
+        <div class="row-content"><strong>Reservations for 9</strong><span class="badge no">❌ Walk-In Only</span></div>
+      </div>
+      <div class="row">
+        <div class="row-icon">✉️</div>
+        <div class="row-content"><strong>Contact</strong><a class="email-link" href="mailto:info@waiteswharf.com">info@waiteswharf.com</a> · (401) 846-3600 · <a class="email-link" href="https://atthedeck.com" target="_blank">atthedeck.com</a></div>
+      </div>
+    </div>
+    <div class="card-footer">24 Waites Wharf, Newport, RI · Fri–Sat only 9:30PM–1AM</div>
+  </div>
+
+</div>
+
+<div style="text-align:center; margin-top:60px; padding:20px; font-size:0.8rem; color:#bbb; font-style:italic;">
+  Built for Jamie's Newport Bachelorette · July 2025 · Party of 9 🥂
+</div>
+
+</body>
+</html>
