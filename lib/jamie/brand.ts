@@ -1,19 +1,26 @@
 // Jamie's Bach 2026 brand tokens
-// Gen Z forward · Newport-grounded · sunset palette · sticker collage energy
+// Gen Z forward · East Coast sail · Newport harbor · regatta stripes
+// (Token names kept stable; hex values shifted from tropical sunset to coastal navy.)
 
 export const colors = {
-  cream: "#FFF8EC",
-  coral: "#FF6B6B",
-  tangerine: "#FF9E58",
-  butter: "#FFD16A",
-  lime: "#C8E85A",
-  lavender: "#B8A4DD",
-  navy: "#1F2A44",
-  navySoft: "#2D3A55",
+  cream: "#FDF8EE",        // sailcloth — slightly warmer than pure white
+  coral: "#D5453A",        // Nantucket red — primary pop
+  tangerine: "#5B9BD5",    // marina blue — secondary pop
+  butter: "#C8A24B",       // brass — warm accent
+  lime: "#7FA88B",         // sea sage — "live" / fresh indicator
+  lavender: "#B8A4DD",     // dusk — kept for evening sections
+  navy: "#1B3A5C",         // harbor navy — primary anchor
+  navySoft: "#3A5878",     // softer navy for body text
 } as const;
 
+// Renamed semantically but variable kept stable.
+// Navy → marina blue → cream. Reads "harbor at golden hour" not "tropical sunset."
 export const sunsetGradient =
-  "linear-gradient(135deg, #FF6B6B 0%, #FF9E58 50%, #FFD16A 100%)";
+  "linear-gradient(135deg, #1B3A5C 0%, #5B9BD5 65%, #FDF8EE 100%)";
+
+// Regatta stripe band — for hero accents + section dividers.
+export const regattaStripes =
+  "repeating-linear-gradient(90deg, #1B3A5C 0 14px, #FDF8EE 14px 22px, #D5453A 22px 28px, #FDF8EE 28px 36px)";
 
 export const fonts = {
   display: '"Fraunces", "Playfair Display", Georgia, serif',
@@ -22,7 +29,8 @@ export const fonts = {
   mono: '"JetBrains Mono", ui-monospace, monospace',
 } as const;
 
-// Per-attendee accent colors (for face circles, room chips, flight pills)
+// Per-attendee accent colors (face circles, room chips, flight pills)
+// Mapped to nautical palette
 export const attendeeColorTokens = [
   "coral",
   "tangerine",
@@ -36,8 +44,8 @@ export const attendeeColorTokens = [
 ] as const;
 
 // Bold flat sticker shadow
-export const stickerShadow = "4px 4px 0 #1F2A44";
-export const stickerShadowSoft = "3px 3px 0 rgba(31,42,68,0.6)";
+export const stickerShadow = "4px 4px 0 #1B3A5C";
+export const stickerShadowSoft = "3px 3px 0 rgba(27,58,92,0.55)";
 
 // Common card style helper
 export const cardBase = {

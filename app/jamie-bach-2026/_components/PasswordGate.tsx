@@ -92,7 +92,7 @@ export default function PasswordGate({
             boxShadow: stickerShadow,
           }}
         >
-          🌸
+          ⚓
         </div>
         <h1
           style={{

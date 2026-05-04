@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { colors, fonts } from "@/lib/jamie/brand";
 
 export const metadata = {
-  title: "Jamie's Bach 2026 🌸",
+  title: "Jamie's Bach 2026 ⚓",
   description: "Newport, RI · July 10–13, 2026",
 };
 

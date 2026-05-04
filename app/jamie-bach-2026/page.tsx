@@ -27,7 +27,7 @@ function HomeContent() {
   if (loading) {
     return (
       <div style={{ padding: "60px 20px", textAlign: "center" }}>
-        <div style={{ fontSize: "2rem" }}>🌸</div>
+        <div style={{ fontSize: "2rem" }}>⚓</div>
         <p style={{ color: colors.navySoft, marginTop: "12px" }}>loading...</p>
       </div>
     );
@@ -76,7 +76,7 @@ function HomeContent() {
         >
           jamie&apos;s bach
           <br />
-          <span style={{ color: colors.coral }}>2026 🌸</span>
+          <span style={{ color: colors.coral }}>2026 ⚓</span>
         </h1>
         <p
           style={{
@@ -107,7 +107,7 @@ function HomeContent() {
         >
           <Countdown targetDate={trip.startDate} />
           <div style={{ fontSize: "3rem", marginTop: 14, lineHeight: 1 }}>
-            🌊 🍾 🌸
+            ⛵ 🌊 🦞
           </div>
           <p
             style={{

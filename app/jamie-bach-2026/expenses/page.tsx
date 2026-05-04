@@ -24,7 +24,7 @@ const BREAKDOWN: { label: string; emoji: string; perPerson: number }[] = [
   { label: "rental car", emoji: "🚗", perPerson: 65.45 },
   { label: "meals", emoji: "🍝", perPerson: 200 },
   { label: "sunset cruise", emoji: "🛥️", perPerson: 52 },
-  { label: "activity", emoji: "🌸", perPerson: 30 },
+  { label: "activity", emoji: "⛵", perPerson: 30 },
   { label: "decor", emoji: "🎉", perPerson: 10.91 },
   { label: "groceries", emoji: "🛒", perPerson: 10 },
   { label: "alcohol (pregame)", emoji: "🍾", perPerson: 8.33 },
