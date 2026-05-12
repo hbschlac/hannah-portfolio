@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import LoginForm from "@/app/admin/LoginForm";
-import { getJobsFromKV } from "@/lib/kv";
+import { getJobsFromKV, getNetworkFromKV } from "@/lib/kv";
 import JobTrackerClient from "./JobTrackerClient";
 
 export const metadata = { title: "Job Tracker — schlacter.me" };
@@ -31,7 +31,10 @@ async function JobTrackerContent() {
     );
   }
 
-  const initialJobs = await getJobsFromKV();
+  const [initialJobs, initialContacts] = await Promise.all([
+    getJobsFromKV(),
+    getNetworkFromKV(),
+  ]);
   return (
     <div className="max-w-full mx-auto px-2">
       <div className="mb-6 max-w-2xl">
@@ -39,7 +42,7 @@ async function JobTrackerContent() {
         <h1 className="text-2xl font-semibold text-stone-800">Job Tracker</h1>
         <p className="text-sm text-stone-500 mt-1">Application pipeline · {initialJobs.filter(j => j.company).length} companies</p>
       </div>
-      <JobTrackerClient initialJobs={initialJobs} />
+      <JobTrackerClient initialJobs={initialJobs} initialContacts={initialContacts} />
     </div>
   );
 }

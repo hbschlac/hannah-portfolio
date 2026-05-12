@@ -13,6 +13,22 @@ const nextConfig: NextConfig = {
         destination: "/projects/:slug",
       },
       {
+        source: "/aiprototypes",
+        destination: "/projects",
+      },
+      {
+        source: "/aiprototypes/:slug",
+        destination: "/projects/:slug",
+      },
+      {
+        source: "/AIprototypes",
+        destination: "/projects",
+      },
+      {
+        source: "/AIprototypes/:slug",
+        destination: "/projects/:slug",
+      },
+      {
         source: "/google-workspace-ai-feedback",
         destination: "/workspace-ai-gaps",
       },

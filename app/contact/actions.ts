@@ -1,6 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
+import { getResendKey } from "@/lib/resend-key";
 
 export type ContactState = {
   success?: boolean;
@@ -24,7 +25,7 @@ export async function sendContactEmail(
     return { error: "please enter a valid email address." };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = getResendKey();
   if (!apiKey) {
     return { error: "email service not configured." };
   }

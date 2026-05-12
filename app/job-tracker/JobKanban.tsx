@@ -75,9 +75,14 @@ const SORT_LABELS: Record<SortOption, string> = {
 
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 };
 
+function priorityRank(j: JobApplication): number {
+  // Use explicit `order` if set; otherwise fall back to priority bucket so new cards group sensibly.
+  return j.order ?? PRIORITY_ORDER[j.priority] * 100000;
+}
+
 function sortJobs(jobs: JobApplication[], sort: SortOption): JobApplication[] {
   return [...jobs].sort((a, b) => {
-    if (sort === "priority") return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
+    if (sort === "priority") return priorityRank(a) - priorityRank(b);
     if (sort === "company") return a.company.localeCompare(b.company);
     if (sort === "recent") return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     return 0;
@@ -248,6 +253,17 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
     if (data.ok) setCustomTasks(data.tasks);
   }
 
+  async function handleCustomTaskEdit(id: string, label: string) {
+    setCustomTasks((prev) => prev.map((t) => (t.id === id ? { ...t, label } : t)));
+    const res = await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "update", id, label }),
+    });
+    const data = await res.json();
+    if (data.ok) setCustomTasks(data.tasks);
+  }
+
   function handleCustomTaskDelete(id: string) {
     setCustomTasks((prev) => prev.filter((t) => t.id !== id));
     fetch("/api/tasks", {
@@ -255,6 +271,32 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "delete", id }),
     }).catch(() => {});
+  }
+
+  // ── Reorder within a column ─────────────────────────────────────────────────
+  function handleReorder(draggedId: string, targetId: string) {
+    const dragged = jobs.find((j) => j.id === draggedId);
+    const target  = jobs.find((j) => j.id === targetId);
+    if (!dragged || !target) return;
+    const colId = getColumnId(target);
+    if (getColumnId(dragged) !== colId) return; // cross-column = handled by handleDrop
+
+    // Current displayed order for this column
+    const colSorted = sortJobs(jobs.filter((j) => getColumnId(j) === colId), sort);
+    const without   = colSorted.filter((j) => j.id !== draggedId);
+    const targetIdx = without.findIndex((j) => j.id === targetId);
+    if (targetIdx < 0) return;
+    const reordered = [...without.slice(0, targetIdx), dragged, ...without.slice(targetIdx)];
+
+    // Renumber order across the column with gaps so future inserts don't collide
+    const orderMap = new Map(reordered.map((j, i) => [j.id, (i + 1) * 100]));
+    const now = new Date().toISOString();
+    setJobsAndRef((prev) =>
+      prev.map((j) =>
+        orderMap.has(j.id) ? { ...j, order: orderMap.get(j.id)!, updatedAt: now } : j
+      )
+    );
+    scheduleSave();
   }
 
   // ── Drag & drop ──────────────────────────────────────────────────────────────
@@ -297,6 +339,7 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
         customTasks={customTasks}
         onCustomTaskAdd={handleCustomTaskAdd}
         onCustomTaskDelete={handleCustomTaskDelete}
+        onCustomTaskEdit={handleCustomTaskEdit}
       />
 
       {/* Toolbar: search + type filter + sort + save */}
@@ -432,6 +475,7 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
                     job={job}
                     onUpdate={updateJob}
                     onDelete={deleteJob}
+                    onReorder={handleReorder}
                   />
                 ))}
 

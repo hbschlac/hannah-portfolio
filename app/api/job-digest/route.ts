@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getJobsFromKVDirect } from "@/lib/kv";
+import { getResendKey } from "@/lib/resend-key";
 import type { JobApplication } from "@/lib/kv";
 
 function getColumnId(job: JobApplication): string {
@@ -153,7 +154,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = getResendKey();
   if (!apiKey) {
     return NextResponse.json({ error: "Resend not configured" }, { status: 500 });
   }

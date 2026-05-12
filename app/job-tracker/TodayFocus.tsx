@@ -44,7 +44,61 @@ type Props = {
   customTasks: CustomTask[];
   onCustomTaskAdd: (label: string) => Promise<void>;
   onCustomTaskDelete: (id: string) => void;
+  onCustomTaskEdit: (id: string, label: string) => void;
 };
+
+function EditableTaskLabel({
+  label,
+  done,
+  onSave,
+}: {
+  label: string;
+  done: boolean;
+  onSave: (next: string) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(label);
+  const ref = useRef<HTMLInputElement>(null);
+
+  function start() {
+    setDraft(label);
+    setEditing(true);
+    setTimeout(() => { ref.current?.focus(); ref.current?.select(); }, 0);
+  }
+
+  function commit() {
+    setEditing(false);
+    const trimmed = draft.trim();
+    if (trimmed && trimmed !== label) onSave(trimmed);
+    else setDraft(label);
+  }
+
+  if (editing) {
+    return (
+      <input
+        ref={ref}
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") { e.preventDefault(); commit(); }
+          if (e.key === "Escape") { setEditing(false); setDraft(label); }
+        }}
+        className="text-sm flex-1 bg-white border border-stone-300 rounded px-1.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-stone-800"
+      />
+    );
+  }
+
+  return (
+    <span
+      onClick={start}
+      title="Click to edit"
+      className={`text-sm flex-1 cursor-text ${done ? "line-through text-stone-400" : "text-stone-700"}`}
+    >
+      {label}
+    </span>
+  );
+}
 
 export default function TodayFocus({
   jobs,
@@ -56,6 +110,7 @@ export default function TodayFocus({
   customTasks,
   onCustomTaskAdd,
   onCustomTaskDelete,
+  onCustomTaskEdit,
 }: Props) {
   const [showAdd, setShowAdd] = useState(false);
   const [inputVal, setInputVal] = useState("");
@@ -177,9 +232,11 @@ export default function TodayFocus({
                 }}
                 className="accent-stone-800 w-4 h-4 flex-shrink-0 cursor-pointer"
               />
-              <span className={`text-sm flex-1 ${done ? "line-through text-stone-400" : "text-stone-700"}`}>
-                {task.label}
-              </span>
+              <EditableTaskLabel
+                label={task.label}
+                done={done}
+                onSave={(next) => onCustomTaskEdit(task.id, next)}
+              />
               <button
                 onClick={() => onCustomTaskDelete(task.id)}
                 className="text-stone-300 hover:text-stone-500 text-sm leading-none flex-shrink-0"

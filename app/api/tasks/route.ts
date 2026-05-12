@@ -30,6 +30,20 @@ export async function POST(request: Request) {
     return Response.json({ ok: true, task: newTask, tasks: updated });
   }
 
+  if (action === "update") {
+    if (!body.id) {
+      return Response.json({ error: "id is required." }, { status: 400 });
+    }
+    if (!body.label?.trim()) {
+      return Response.json({ error: "label is required." }, { status: 400 });
+    }
+    const updated = existing.map((t) =>
+      t.id === body.id ? { ...t, label: body.label!.trim() } : t
+    );
+    await saveCustomTasksToKV(updated);
+    return Response.json({ ok: true, tasks: updated });
+  }
+
   if (action === "delete") {
     if (!body.id) {
       return Response.json({ error: "id is required." }, { status: 400 });

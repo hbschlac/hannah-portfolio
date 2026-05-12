@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import type { JobApplication, JobPriority, CompanyType, InterviewStage, NoteEntry, Contact, Artifact } from "@/lib/kv";
+import type { JobApplication, JobPriority, CompanyType, NoteEntry, Contact, Artifact } from "@/lib/kv";
 import ArtifactsModal from "./ArtifactsModal";
 
 export const PROJECT_SLUGS: { slug: string; title: string; url?: string }[] = [
@@ -25,17 +25,11 @@ export const COMPANY_TYPE_LABELS: Record<CompanyType, string> = {
 };
 
 const COMPANY_TYPE_COLORS: Record<CompanyType, string> = {
-  "big-tech": "bg-blue-50 text-blue-700 border-blue-200",
-  "ai-lab": "bg-purple-50 text-purple-700 border-purple-200",
-  "series-c": "bg-emerald-50 text-emerald-700 border-emerald-200",
-  "startup": "bg-amber-50 text-amber-700 border-amber-200",
+  "big-tech": "bg-stone-100 text-stone-600 border-stone-200",
+  "ai-lab": "bg-stone-100 text-stone-600 border-stone-200",
+  "series-c": "bg-stone-100 text-stone-600 border-stone-200",
+  "startup": "bg-stone-100 text-stone-600 border-stone-200",
   "other": "bg-stone-100 text-stone-600 border-stone-200",
-};
-
-const PRIORITY_DOTS: Record<JobPriority, string> = {
-  high: "🔴",
-  medium: "🟡",
-  low: "⚪",
 };
 
 export function nextActionLabel(job: JobApplication): string {
@@ -386,9 +380,10 @@ type Props = {
   onUpdate: (id: string, field: keyof JobApplication, value: unknown) => void;
   onDelete: (id: string) => void;
   onDragStart?: (jobId: string) => void;
+  onReorder?: (draggedId: string, targetId: string) => void;
 };
 
-export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props) {
+export default function JobCard({ job, onUpdate, onDelete, onDragStart, onReorder }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [artifactsOpen, setArtifactsOpen] = useState(false);
   const [newNote, setNewNote] = useState("");
@@ -412,13 +407,29 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
 
   return (
     <div
+      id={`job-tile-${job.id}`}
+      data-job-tile={job.id}
       draggable
       onDragStart={(e) => {
         e.dataTransfer.setData("jobId", job.id);
         e.dataTransfer.effectAllowed = "move";
         onDragStart?.(job.id);
       }}
-      className={`rounded-xl border bg-white shadow-sm transition-all hover:shadow-md cursor-grab active:cursor-grabbing active:opacity-70 ${
+      onDragOver={(e) => {
+        const draggedId = e.dataTransfer.types.includes("jobid") ? e.dataTransfer.getData("jobId") : null;
+        if (draggedId === job.id) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.dataTransfer.dropEffect = "move";
+      }}
+      onDrop={(e) => {
+        const draggedId = e.dataTransfer.getData("jobId");
+        if (!draggedId || draggedId === job.id) return;
+        e.preventDefault();
+        e.stopPropagation();
+        onReorder?.(draggedId, job.id);
+      }}
+      className={`rounded-xl border bg-white shadow-sm transition-all hover:shadow-md cursor-grab active:cursor-grabbing active:opacity-70 scroll-mt-24 ${
         expanded ? "ring-2 ring-stone-800 ring-offset-1" : ""
       }`}
     >
@@ -457,7 +468,6 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
             )}
           </div>
           <div className="flex items-center gap-1.5 flex-shrink-0">
-            <span className="text-sm leading-none">{PRIORITY_DOTS[job.priority]}</span>
             <span className="text-stone-300 text-xs">{expanded ? "▲" : "▼"}</span>
           </div>
         </div>
@@ -571,9 +581,9 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
                 value={job.priority}
                 onChange={(e) => onUpdate(job.id, "priority", e.target.value as JobPriority)}
               >
-                <option value="high">🔴 High</option>
-                <option value="medium">🟡 Medium</option>
-                <option value="low">⚪ Low</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
               </select>
             </div>
             <div>
@@ -594,26 +604,6 @@ export default function JobCard({ job, onUpdate, onDelete, onDragStart }: Props)
               </select>
             </div>
           </div>
-
-          {/* Interview stage (only when applied) */}
-          {job.applied && (
-            <div>
-              <label className="text-[10px] text-stone-400 uppercase tracking-wider">Interview Stage</label>
-              <select
-                className="w-full text-sm border border-stone-200 rounded-lg px-2 py-1.5 mt-0.5 focus:outline-none focus:ring-2 focus:ring-stone-800 bg-white"
-                value={job.interviewStage ?? ""}
-                onChange={(e) =>
-                  onUpdate(job.id, "interviewStage", (e.target.value as InterviewStage) || undefined)
-                }
-              >
-                <option value="">— None yet —</option>
-                <option value="screening">Screening</option>
-                <option value="onsite">Onsite</option>
-                <option value="offer">Offer 🎉</option>
-                <option value="rejected">Rejected</option>
-              </select>
-            </div>
-          )}
 
           {/* Job URL + project */}
           <div className="space-y-2">

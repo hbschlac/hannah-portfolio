@@ -129,6 +129,7 @@ export type JobApplication = {
   noteLog?: NoteEntry[];
   contacts?: Contact[];
   artifacts?: Artifact[];
+  order?: number;
   createdAt: string;
   updatedAt: string;
 };
@@ -179,6 +180,43 @@ export async function getCustomTasksFromKV(): Promise<CustomTask[]> {
 export async function saveCustomTasksToKV(tasks: CustomTask[]): Promise<void> {
   const redis = getRedis();
   await redis.set(CUSTOM_TASKS_KEY, JSON.stringify(tasks));
+}
+
+export type NetworkContact = {
+  id: string;
+  name: string;
+  linkedinUrl: string;
+  messaged: boolean;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+const NETWORK_KEY = "network";
+
+export async function getNetworkFromKV(): Promise<NetworkContact[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("network");
+
+  const redis = getRedis();
+  const raw = await redis.get<string>(NETWORK_KEY);
+  if (!raw) return [];
+  if (typeof raw === "object") return raw as NetworkContact[];
+  return JSON.parse(raw) as NetworkContact[];
+}
+
+export async function getNetworkFromKVDirect(): Promise<NetworkContact[]> {
+  const redis = getRedis();
+  const raw = await redis.get<string>(NETWORK_KEY);
+  if (!raw) return [];
+  if (typeof raw === "object") return raw as NetworkContact[];
+  return JSON.parse(raw) as NetworkContact[];
+}
+
+export async function saveNetworkToKV(contacts: NetworkContact[]): Promise<void> {
+  const redis = getRedis();
+  await redis.set(NETWORK_KEY, JSON.stringify(contacts));
 }
 
 export async function listResumes(): Promise<ResumeEntry[]> {
