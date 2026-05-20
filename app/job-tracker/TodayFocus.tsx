@@ -43,17 +43,16 @@ type Props = {
   onTaskDismiss: (jobId: string, field: string) => void;
   customTasks: CustomTask[];
   onCustomTaskAdd: (label: string) => Promise<void>;
+  onCustomTaskDone: (id: string) => void;
   onCustomTaskDelete: (id: string) => void;
   onCustomTaskEdit: (id: string, label: string) => void;
 };
 
 function EditableTaskLabel({
   label,
-  done,
   onSave,
 }: {
   label: string;
-  done: boolean;
   onSave: (next: string) => void;
 }) {
   const [editing, setEditing] = useState(false);
@@ -93,7 +92,7 @@ function EditableTaskLabel({
     <span
       onClick={start}
       title="Click to edit"
-      className={`text-sm flex-1 cursor-text ${done ? "line-through text-stone-400" : "text-stone-700"}`}
+      className="text-sm flex-1 cursor-text text-stone-700"
     >
       {label}
     </span>
@@ -109,6 +108,7 @@ export default function TodayFocus({
   onTaskDismiss,
   customTasks,
   onCustomTaskAdd,
+  onCustomTaskDone,
   onCustomTaskDelete,
   onCustomTaskEdit,
 }: Props) {
@@ -127,8 +127,15 @@ export default function TodayFocus({
   }
 
   const allJobTasks = computeTasks(jobs);
-  const jobTasks = allJobTasks.filter((t) => !dismissedTaskIds.has(`${t.jobId}:${t.field}`));
-  const totalTasks = jobTasks.length + customTasks.length;
+  const jobTasks = allJobTasks.filter(
+    (t) =>
+      !dismissedTaskIds.has(`${t.jobId}:${t.field}`) &&
+      !completedTaskIds.has(`${t.jobId}:${t.field}`)
+  );
+  const visibleCustomTasks = customTasks.filter(
+    (t) => !t.done && !completedTaskIds.has(`custom:${t.id}:custom`)
+  );
+  const totalTasks = jobTasks.length + visibleCustomTasks.length;
 
   async function handleAdd() {
     const label = inputVal.trim();
@@ -194,47 +201,39 @@ export default function TodayFocus({
     );
   }
 
-  const doneJobCount = jobTasks.filter((t) => completedTaskIds.has(`${t.jobId}:${t.field}`)).length;
-  const doneCustomCount = customTasks.filter((t) => completedTaskIds.has(`custom:${t.id}:custom`)).length;
-  const doneCount = doneJobCount + doneCustomCount;
-  const allDone = totalTasks > 0 && doneCount === totalTasks;
-
   return (
     <div className="rounded-2xl bg-gradient-to-r from-stone-50 to-slate-50 border border-stone-200 px-5 py-4 mb-6">
       <div className="mb-3 flex items-start justify-between">
         <div>
-          <h2 className="text-sm font-semibold text-stone-800">
-            {allDone ? "✅ Day's focus complete!" : "Today's Focus"}
-          </h2>
+          <h2 className="text-sm font-semibold text-stone-800">Today's Focus</h2>
           <p className="text-xs text-stone-500 mt-0.5">
-            {doneCount}/{totalTasks} done{allDone ? " — amazing momentum 🎉" : ""}
+            {totalTasks} {totalTasks === 1 ? "task" : "tasks"} to tackle
           </p>
         </div>
       </div>
 
       <div className="space-y-2">
         {/* Custom tasks */}
-        {customTasks.map((task) => {
+        {visibleCustomTasks.map((task) => {
           const key = `custom:${task.id}:custom`;
-          const done = completedTaskIds.has(key);
           return (
             <div
               key={key}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2 transition-colors ${
-                done ? "bg-emerald-50 border-emerald-200" : "bg-white border-stone-100"
-              } border`}
+              className="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors bg-white border-stone-100 border"
             >
               <input
                 type="checkbox"
-                checked={done}
+                checked={false}
                 onChange={(e) => {
-                  if (e.target.checked) onTaskDone(`custom:${task.id}`, "custom");
+                  if (e.target.checked) {
+                    onTaskDone(`custom:${task.id}`, "custom");
+                    onCustomTaskDone(task.id);
+                  }
                 }}
                 className="accent-stone-800 w-4 h-4 flex-shrink-0 cursor-pointer"
               />
               <EditableTaskLabel
                 label={task.label}
-                done={done}
                 onSave={(next) => onCustomTaskEdit(task.id, next)}
               />
               <button
@@ -251,17 +250,14 @@ export default function TodayFocus({
         {/* Auto-generated job tasks */}
         {jobTasks.map((task) => {
           const key = `${task.jobId}:${task.field}`;
-          const done = completedTaskIds.has(key);
           return (
             <div
               key={key}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2 transition-colors ${
-                done ? "bg-emerald-50 border-emerald-200" : "bg-white border-stone-100"
-              } border`}
+              className="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors bg-white border-stone-100 border"
             >
               <input
                 type="checkbox"
-                checked={done}
+                checked={false}
                 onChange={(e) => {
                   if (e.target.checked) {
                     onUpdate(task.jobId, task.field, task.value);
@@ -274,14 +270,12 @@ export default function TodayFocus({
               <button
                 type="button"
                 onClick={() => jumpToJob(task.jobId)}
-                className={`text-sm flex-1 text-left truncate hover:text-stone-900 hover:underline underline-offset-2 ${
-                  done ? "line-through text-stone-400" : "text-stone-700"
-                }`}
+                className="text-sm flex-1 text-left truncate hover:text-stone-900 hover:underline underline-offset-2 text-stone-700"
                 title={`Jump to ${task.company}`}
               >
                 {task.label}
               </button>
-              {task.jobUrl && !done && (
+              {task.jobUrl && (
                 <a
                   href={task.jobUrl}
                   target="_blank"
@@ -291,15 +285,13 @@ export default function TodayFocus({
                   Job ↗
                 </a>
               )}
-              {!done && (
-                <button
-                  onClick={() => onTaskDismiss(task.jobId, task.field)}
-                  className="text-stone-300 hover:text-stone-500 text-sm leading-none flex-shrink-0"
-                  title="Remove from today's list"
-                >
-                  ✕
-                </button>
-              )}
+              <button
+                onClick={() => onTaskDismiss(task.jobId, task.field)}
+                className="text-stone-300 hover:text-stone-500 text-sm leading-none flex-shrink-0"
+                title="Remove from today's list"
+              >
+                ✕
+              </button>
             </div>
           );
         })}

@@ -38,33 +38,72 @@ export default function NetworkTable({
   const [saveResult, setSaveResult] = useState<SaveNetworkResult>({});
   const [isPending, startTransition] = useTransition();
   const tableRef = useRef<HTMLTableElement>(null);
+  const contactsRef = useRef<NetworkContact[]>(contacts);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     if (!tableRef.current) return;
     tableRef.current.querySelectorAll<HTMLTextAreaElement>("textarea").forEach(autoResize);
   }, [contacts.length]);
 
+  // Flush any pending debounced save when the component unmounts (e.g. view switch)
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+        const cleaned = contactsRef.current.filter((c) => c.name.trim() || c.linkedinUrl.trim());
+        // Fire-and-forget: keep KV in sync even if user navigates away mid-edit.
+        void saveNetwork(cleaned);
+      }
+    };
+  }, []);
+
+  function setContactsAndRef(updater: NetworkContact[] | ((prev: NetworkContact[]) => NetworkContact[])) {
+    setContacts((prev) => {
+      const next = typeof updater === "function" ? (updater as (p: NetworkContact[]) => NetworkContact[])(prev) : updater;
+      contactsRef.current = next;
+      return next;
+    });
+  }
+
+  function scheduleSave() {
+    clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => persistSave(), 1200);
+  }
+
+  function persistSave() {
+    const cleaned = contactsRef.current.filter((c) => c.name.trim() || c.linkedinUrl.trim());
+    startTransition(async () => {
+      const result = await saveNetwork(cleaned);
+      setSaveResult(result);
+    });
+  }
+
   function updateContact(id: string, field: keyof NetworkContact, value: unknown) {
-    setContacts((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, [field]: value } : c))
+    setContactsAndRef((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, [field]: value, updatedAt: new Date().toISOString() } : c))
     );
+    scheduleSave();
   }
 
   function addRow() {
-    setContacts((prev) => [...prev, newBlankContact()]);
+    setContactsAndRef((prev) => [...prev, newBlankContact()]);
+    // No save yet — blank row gets filtered out anyway. First edit will trigger save.
   }
 
   function deleteRow(id: string) {
-    setContacts((prev) => prev.filter((c) => c.id !== id));
+    setContactsAndRef((prev) => prev.filter((c) => c.id !== id));
+    scheduleSave();
   }
 
   function commit() {
-    const cleaned = contacts.filter((c) => c.name.trim() || c.linkedinUrl.trim());
+    clearTimeout(saveTimerRef.current);
+    const cleaned = contactsRef.current.filter((c) => c.name.trim() || c.linkedinUrl.trim());
     startTransition(async () => {
       const result = await saveNetwork(cleaned);
       setSaveResult(result);
       if (!result.error) {
-        setContacts(cleaned.length ? cleaned : [newBlankContact()]);
+        setContactsAndRef(cleaned.length ? cleaned : [newBlankContact()]);
       }
     });
   }

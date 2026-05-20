@@ -164,7 +164,7 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
-    fetch("/api/tasks")
+    fetch("/api/tasks", { cache: "no-store" })
       .then((r) => r.json())
       .then((data) => { if (data.ok) setCustomTasks(data.tasks); })
       .catch(() => {});
@@ -264,6 +264,17 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
     if (data.ok) setCustomTasks(data.tasks);
   }
 
+  async function handleCustomTaskDone(id: string) {
+    setCustomTasks((prev) => prev.map((t) => (t.id === id ? { ...t, done: true } : t)));
+    const res = await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "complete", id }),
+    });
+    const data = await res.json();
+    if (data.ok) setCustomTasks(data.tasks);
+  }
+
   function handleCustomTaskDelete(id: string) {
     setCustomTasks((prev) => prev.filter((t) => t.id !== id));
     fetch("/api/tasks", {
@@ -338,6 +349,7 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
         onTaskDismiss={handleTaskDismiss}
         customTasks={customTasks}
         onCustomTaskAdd={handleCustomTaskAdd}
+        onCustomTaskDone={handleCustomTaskDone}
         onCustomTaskDelete={handleCustomTaskDelete}
         onCustomTaskEdit={handleCustomTaskEdit}
       />

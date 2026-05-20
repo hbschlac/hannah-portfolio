@@ -165,6 +165,7 @@ export type CustomTask = {
   id: string;
   label: string;
   createdAt: string;
+  done?: boolean;
 };
 
 const CUSTOM_TASKS_KEY = "custom_tasks";
