@@ -235,8 +235,10 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   }
 
   function handleTaskDone(jobId: string, field: string) {
+    // Local-only session state. Job-field flips (e.g. `applied: true`) are
+    // persisted via updateJob → scheduleSave; custom-task completion is
+    // persisted via handleCustomTaskDone. No jobs save needed here.
     setCompletedTaskIds((prev) => new Set([...prev, `${jobId}:${field}`]));
-    scheduleSave();
   }
 
   function handleTaskDismiss(jobId: string, field: string) {

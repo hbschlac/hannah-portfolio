@@ -33,9 +33,22 @@ export default function JobTrackerClient({ initialJobs, initialContacts }: Props
         </button>
       </div>
 
-      {view === "kanban" && <JobKanban initialJobs={initialJobs} />}
-      {view === "table" && <JobTable initialJobs={initialJobs} />}
-      {view === "network" && <NetworkTable initialContacts={initialContacts} />}
+      {/*
+        All three views stay mounted; we toggle visibility instead of
+        conditional-rendering. Unmounting on view switch was wiping the
+        components' local state (custom to-dos, in-flight network edits,
+        unsaved kanban tweaks), forcing a refetch that could return stale
+        data and confusing the user when "newest items disappeared."
+      */}
+      <div className={view === "kanban" ? "" : "hidden"}>
+        <JobKanban initialJobs={initialJobs} />
+      </div>
+      <div className={view === "table" ? "" : "hidden"}>
+        <JobTable initialJobs={initialJobs} />
+      </div>
+      <div className={view === "network" ? "" : "hidden"}>
+        <NetworkTable initialContacts={initialContacts} />
+      </div>
     </div>
   );
 }
