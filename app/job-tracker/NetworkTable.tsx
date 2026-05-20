@@ -46,11 +46,14 @@ export default function NetworkTable({
     tableRef.current.querySelectorAll<HTMLTextAreaElement>("textarea").forEach(autoResize);
   }, [contacts.length]);
 
-  // Flush any pending debounced save when the component unmounts (e.g. view switch)
+  // Flush any pending debounced save when the component unmounts (e.g. view switch).
+  // Gated on `saveTimerRef.current` being a *pending* timer — we null the ref after
+  // the timer fires, so this only triggers when there's genuinely unsaved work.
   useEffect(() => {
     return () => {
-      if (saveTimerRef.current) {
+      if (saveTimerRef.current !== undefined) {
         clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = undefined;
         const cleaned = contactsRef.current.filter((c) => c.name.trim() || c.linkedinUrl.trim());
         // Fire-and-forget: keep KV in sync even if user navigates away mid-edit.
         void saveNetwork(cleaned);
@@ -67,8 +70,11 @@ export default function NetworkTable({
   }
 
   function scheduleSave() {
-    clearTimeout(saveTimerRef.current);
-    saveTimerRef.current = setTimeout(() => persistSave(), 1200);
+    if (saveTimerRef.current !== undefined) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      saveTimerRef.current = undefined;
+      persistSave();
+    }, 1200);
   }
 
   function persistSave() {
@@ -97,13 +103,19 @@ export default function NetworkTable({
   }
 
   function commit() {
-    clearTimeout(saveTimerRef.current);
+    if (saveTimerRef.current !== undefined) {
+      clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = undefined;
+    }
     const cleaned = contactsRef.current.filter((c) => c.name.trim() || c.linkedinUrl.trim());
     startTransition(async () => {
       const result = await saveNetwork(cleaned);
       setSaveResult(result);
-      if (!result.error) {
-        setContactsAndRef(cleaned.length ? cleaned : [newBlankContact()]);
+      // Only seed a blank row when the cleaned set is empty — don't overwrite
+      // the live `contacts` with the stale `cleaned` snapshot, which would
+      // clobber any edits the user made during the in-flight save.
+      if (!result.error && cleaned.length === 0) {
+        setContactsAndRef([newBlankContact()]);
       }
     });
   }

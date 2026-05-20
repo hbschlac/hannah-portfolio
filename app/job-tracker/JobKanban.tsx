@@ -265,14 +265,25 @@ export default function JobKanban({ initialJobs }: { initialJobs: JobApplication
   }
 
   async function handleCustomTaskDone(id: string) {
+    // Optimistic: hide locally immediately.
     setCustomTasks((prev) => prev.map((t) => (t.id === id ? { ...t, done: true } : t)));
-    const res = await fetch("/api/tasks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "complete", id }),
-    });
-    const data = await res.json();
-    if (data.ok) setCustomTasks(data.tasks);
+    try {
+      const res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "complete", id }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setCustomTasks(data.tasks);
+      } else {
+        // Server rejected — revert optimistic update so the task doesn't
+        // appear hidden in this session but resurrect on refresh.
+        setCustomTasks((prev) => prev.map((t) => (t.id === id ? { ...t, done: false } : t)));
+      }
+    } catch {
+      setCustomTasks((prev) => prev.map((t) => (t.id === id ? { ...t, done: false } : t)));
+    }
   }
 
   function handleCustomTaskDelete(id: string) {
