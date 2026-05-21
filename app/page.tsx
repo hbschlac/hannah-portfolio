@@ -117,6 +117,16 @@ export default function Home() {
             </Link>
           </div>
         )}
+
+        <div className="mt-2">
+          <Link
+            href="/vibe-check"
+            className="text-xs italic transition-opacity hover:opacity-50"
+            style={{ color: "#8A8A8A" }}
+          >
+            (…but am i any good at this?) →
+          </Link>
+        </div>
       </main>
 
       <footer

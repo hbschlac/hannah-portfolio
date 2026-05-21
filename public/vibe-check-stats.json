@@ -1,0 +1,139 @@
+{
+  "generated_at": "2026-05-20T20:16:09.379500+00:00",
+  "window_days": 90,
+  "tomatometer": 34,
+  "verdict": "Splat",
+  "themes": {
+    "does_it_work": {
+      "label": "Does it actually work?",
+      "blurb": "the prod reality check",
+      "emoji": "\ud83d\udea8",
+      "metric_keys": [
+        "broken_in_prod",
+        "uptime",
+        "mttf"
+      ],
+      "score": 39
+    },
+    "do_i_know": {
+      "label": "Do I know what I'm doing?",
+      "blurb": "the panic index",
+      "emoji": "\ud83e\udd21",
+      "metric_keys": [
+        "fix_to_feature",
+        "reverts",
+        "debug_spiral"
+      ],
+      "score": 37
+    },
+    "any_mess": {
+      "label": "Did I leave a mess?",
+      "blurb": "the tech debt tax",
+      "emoji": "\ud83e\uddf9",
+      "metric_keys": [
+        "test_coverage",
+        "todos",
+        "secrets_blocked"
+      ],
+      "score": 26
+    }
+  },
+  "metrics": {
+    "broken_in_prod": {
+      "value": "69",
+      "raw": {
+        "emergencies": 69,
+        "total_fixes": 73
+      },
+      "score": 0,
+      "caption": "hotfixes within 24h of the commit they broke"
+    },
+    "uptime": {
+      "value": "1691ms",
+      "raw": {
+        "sites": {
+          "https://schlacter.me": {
+            "status": 200,
+            "ttfb_ms": 397
+          },
+          "https://www.muse.shopping": {
+            "status": 200,
+            "ttfb_ms": 3130
+          },
+          "https://kindle.schlacter.me": {
+            "status": 200,
+            "ttfb_ms": 1547
+          }
+        },
+        "ok_rate": 1.0,
+        "avg_ttfb_ms": 1691
+      },
+      "score": 17,
+      "caption": "avg time to first byte across live sites"
+    },
+    "mttf": {
+      "value": "0.1h",
+      "raw": {
+        "median_hours": 0.1,
+        "samples": 73
+      },
+      "score": 100,
+      "caption": "median hours bugs lived before patched"
+    },
+    "fix_to_feature": {
+      "value": "70%",
+      "raw": {
+        "fix": 73,
+        "feat": 31,
+        "total": 253
+      },
+      "score": 12,
+      "caption": "of commits start with 'fix'"
+    },
+    "debug_spiral": {
+      "value": "6.0h",
+      "raw": {
+        "date": "2026-05-10"
+      },
+      "score": 0,
+      "caption": "longest single debug spiral, capped 6h"
+    },
+    "test_coverage": {
+      "value": "4/14",
+      "raw": {
+        "with_tests": 4,
+        "total": 14
+      },
+      "score": 29,
+      "caption": "repos with any test file at all"
+    },
+    "todos": {
+      "value": "1255",
+      "raw": {
+        "count": 1255
+      },
+      "score": 0,
+      "caption": "TODOs, FIXMEs, HACKs across the codebase"
+    },
+    "secrets_blocked": {
+      "value": "13",
+      "raw": {
+        "patterns_blocked": 13,
+        "repos_protected": 7,
+        "total_repos": 14
+      },
+      "score": 50,
+      "caption": "secret-y patterns gitignored before they leaked"
+    },
+    "reverts": {
+      "value": "0",
+      "raw": {
+        "reverts": 0,
+        "total": 253
+      },
+      "score": 100,
+      "caption": "reverts and 'oops' commits"
+    }
+  },
+  "repos_scanned": 14
+}
