@@ -3,9 +3,17 @@
 import PasswordGate from "../_components/PasswordGate";
 import BottomNav from "../_components/BottomNav";
 import SectionHeader from "../_components/SectionHeader";
+import PortraitCard from "../_components/PortraitCard";
 import { useGuestState } from "../_components/useGuestState";
-import { colors, fonts, stickerShadow } from "@/lib/jamie/brand";
-import type { Attendee, RoomAssignment } from "@/lib/jamie/types";
+import { colors, fonts } from "@/lib/jamie/brand";
+import type { Attendee } from "@/lib/jamie/types";
+
+const roleLabels: Record<Attendee["role"], string> = {
+  bride: "The Bride",
+  moh: "Maid of Honor",
+  "co-planner": "Co-Planner",
+  guest: "Guest",
+};
 
 export default function SquadPage() {
   return (
@@ -20,175 +28,161 @@ export default function SquadPage() {
   );
 }
 
-const roleLabels: Record<Attendee["role"], string> = {
-  bride: "the bride 💍",
-  moh: "MOH · sister",
-  "co-planner": "co-planner",
-  guest: "guest",
-};
-
 function Body() {
   const { state, error, loading } = useGuestState();
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
-  const findRoomie = (id: string): string | null => {
-    const myAssign = state.rooms.assignments.find((a) => a.attendeeId === id);
-    if (!myAssign) return null;
-    const sameFloor = state.rooms.assignments.filter(
-      (a) => a.floor === myAssign.floor && a.attendeeId && a.attendeeId !== id
-    );
-    if (!sameFloor.length) return null;
-    return sameFloor
-      .map((a) => state.roster.find((r) => r.id === a.attendeeId)?.name.split(" ")[0])
-      .filter(Boolean)
-      .join(" · ");
-  };
-
   return (
-    <div style={{ maxWidth: 480, margin: "0 auto" }}>
-      <SectionHeader kicker="meet everyone ✨" title="the squad" />
-      <div style={{ padding: "12px 20px 40px", display: "flex", flexDirection: "column", gap: 14 }}>
-        {state.roster.map((person, idx) => (
-          <PersonCard
+    <div style={{ maxWidth: 640, margin: "0 auto" }}>
+      <SectionHeader
+        kicker="The Cast"
+        title="Nine on the trip."
+        dek="A roster — bride, sister, two co-planners, and five who said yes."
+      />
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "32px 18px",
+          padding: "16px 24px 56px",
+        }}
+      >
+        {state.roster.map((person) => (
+          <PortraitCard
             key={person.id}
-            person={person}
-            roomie={findRoomie(person.id)}
-            tilt={idx % 2 === 0 ? -0.6 : 0.6}
+            name={person.name}
+            role={person.role !== "guest" ? roleLabels[person.role] : undefined}
+            city={person.city}
+            photoUrl={person.photoUrl}
           />
         ))}
       </div>
-    </div>
-  );
-}
 
-function PersonCard({
-  person,
-  roomie,
-  tilt,
-}: {
-  person: Attendee;
-  roomie: string | null;
-  tilt: number;
-}) {
-  const accent = colors[person.colorToken];
-  return (
-    <div
-      style={{
-        background: "#fff",
-        border: `3px solid ${colors.navy}`,
-        borderRadius: "14px",
-        padding: "16px",
-        display: "flex",
-        gap: 14,
-        boxShadow: stickerShadow,
-        transform: `rotate(${tilt}deg)`,
-      }}
-    >
-      <div
-        style={{
-          width: 84,
-          height: 84,
-          borderRadius: "50%",
-          background: accent,
-          border: `3px solid ${colors.navy}`,
-          boxShadow: "3px 3px 0 #1F2A44",
-          flexShrink: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: fonts.display,
-          fontStyle: "italic",
-          fontWeight: 900,
-          fontSize: "2rem",
-          color: colors.navy,
-          backgroundImage: person.photoUrl ? `url(${person.photoUrl})` : undefined,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {!person.photoUrl && person.name[0]}
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
+      {/* Contact directory */}
+      <section style={{ padding: "0 24px 48px" }}>
         <div
           style={{
-            fontFamily: fonts.display,
-            fontStyle: "italic",
-            fontWeight: 900,
-            fontSize: "1.4rem",
-            color: colors.navy,
-            lineHeight: 1.1,
+            fontFamily: fonts.body,
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: colors.brass,
+            marginBottom: 14,
+            paddingTop: 24,
+            borderTop: `1px solid ${colors.mist}`,
           }}
         >
-          {person.name.toLowerCase()}
+          Contact Directory
         </div>
-        <div
-          style={{
-            fontFamily: fonts.script,
-            fontSize: "1rem",
-            color: colors.coral,
-            marginTop: 2,
-          }}
-        >
-          {roleLabels[person.role]}
-        </div>
-        <div style={{ fontSize: "0.82rem", marginTop: 8, lineHeight: 1.5 }}>
-          <Row icon="📍">{person.city}</Row>
-          {person.phone && (
-            <Row icon="📱">
-              <a
-                href={`tel:${person.phone}`}
-                style={{ color: colors.navy, textDecoration: "underline" }}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {state.roster.map((p) => (
+            <div
+              key={p.id}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                padding: "14px 0",
+                borderBottom: `1px solid ${colors.mist}`,
+                fontFamily: fonts.body,
+                gap: 12,
+                flexWrap: "wrap",
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    fontFamily: fonts.display,
+                    fontWeight: 500,
+                    fontSize: 17,
+                    color: colors.ink,
+                    letterSpacing: "-0.005em",
+                  }}
+                >
+                  {p.name}
+                </div>
+                <div
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase",
+                    color: colors.inkSoft,
+                    marginTop: 2,
+                  }}
+                >
+                  {p.city}
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 14,
+                  fontSize: 12,
+                  color: colors.ink,
+                }}
               >
-                {person.phone}
-              </a>
-            </Row>
-          )}
-          {person.instagram && (
-            <Row icon="📷">
-              <a
-                href={`https://instagram.com/${person.instagram}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: colors.navy, textDecoration: "underline" }}
-              >
-                @{person.instagram}
-              </a>
-            </Row>
-          )}
-          {roomie && (
-            <Row icon="🛏️">
-              <span style={{ color: colors.navySoft }}>roomie: {roomie}</span>
-            </Row>
-          )}
+                {p.phone && (
+                  <a
+                    href={`tel:${p.phone}`}
+                    style={{
+                      color: colors.ink,
+                      textDecoration: "none",
+                      borderBottom: `1px solid ${colors.mist}`,
+                    }}
+                  >
+                    {p.phone}
+                  </a>
+                )}
+                {p.instagram && (
+                  <a
+                    href={`https://instagram.com/${p.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: colors.inkSoft,
+                      textDecoration: "none",
+                      borderBottom: `1px solid ${colors.mist}`,
+                    }}
+                  >
+                    @{p.instagram}
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    </div>
-  );
-}
-
-function Row({ icon, children }: { icon: string; children: React.ReactNode }) {
-  return (
-    <div style={{ display: "flex", gap: 6, marginTop: 3 }}>
-      <span style={{ width: 18, flexShrink: 0 }}>{icon}</span>
-      <div style={{ flex: 1 }}>{children}</div>
+      </section>
     </div>
   );
 }
 
 function Loading() {
   return (
-    <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <div style={{ fontSize: "2rem" }}>💕</div>
-      <p style={{ color: colors.navySoft, marginTop: 12 }}>loading...</p>
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p
+        style={{
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: 11,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: colors.inkSoft,
+        }}
+      >
+        Loading
+      </p>
     </div>
   );
 }
 
 function ErrorView({ error }: { error: string | null }) {
   return (
-    <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <p style={{ color: colors.coral }}>oops — {error || "no data"}</p>
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p style={{ color: colors.coral, fontFamily: fonts.body }}>
+        {error || "No data yet."}
+      </p>
     </div>
   );
 }

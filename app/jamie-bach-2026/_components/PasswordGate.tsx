@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect, type ReactNode } from "react";
-import { colors, fonts, sunsetGradient, stickerShadow } from "@/lib/jamie/brand";
+import Image from "next/image";
+import { colors, fonts } from "@/lib/jamie/brand";
 
 type Props = {
   guestPassword: string;
-  adminPassword?: string; // if set, this gate also accepts admin pw
-  storageKey: string; // sessionStorage key
+  adminPassword?: string;
+  storageKey: string;
   title?: string;
   subtitle?: string;
   children: ReactNode;
@@ -16,8 +17,8 @@ export default function PasswordGate({
   guestPassword,
   adminPassword,
   storageKey,
-  title = "jamie's bach 2026",
-  subtitle = "newport · jul 10–13 · party of 9",
+  title = "Jamie's Bachelorette",
+  subtitle = "Newport, Rhode Island · July 10–13, 2026",
   children,
 }: Props) {
   const [unlocked, setUnlocked] = useState(false);
@@ -38,7 +39,6 @@ export default function PasswordGate({
       input === guestPassword || (adminPassword && input === adminPassword);
     if (valid) {
       sessionStorage.setItem(storageKey, "true");
-      // admin pw also unlocks guest
       if (adminPassword && input === adminPassword) {
         sessionStorage.setItem("jamie-bach-unlocked", "true");
       }
@@ -57,70 +57,109 @@ export default function PasswordGate({
     <div
       style={{
         minHeight: "100vh",
-        background: colors.cream,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        background: colors.paper,
         fontFamily: fonts.body,
-        padding: "24px",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <div
         style={{
-          background: "#fff",
-          border: `3px solid ${colors.navy}`,
-          boxShadow: stickerShadow,
-          borderRadius: "18px",
-          padding: "40px 28px",
-          maxWidth: "380px",
+          position: "relative",
           width: "100%",
-          textAlign: "center",
+          height: "45vh",
+          minHeight: 280,
+          overflow: "hidden",
+          background: colors.ink,
+        }}
+      >
+        <Image
+          src="/jamie/newport/sailboats-sunset.jpg"
+          alt="Newport harbor at sunset"
+          fill
+          priority
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.45) 100%)",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          flex: 1,
+          padding: "32px 28px 48px",
+          maxWidth: 440,
+          width: "100%",
+          margin: "0 auto",
         }}
       >
         <div
           style={{
-            background: sunsetGradient,
-            width: "72px",
-            height: "72px",
-            borderRadius: "50%",
-            margin: "0 auto 20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "2.4rem",
-            border: `3px solid ${colors.navy}`,
-            boxShadow: stickerShadow,
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: "0.24em",
+            textTransform: "uppercase",
+            color: colors.brass,
+            marginBottom: 14,
           }}
         >
-          ⚓
+          Newport · 2026
         </div>
         <h1
           style={{
             fontFamily: fonts.display,
-            fontSize: "1.8rem",
-            color: colors.navy,
-            fontWeight: 900,
-            fontStyle: "italic",
-            marginBottom: "6px",
-            lineHeight: 1.1,
+            fontWeight: 500,
+            fontSize: "2.4rem",
+            color: colors.ink,
+            margin: 0,
+            lineHeight: 1.04,
+            letterSpacing: "-0.015em",
           }}
         >
           {title}
         </h1>
         <p
           style={{
-            color: colors.navySoft,
-            marginBottom: "28px",
-            fontFamily: fonts.script,
-            fontSize: "1.15rem",
+            fontFamily: fonts.display,
+            fontStyle: "italic",
+            color: colors.inkSoft,
+            margin: "16px 0 32px",
+            fontSize: 15,
+            lineHeight: 1.5,
           }}
         >
           {subtitle}
         </p>
+        <div
+          style={{
+            height: 1,
+            width: 48,
+            background: colors.brass,
+            marginBottom: 24,
+          }}
+        />
         <form onSubmit={handleSubmit}>
+          <label
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: colors.inkSoft,
+              display: "block",
+              marginBottom: 10,
+            }}
+          >
+            Password
+          </label>
           <input
             type="password"
-            placeholder="password"
             value={input}
             onChange={(e) => {
               setInput(e.target.value);
@@ -129,51 +168,52 @@ export default function PasswordGate({
             autoFocus
             style={{
               width: "100%",
-              padding: "12px 16px",
-              fontSize: "1rem",
-              borderRadius: "10px",
-              border: error
-                ? `2px solid ${colors.coral}`
-                : `2px solid ${colors.navy}`,
+              padding: "12px 0",
+              fontSize: 16,
+              borderRadius: 0,
+              border: "none",
+              borderBottom: error
+                ? `1px solid ${colors.coral}`
+                : `1px solid ${colors.ink}`,
               outline: "none",
               fontFamily: fonts.body,
-              textAlign: "center",
-              marginBottom: "12px",
+              marginBottom: 12,
               boxSizing: "border-box",
-              background: colors.cream,
-              color: colors.navy,
+              background: "transparent",
+              color: colors.ink,
             }}
           />
           {error && (
             <p
               style={{
                 color: colors.coral,
-                fontSize: "0.82rem",
-                marginBottom: "10px",
-                fontFamily: fonts.body,
+                fontSize: 12,
+                marginBottom: 12,
+                letterSpacing: "0.05em",
               }}
             >
-              wrong password — try again 💔
+              That password isn't right. Try again.
             </p>
           )}
           <button
             type="submit"
             style={{
+              marginTop: 18,
               width: "100%",
-              padding: "12px",
-              background: sunsetGradient,
-              color: colors.navy,
-              border: `3px solid ${colors.navy}`,
-              borderRadius: "10px",
-              fontSize: "1rem",
-              fontFamily: fonts.display,
-              fontStyle: "italic",
-              fontWeight: 700,
+              padding: "14px",
+              background: colors.ink,
+              color: colors.paper,
+              border: "none",
+              borderRadius: 0,
+              fontSize: 12,
+              fontFamily: fonts.body,
+              fontWeight: 600,
+              letterSpacing: "0.24em",
+              textTransform: "uppercase",
               cursor: "pointer",
-              boxShadow: stickerShadow,
             }}
           >
-            let me in ✨
+            Enter
           </button>
         </form>
       </div>

@@ -1,56 +1,82 @@
-// Jamie's Bach 2026 brand tokens
-// Gen Z forward · East Coast sail · Newport harbor · regatta stripes
-// (Token names kept stable; hex values shifted from tropical sunset to coastal navy.)
+// Jamie's Bach 2026 brand tokens — editorial reset
+// Travel + Leisure / Condé Nast Traveler Newport feature
+// Photo-led · serif headlines · single coral pop · brass hairlines
 
 export const colors = {
-  cream: "#FDF8EE",        // sailcloth — slightly warmer than pure white
-  coral: "#D5453A",        // Nantucket red — primary pop
-  tangerine: "#5B9BD5",    // marina blue — secondary pop
-  butter: "#C8A24B",       // brass — warm accent
-  lime: "#7FA88B",         // sea sage — "live" / fresh indicator
-  lavender: "#B8A4DD",     // dusk — kept for evening sections
-  navy: "#1B3A5C",         // harbor navy — primary anchor
-  navySoft: "#3A5878",     // softer navy for body text
+  // Editorial palette
+  paper: "#F4EFE6",       // warm off-white background
+  ink: "#161616",         // body + headlines
+  inkSoft: "#5C544A",     // captions, secondary
+  coral: "#C8453A",       // single editorial pop (sparingly)
+  brass: "#9B7B3F",       // rule lines, small accents
+  mist: "#E8E2D5",        // card dividers, hairlines
+
+  // Back-compat aliases for old token names — let legacy code keep compiling.
+  // All map into the editorial system.
+  cream: "#F4EFE6",       // → paper
+  navy: "#161616",        // → ink
+  navySoft: "#5C544A",    // → inkSoft
+  tangerine: "#9B7B3F",   // → brass
+  butter: "#9B7B3F",      // → brass
+  lime: "#E8E2D5",        // → mist
+  lavender: "#E8E2D5",    // → mist
 } as const;
-
-// Renamed semantically but variable kept stable.
-// Navy → marina blue → cream. Reads "harbor at golden hour" not "tropical sunset."
-export const sunsetGradient =
-  "linear-gradient(135deg, #1B3A5C 0%, #5B9BD5 65%, #FDF8EE 100%)";
-
-// Regatta stripe band — for hero accents + section dividers.
-export const regattaStripes =
-  "repeating-linear-gradient(90deg, #1B3A5C 0 14px, #FDF8EE 14px 22px, #D5453A 22px 28px, #FDF8EE 28px 36px)";
 
 export const fonts = {
   display: '"Fraunces", "Playfair Display", Georgia, serif',
   body: '"Inter", system-ui, -apple-system, sans-serif',
-  script: '"Caveat", "Homemade Apple", cursive',
-  mono: '"JetBrains Mono", ui-monospace, monospace',
+  // Aliases kept (mapped to body) so legacy refs compile; we don't decorate with these anymore.
+  script: '"Fraunces", Georgia, serif',
+  mono: '"Inter", system-ui, sans-serif',
 } as const;
 
-// Per-attendee accent colors (face circles, room chips, flight pills)
-// Mapped to nautical palette
+// Per-attendee accent — neutralized to brass for the editorial system.
+// Faces are now portrait photographs, not colored circles, so this barely shows.
 export const attendeeColorTokens = [
-  "coral",
-  "tangerine",
-  "butter",
-  "lime",
-  "lavender",
-  "navySoft",
-  "coral",
-  "tangerine",
-  "lime",
+  "brass",
+  "brass",
+  "brass",
+  "brass",
+  "brass",
+  "brass",
+  "brass",
+  "brass",
+  "brass",
 ] as const;
 
-// Bold flat sticker shadow
-export const stickerShadow = "4px 4px 0 #1B3A5C";
-export const stickerShadowSoft = "3px 3px 0 rgba(27,58,92,0.55)";
+// Editorial type scale (px)
+export const type = {
+  display: 56,
+  h1: 40,
+  h2: 28,
+  h3: 20,
+  body: 16,
+  caption: 13,
+  eyebrow: 11,
+} as const;
 
-// Common card style helper
+// Eyebrow styling helper — small uppercase tracked tag
+export const eyebrowStyle = {
+  fontFamily: '"Inter", system-ui, sans-serif',
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: "0.18em",
+  textTransform: "uppercase" as const,
+  color: "#9B7B3F",
+};
+
+// Thin brass hairline (separator)
+export const hairline = `1px solid ${colors.brass}`;
+export const mistRule = `1px solid ${colors.mist}`;
+
+// Legacy gradient + sticker exports REMOVED in editorial reset.
+// Stubs kept (transparent / none) so any stray import doesn't crash a render.
+export const sunsetGradient = "transparent";
+export const regattaStripes = "transparent";
+export const stickerShadow = "none";
+export const stickerShadowSoft = "none";
 export const cardBase = {
-  background: colors.cream,
-  border: `3px solid ${colors.navy}`,
-  boxShadow: stickerShadow,
-  borderRadius: "14px",
+  background: colors.paper,
+  border: `1px solid ${colors.mist}`,
+  borderRadius: 0,
 } as const;

@@ -12,24 +12,17 @@ export function EventWeatherChip({ date }: { date: string }) {
   return (
     <span
       style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 4,
-        padding: "2px 8px",
-        background: colors.lavender,
-        border: `2px solid ${colors.navy}`,
-        borderRadius: 999,
-        fontSize: "0.75rem",
-        fontFamily: fonts.mono,
-        fontWeight: 700,
-        color: colors.navy,
+        fontFamily: fonts.body,
+        fontSize: 11,
+        letterSpacing: "0.12em",
+        textTransform: "uppercase",
+        color: colors.inkSoft,
+        fontWeight: 500,
       }}
       title={`${day.label} · wind ${day.windMaxMph} mph · ${day.precipitationChance}% rain`}
     >
-      {day.emoji} {day.tempMaxF}°/{day.tempMinF}°
-      {day.precipitationChance >= 40 && (
-        <span style={{ marginLeft: 4 }}>💧 {day.precipitationChance}%</span>
-      )}
+      {day.tempMaxF}° / {day.tempMinF}°
+      {day.precipitationChance >= 40 && ` · ${day.precipitationChance}% rain`}
     </span>
   );
 }
@@ -40,22 +33,16 @@ export function CurrentWeatherChip() {
   return (
     <span
       style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 4,
-        padding: "3px 10px",
-        background: "#fff",
-        border: `2px solid ${colors.navy}`,
-        borderRadius: 999,
-        fontSize: "0.75rem",
-        fontFamily: fonts.mono,
-        fontWeight: 700,
-        color: colors.navy,
-        boxShadow: "2px 2px 0 #1F2A44",
+        fontFamily: fonts.body,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.2em",
+        textTransform: "uppercase",
+        color: colors.inkSoft,
       }}
       title={`Newport now: ${weather.current.label}`}
     >
-      {weather.current.emoji} newport · {weather.current.tempF}°
+      Newport · {weather.current.tempF}°
     </span>
   );
 }
@@ -67,16 +54,16 @@ export function MarineCard({ date }: { date: string }) {
     return (
       <div
         style={{
-          marginTop: 10,
-          padding: "10px 12px",
-          background: colors.lavender,
-          border: `2px solid ${colors.navy}`,
-          borderRadius: 10,
-          fontSize: "0.82rem",
-          fontFamily: fonts.script,
+          marginTop: 14,
+          padding: "12px 0",
+          borderTop: `1px solid ${colors.mist}`,
+          fontFamily: fonts.display,
+          fontStyle: "italic",
+          fontSize: 13,
+          color: colors.inkSoft,
         }}
       >
-        🌊 marine forecast available ~16 days before the trip
+        Marine forecast available ~16 days before the trip.
       </div>
     );
   }
@@ -86,28 +73,36 @@ export function MarineCard({ date }: { date: string }) {
   return (
     <div
       style={{
-        marginTop: 10,
-        padding: "10px 12px",
-        background: colors.lavender,
-        border: `2px solid ${colors.navy}`,
-        borderRadius: 10,
-        fontSize: "0.82rem",
+        marginTop: 14,
+        padding: "12px 0",
+        borderTop: `1px solid ${colors.mist}`,
+        fontFamily: fonts.body,
+        fontSize: 12,
+        color: colors.inkSoft,
         display: "flex",
-        gap: 12,
+        gap: 18,
         flexWrap: "wrap",
-        alignItems: "center",
+        letterSpacing: "0.04em",
       }}
     >
-      <strong style={{ fontFamily: fonts.body, fontSize: "0.85rem" }}>
-        🌊 marine
-      </strong>
+      <span
+        style={{
+          fontWeight: 600,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          color: colors.brass,
+          fontSize: 11,
+        }}
+      >
+        Marine
+      </span>
       {day && (
         <>
-          <span>💨 wind {day.windMaxMph} mph</span>
-          <span>{day.emoji} {day.label}</span>
+          <span>Wind {day.windMaxMph} mph</span>
+          <span>{day.label}</span>
         </>
       )}
-      {sea && <span>🌊 waves {sea.waveHeightMaxFt} ft</span>}
+      {sea && <span>Waves {sea.waveHeightMaxFt} ft</span>}
     </div>
   );
 }

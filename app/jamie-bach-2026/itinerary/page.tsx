@@ -1,12 +1,68 @@
 "use client";
 
+import Image from "next/image";
 import PasswordGate from "../_components/PasswordGate";
 import BottomNav from "../_components/BottomNav";
 import TripSubNav from "../_components/TripSubNav";
+import SectionHeader from "../_components/SectionHeader";
 import { EventWeatherChip, MarineCard } from "../_components/WeatherChip";
 import { useGuestState } from "../_components/useGuestState";
-import { colors, fonts, stickerShadow } from "@/lib/jamie/brand";
+import { colors, fonts } from "@/lib/jamie/brand";
 import type { ItineraryEvent } from "@/lib/jamie/types";
+
+const dayMeta: Record<
+  string,
+  { label: string; subtitle: string; cover: { src: string; alt: string } }
+> = {
+  fri: {
+    label: "Day One — Friday, July 10",
+    subtitle: "Settling in, a slow lunch, a long first dinner.",
+    cover: {
+      src: "/jamie/newport/harbor-day.jpg",
+      alt: "Schooner sailing past the Newport coast",
+    },
+  },
+  sat: {
+    label: "Day Two — Saturday, July 11",
+    subtitle: "Brunch, a sunset cruise, and the night we built the trip around.",
+    cover: {
+      src: "/jamie/newport/sailboats-sunset.jpg",
+      alt: "Sailboats silhouetted against a Newport sunset",
+    },
+  },
+  sun: {
+    label: "Day Three — Sunday, July 12",
+    subtitle: "Slow morning, settling up, one last toast.",
+    cover: {
+      src: "/jamie/newport/cliff-walk.jpg",
+      alt: "Newport harbor of moored boats",
+    },
+  },
+};
+
+// Per-event editorial thumbnail
+const eventCovers: Record<string, { src: string; alt: string }> = {
+  "fri-picnic": {
+    src: "/jamie/newport/newport-flag.jpg",
+    alt: "Newport harbor with a flag flying",
+  },
+  "fri-pasta-beach": {
+    src: "/jamie/venues/pasta-beach.jpg",
+    alt: "Pasta Beach Newport",
+  },
+  "sat-wallys": {
+    src: "/jamie/newport/oysters.jpg",
+    alt: "A Newport lobster shack",
+  },
+  "sat-cruise": {
+    src: "/jamie/venues/gansett-sunset.jpg",
+    alt: "Gansett Cruises sunset sail",
+  },
+  "sat-mooring": {
+    src: "/jamie/venues/mooring-patio.jpg",
+    alt: "The Mooring patio overlooking Newport Harbor",
+  },
+};
 
 export default function ItineraryPage() {
   return (
@@ -21,30 +77,10 @@ export default function ItineraryPage() {
   );
 }
 
-const dayLabels: Record<string, { label: string; color: keyof typeof colors }> = {
-  fri: { label: "FRI · 7/10", color: "coral" },
-  sat: { label: "SAT · 7/11", color: "tangerine" },
-  sun: { label: "SUN · 7/12", color: "lime" },
-};
-
 function Body() {
   const { state, error, loading } = useGuestState();
-
-  if (loading) {
-    return (
-      <div style={{ padding: "60px 20px", textAlign: "center" }}>
-        <div style={{ fontSize: "2rem" }}>🌊</div>
-        <p style={{ color: colors.navySoft, marginTop: 12 }}>loading...</p>
-      </div>
-    );
-  }
-  if (error || !state) {
-    return (
-      <div style={{ padding: "60px 20px", textAlign: "center" }}>
-        <p style={{ color: colors.coral }}>oops — {error || "no data yet"}</p>
-      </div>
-    );
-  }
+  if (loading) return <Loading />;
+  if (error || !state) return <ErrorView error={error} />;
 
   const grouped = state.itinerary.reduce<Record<string, ItineraryEvent[]>>(
     (acc, event) => {
@@ -53,58 +89,76 @@ function Body() {
     },
     {}
   );
-
   const dayOrder: ("fri" | "sat" | "sun")[] = ["fri", "sat", "sun"];
 
   return (
-    <div style={{ maxWidth: 480, margin: "0 auto" }}>
-      <header style={{ padding: "32px 20px 12px" }}>
-        <div
-          style={{
-            fontFamily: fonts.script,
-            fontSize: "1.25rem",
-            color: colors.coral,
-            transform: "rotate(-2deg)",
-          }}
-        >
-          here&apos;s what&apos;s happening
-        </div>
-        <h1
-          style={{
-            fontFamily: fonts.display,
-            fontStyle: "italic",
-            fontWeight: 900,
-            fontSize: "2.4rem",
-            margin: "6px 0 0",
-            color: colors.navy,
-            lineHeight: 1,
-          }}
-        >
-          itinerary
-        </h1>
-      </header>
-
+    <div style={{ maxWidth: 640, margin: "0 auto" }}>
+      <SectionHeader
+        kicker="The Itinerary"
+        title="What we're doing"
+        dek="Three days in Newport, scheduled enough to be relaxing."
+      />
       <TripSubNav />
 
-      <div style={{ padding: "12px 20px 40px" }}>
+      <div style={{ paddingBottom: 40 }}>
         {dayOrder.map((day) => {
           const events = grouped[day];
           if (!events?.length) return null;
+          const meta = dayMeta[day];
           return (
-            <div key={day} style={{ marginTop: 24 }}>
-              <DayHeader meta={dayLabels[day]} />
-              <div style={{ display: "flex", flexDirection: "column", gap: 14, marginTop: 12 }}>
+            <article key={day} style={{ marginTop: 48 }}>
+              <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10" }}>
+                <Image
+                  src={meta.cover.src}
+                  alt={meta.cover.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 640px"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+              <div style={{ padding: "20px 24px 0" }}>
+                <div
+                  style={{
+                    fontFamily: fonts.body,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: colors.brass,
+                  }}
+                >
+                  {meta.label}
+                </div>
+                <h2
+                  style={{
+                    fontFamily: fonts.display,
+                    fontWeight: 500,
+                    fontSize: "1.9rem",
+                    margin: "10px 0 0",
+                    color: colors.ink,
+                    letterSpacing: "-0.015em",
+                    lineHeight: 1.08,
+                  }}
+                >
+                  {meta.subtitle}
+                </h2>
+                <div
+                  style={{
+                    marginTop: 18,
+                    height: 1,
+                    background: colors.brass,
+                    width: 48,
+                  }}
+                />
+              </div>
+              <div style={{ padding: "0 24px" }}>
                 {events
                   .sort((a, b) => a.startTime.localeCompare(b.startTime))
-                  .map((event, idx) => (
-                    <EventCard
-                      key={event.id}
-                      event={event}
-                      tilt={idx % 2 === 0 ? -1 : 1}
-                    />
+                  .map((event) => (
+                    <EventEntry key={event.id} event={event} />
                   ))}
               </div>
-            </div>
+            </article>
           );
         })}
       </div>
@@ -112,119 +166,139 @@ function Body() {
   );
 }
 
-function DayHeader({ meta }: { meta: { label: string; color: keyof typeof colors } }) {
+function EventEntry({ event }: { event: ItineraryEvent }) {
+  const cover = eventCovers[event.id];
   return (
     <div
       style={{
-        display: "inline-block",
-        background: colors[meta.color],
-        border: `3px solid ${colors.navy}`,
-        boxShadow: "3px 3px 0 #1F2A44",
-        borderRadius: "999px",
-        padding: "6px 16px",
-        fontFamily: fonts.mono,
-        fontWeight: 700,
-        fontSize: "0.85rem",
-        letterSpacing: "0.08em",
-        transform: "rotate(-1deg)",
+        display: "flex",
+        gap: 18,
+        padding: "22px 0",
+        borderBottom: `1px solid ${colors.mist}`,
       }}
     >
-      {meta.label}
-    </div>
-  );
-}
-
-function EventCard({ event, tilt }: { event: ItineraryEvent; tilt: number }) {
-  return (
-    <div
-      style={{
-        background: "#fff",
-        border: `3px solid ${colors.navy}`,
-        borderRadius: "14px",
-        padding: "16px 18px",
-        boxShadow: stickerShadow,
-        transform: `rotate(${tilt * 0.5}deg)`,
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-        <span style={{ fontSize: "2rem", lineHeight: 1 }}>{event.emoji}</span>
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              fontFamily: fonts.mono,
-              fontSize: "0.78rem",
-              fontWeight: 700,
-              color: colors.coral,
-              letterSpacing: "0.05em",
-            }}
-          >
-            {formatTime(event.startTime)}
-            {event.endTime ? ` – ${formatTime(event.endTime)}` : ""}
-          </div>
-          <h3
-            style={{
-              fontFamily: fonts.display,
-              fontStyle: "italic",
-              fontWeight: 900,
-              fontSize: "1.4rem",
-              margin: "2px 0 0",
-              color: colors.navy,
-              lineHeight: 1.1,
-            }}
-          >
-            {event.title}
-          </h3>
+      {cover ? (
+        <div
+          style={{
+            position: "relative",
+            width: 96,
+            height: 96,
+            flexShrink: 0,
+            background: colors.mist,
+            overflow: "hidden",
+          }}
+        >
+          <Image
+            src={cover.src}
+            alt={cover.alt}
+            fill
+            sizes="96px"
+            style={{ objectFit: "cover" }}
+          />
         </div>
-        <EventWeatherChip date={event.date} />
-      </div>
-      {event.id === "sat-cruise" && <MarineCard date={event.date} />}
-
-      <div style={{ marginTop: 12, fontSize: "0.85rem", lineHeight: 1.5 }}>
-        <Row label="📍">
+      ) : null}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontFamily: fonts.body,
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: colors.coral,
+          }}
+        >
+          {formatTime(event.startTime)}
+          {event.endTime ? ` – ${formatTime(event.endTime)}` : ""}
+        </div>
+        <h3
+          style={{
+            fontFamily: fonts.display,
+            fontWeight: 500,
+            fontSize: 22,
+            margin: "4px 0 0",
+            color: colors.ink,
+            letterSpacing: "-0.01em",
+            lineHeight: 1.15,
+            textTransform: "capitalize",
+          }}
+        >
+          {event.title}
+        </h3>
+        <div style={{ marginTop: 6 }}>
           <a
             href={event.location.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: colors.navy, textDecoration: "underline" }}
+            style={{
+              fontFamily: fonts.body,
+              fontSize: 13,
+              color: colors.inkSoft,
+              textDecoration: "none",
+              borderBottom: `1px solid ${colors.mist}`,
+            }}
           >
             {event.location.name}
           </a>
           <div
-            style={{ color: colors.navySoft, fontSize: "0.78rem" }}
+            style={{
+              fontFamily: fonts.body,
+              fontSize: 12,
+              color: colors.inkSoft,
+              marginTop: 2,
+            }}
           >
             {event.location.address}
           </div>
-        </Row>
-
-        {event.dressCode && (
-          <Row label="👗">
-            <span>{event.dressCode}</span>
-          </Row>
-        )}
-
-        {event.bring?.length ? (
-          <Row label="👜">
-            <span>{event.bring.join(" · ")}</span>
-          </Row>
-        ) : null}
+        </div>
 
         {event.publicNote && (
-          <Row label="💌">
-            <span style={{ fontFamily: fonts.script, fontSize: "1rem" }}>
-              {event.publicNote}
-            </span>
-          </Row>
+          <p
+            style={{
+              fontFamily: fonts.display,
+              fontStyle: "italic",
+              fontSize: 14,
+              color: colors.ink,
+              margin: "12px 0 0",
+              lineHeight: 1.5,
+            }}
+          >
+            {event.publicNote}
+          </p>
         )}
-      </div>
-    </div>
-  );
-}
 
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
-      <span style={{ width: 22, flexShrink: 0 }}>{label}</span>
-      <div style={{ flex: 1 }}>{children}</div>
+        <div
+          style={{
+            marginTop: 12,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 16,
+            fontFamily: fonts.body,
+            fontSize: 12,
+            color: colors.inkSoft,
+          }}
+        >
+          <EventWeatherChip date={event.date} />
+          {event.dressCode && (
+            <span style={{ letterSpacing: "0.04em" }}>
+              <em style={{ fontFamily: fonts.display, fontStyle: "italic" }}>
+                Dress:
+              </em>{" "}
+              {event.dressCode}
+            </span>
+          )}
+          {event.bring?.length ? (
+            <span style={{ letterSpacing: "0.04em" }}>
+              <em style={{ fontFamily: fonts.display, fontStyle: "italic" }}>
+                Bring:
+              </em>{" "}
+              {event.bring.join(", ")}
+            </span>
+          ) : null}
+        </div>
+
+        {event.id === "sat-cruise" && <MarineCard date={event.date} />}
+      </div>
     </div>
   );
 }
@@ -234,4 +308,32 @@ function formatTime(t24: string): string {
   const period = h >= 12 ? "pm" : "am";
   const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
   return `${h12}${m ? ":" + String(m).padStart(2, "0") : ""}${period}`;
+}
+
+function Loading() {
+  return (
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p
+        style={{
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: 11,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: colors.inkSoft,
+        }}
+      >
+        Loading
+      </p>
+    </div>
+  );
+}
+
+function ErrorView({ error }: { error: string | null }) {
+  return (
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p style={{ color: colors.coral, fontFamily: fonts.body }}>
+        {error || "No data yet."}
+      </p>
+    </div>
+  );
 }

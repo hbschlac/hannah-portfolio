@@ -5,7 +5,7 @@ import BottomNav from "../_components/BottomNav";
 import SectionHeader from "../_components/SectionHeader";
 import TripSubNav from "../_components/TripSubNav";
 import { useGuestState } from "../_components/useGuestState";
-import { colors, fonts, stickerShadow } from "@/lib/jamie/brand";
+import { colors, fonts } from "@/lib/jamie/brand";
 import type { Flight, Attendee } from "@/lib/jamie/types";
 
 export default function TravelPage() {
@@ -41,133 +41,122 @@ function Body() {
     state.roster.find((r) => r.id === id);
 
   return (
-    <div style={{ maxWidth: 480, margin: "0 auto" }}>
-      <SectionHeader kicker="how we're getting there 🛫" title="travel" />
+    <div style={{ maxWidth: 640, margin: "0 auto" }}>
+      <SectionHeader
+        kicker="Getting There"
+        title="Flights & ground."
+        dek="Providence is closer; Boston is bigger. Most of us land on Friday."
+      />
       <TripSubNav />
 
-      <section style={{ padding: "12px 20px 0" }}>
-        <SubHeader emoji="✈️" title="flights" />
+      <section style={{ padding: "32px 24px 0" }}>
+        <Eyebrow text="Arrivals" />
+        <h2 style={h2Style}>Flights, by airport.</h2>
 
-        {Object.entries(flightsByAirport).length > 0 ? (
-          Object.entries(flightsByAirport).map(([airport, flights]) => (
-            <AirportGroup
+        <div style={{ marginTop: 20 }}>
+          {Object.entries(flightsByAirport).map(([airport, flights]) => (
+            <AirportSection
               key={airport}
               airport={airport}
               flights={flights}
               findPerson={findPerson}
             />
-          ))
-        ) : null}
+          ))}
+        </div>
 
         {tbdFlights.length > 0 && (
-          <div style={{ marginTop: 18 }}>
-            <div
+          <div style={{ marginTop: 30 }}>
+            <Eyebrow text="Still Booking" />
+            <h3
               style={{
-                fontFamily: fonts.mono,
-                fontSize: "0.78rem",
-                fontWeight: 700,
-                color: colors.navySoft,
-                letterSpacing: "0.08em",
-                marginBottom: 8,
+                ...h2Style,
+                fontSize: "1.3rem",
+                marginTop: 8,
               }}
             >
-              STILL BOOKING ✈️
-            </div>
+              Waiting on these.
+            </h3>
             <div
               style={{
-                background: "#fff",
-                border: `3px solid ${colors.navy}`,
-                borderRadius: 12,
-                padding: 14,
-                boxShadow: stickerShadow,
+                paddingTop: 14,
                 display: "flex",
                 flexWrap: "wrap",
-                gap: 6,
+                gap: "8px 18px",
+                fontFamily: fonts.body,
+                fontSize: 13,
+                color: colors.inkSoft,
               }}
             >
               {tbdFlights.map((f) => {
                 const p = findPerson(f.attendeeId);
                 if (!p) return null;
                 return (
-                  <span
-                    key={f.attendeeId}
-                    style={{
-                      padding: "3px 9px",
-                      background: colors.cream,
-                      border: `2px solid ${colors.navy}`,
-                      borderRadius: 999,
-                      fontSize: "0.78rem",
-                    }}
-                  >
-                    {p.name.split(" ")[0]} · {p.city}
+                  <span key={f.attendeeId}>
+                    <span style={{ color: colors.ink, fontWeight: 500 }}>
+                      {p.name.split(" ")[0]}
+                    </span>{" "}
+                    · {p.city}
                   </span>
                 );
               })}
             </div>
             <p
               style={{
-                marginTop: 8,
-                fontFamily: fonts.script,
-                fontSize: "1rem",
-                color: colors.navySoft,
+                marginTop: 18,
+                fontFamily: fonts.display,
+                fontStyle: "italic",
+                fontSize: 14,
+                color: colors.inkSoft,
               }}
             >
-              text hannah your flight info when you book ✨
+              Text Hannah your flight info when you book.
             </p>
           </div>
         )}
       </section>
 
-      <section style={{ padding: "32px 20px 0" }}>
-        <SubHeader emoji="🚗" title="ground transport" />
-        <div
+      <section style={{ padding: "48px 24px 0" }}>
+        <Eyebrow text="On the Ground" />
+        <h2 style={h2Style}>Getting from the airport to the inn.</h2>
+        <p
           style={{
-            marginTop: 12,
-            background: "#fff",
-            border: `3px solid ${colors.navy}`,
-            borderRadius: 12,
-            padding: 16,
-            boxShadow: stickerShadow,
-            fontSize: "0.9rem",
-            lineHeight: 1.5,
+            fontFamily: fonts.display,
+            fontStyle: "italic",
+            fontSize: 16,
+            color: colors.ink,
+            lineHeight: 1.55,
+            marginTop: 16,
           }}
         >
-          <p style={{ margin: 0 }}>
-            most of us are flying into <strong>PVD</strong> (Providence, ~30 min) or{" "}
-            <strong>BOS</strong> (Boston, ~1.5 hrs).
-          </p>
-          <p style={{ margin: "10px 0 0", fontFamily: fonts.script, fontSize: "1.05rem", color: colors.coral }}>
-            rental car groups still being figured out — once flights firm up
-            we&apos;ll match people who land near each other ✨
-          </p>
-        </div>
+          Most of us are flying into <strong>PVD</strong> (Providence, about 30
+          minutes from Newport) or <strong>BOS</strong> (Boston, about an hour
+          and a half). Rental car groups firm up once flights do — we&apos;ll
+          pair people who land near each other.
+        </p>
       </section>
 
-      <section style={{ padding: "32px 20px 40px" }}>
-        <SubHeader emoji="🅿️" title="parking · for the cruise" />
-        <div
+      <section style={{ padding: "48px 24px 64px" }}>
+        <Eyebrow text="Parking for the Cruise" />
+        <h2 style={h2Style}>Mary Street Lot.</h2>
+        <p
           style={{
-            marginTop: 12,
-            background: colors.lime,
-            border: `3px solid ${colors.navy}`,
-            borderRadius: 12,
-            padding: 14,
-            boxShadow: stickerShadow,
-            fontSize: "0.85rem",
-            lineHeight: 1.5,
+            fontFamily: fonts.display,
+            fontStyle: "italic",
+            fontSize: 15,
+            color: colors.ink,
+            lineHeight: 1.55,
+            marginTop: 14,
           }}
         >
-          <p style={{ margin: 0 }}>
-            <strong>Mary St lot</strong> — $3/hr, 3-min walk to the boat. Or
-            rideshare — parking is rough in summer.
-          </p>
-        </div>
+          $3/hr, three minutes from the dock. Rideshare also works — Newport
+          parking is rough in July.
+        </p>
       </section>
     </div>
   );
 }
 
-function AirportGroup({
+function AirportSection({
   airport,
   flights,
   findPerson,
@@ -177,33 +166,26 @@ function AirportGroup({
   findPerson: (id: string) => Attendee | undefined;
 }) {
   const cityName: Record<string, string> = {
-    PVD: "providence",
-    BOS: "boston",
+    PVD: "Providence",
+    BOS: "Boston",
   };
   return (
-    <div style={{ marginTop: 18 }}>
+    <div style={{ marginTop: 20 }}>
       <div
         style={{
-          fontFamily: fonts.mono,
-          fontSize: "0.78rem",
-          fontWeight: 700,
-          color: colors.coral,
-          letterSpacing: "0.08em",
+          fontFamily: fonts.body,
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: colors.brass,
           marginBottom: 8,
         }}
       >
-        ✈️ {airport.toUpperCase()} · {cityName[airport] || ""}
+        {airport} — {cityName[airport] || ""}
       </div>
-      <div
-        style={{
-          background: "#fff",
-          border: `3px solid ${colors.navy}`,
-          borderRadius: 12,
-          boxShadow: stickerShadow,
-          overflow: "hidden",
-        }}
-      >
-        {flights.map((f, i) => {
+      <div style={{ borderTop: `1px solid ${colors.mist}` }}>
+        {flights.map((f) => {
           const p = findPerson(f.attendeeId);
           if (!p) return null;
           return (
@@ -211,38 +193,63 @@ function AirportGroup({
               key={f.attendeeId}
               style={{
                 display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "10px 12px",
-                borderTop: i === 0 ? "none" : `1px solid ${colors.navy}`,
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                padding: "14px 0",
+                borderBottom: `1px solid ${colors.mist}`,
+                gap: 12,
               }}
             >
-              <div
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  background: colors[p.colorToken],
-                  border: `1.5px solid ${colors.navy}`,
-                }}
-              />
-              <div style={{ flex: 1, fontSize: "0.88rem" }}>
-                <strong>{p.name.split(" ")[0]}</strong>
-                <span style={{ color: colors.navySoft }}> · {p.city}</span>
+              <div>
+                <div
+                  style={{
+                    fontFamily: fonts.display,
+                    fontWeight: 500,
+                    fontSize: 17,
+                    color: colors.ink,
+                    letterSpacing: "-0.005em",
+                  }}
+                >
+                  {p.name.split(" ")[0]}
+                </div>
+                <div
+                  style={{
+                    fontFamily: fonts.body,
+                    fontSize: 11,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: colors.inkSoft,
+                    marginTop: 2,
+                  }}
+                >
+                  {p.city}
+                </div>
               </div>
               <div
                 style={{
-                  fontFamily: fonts.mono,
-                  fontSize: "0.78rem",
-                  color: colors.navy,
+                  fontFamily: fonts.body,
+                  fontSize: 13,
+                  color: colors.ink,
                   textAlign: "right",
                 }}
               >
-                {f.airline && f.flightNumber
-                  ? `${f.airline} ${f.flightNumber}`
-                  : "—"}
-                <br />
-                {f.arrivalTime ? `${formatTime(f.arrivalTime)}` : ""}
+                <div>
+                  {f.airline && f.flightNumber
+                    ? `${f.airline} ${f.flightNumber}`
+                    : "—"}
+                </div>
+                {f.arrivalTime && (
+                  <div
+                    style={{
+                      color: colors.inkSoft,
+                      fontSize: 12,
+                      letterSpacing: "0.06em",
+                      marginTop: 2,
+                    }}
+                  >
+                    Arr. {formatTime(f.arrivalTime)}
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -252,25 +259,32 @@ function AirportGroup({
   );
 }
 
-function SubHeader({ emoji, title }: { emoji: string; title: string }) {
+function Eyebrow({ text }: { text: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-      <span style={{ fontSize: "1.4rem" }}>{emoji}</span>
-      <h2
-        style={{
-          fontFamily: fonts.display,
-          fontStyle: "italic",
-          fontWeight: 900,
-          fontSize: "1.4rem",
-          color: colors.navy,
-          margin: 0,
-        }}
-      >
-        {title}
-      </h2>
+    <div
+      style={{
+        fontFamily: fonts.body,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: colors.brass,
+      }}
+    >
+      {text}
     </div>
   );
 }
+
+const h2Style = {
+  fontFamily: fonts.display,
+  fontWeight: 500,
+  fontSize: "1.6rem",
+  color: colors.ink,
+  margin: "10px 0 0",
+  letterSpacing: "-0.015em",
+  lineHeight: 1.08,
+} as const;
 
 function formatTime(t24: string): string {
   const [h, m] = t24.split(":").map(Number);
@@ -281,17 +295,28 @@ function formatTime(t24: string): string {
 
 function Loading() {
   return (
-    <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <div style={{ fontSize: "2rem" }}>🛫</div>
-      <p style={{ color: colors.navySoft, marginTop: 12 }}>loading...</p>
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p
+        style={{
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: 11,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: colors.inkSoft,
+        }}
+      >
+        Loading
+      </p>
     </div>
   );
 }
 
 function ErrorView({ error }: { error: string | null }) {
   return (
-    <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <p style={{ color: colors.coral }}>oops — {error || "no data"}</p>
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p style={{ color: colors.coral, fontFamily: fonts.body }}>
+        {error || "No data yet."}
+      </p>
     </div>
   );
 }

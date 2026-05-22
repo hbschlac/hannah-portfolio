@@ -4,9 +4,31 @@ import Link from "next/link";
 import PasswordGate from "./_components/PasswordGate";
 import BottomNav from "./_components/BottomNav";
 import Countdown from "./_components/Countdown";
+import EditorialHero from "./_components/EditorialHero";
+import PhotoCaption from "./_components/PhotoCaption";
+import PortraitCard from "./_components/PortraitCard";
 import { CurrentWeatherChip } from "./_components/WeatherChip";
 import { useGuestState } from "./_components/useGuestState";
-import { colors, fonts, sunsetGradient, stickerShadow } from "@/lib/jamie/brand";
+import { colors, fonts } from "@/lib/jamie/brand";
+
+// Day → cover photo mapping for the "what's the plan" mosaic
+const dayCovers: Record<string, { src: string; alt: string; caption: string }> = {
+  fri: {
+    src: "/jamie/newport/harbor-day.jpg",
+    alt: "Sailing schooner past the Newport coastline",
+    caption: "Friday — settling in, slow lunch, first dinner.",
+  },
+  sat: {
+    src: "/jamie/newport/sailboats-sunset.jpg",
+    alt: "Sailboats silhouetted against a Newport sunset",
+    caption: "Saturday — brunch, sunset cruise, the big dinner.",
+  },
+  sun: {
+    src: "/jamie/newport/cliff-walk.jpg",
+    alt: "Newport harbor of moored boats",
+    caption: "Sunday — slow morning, settling up, last toast.",
+  },
+};
 
 export default function JamieBachHome() {
   return (
@@ -24,347 +46,301 @@ export default function JamieBachHome() {
 function HomeContent() {
   const { state, error, loading } = useGuestState();
 
-  if (loading) {
-    return (
-      <div style={{ padding: "60px 20px", textAlign: "center" }}>
-        <div style={{ fontSize: "2rem" }}>⚓</div>
-        <p style={{ color: colors.navySoft, marginTop: "12px" }}>loading...</p>
-      </div>
-    );
-  }
-
-  if (error || !state) {
-    return (
-      <div style={{ padding: "60px 20px", textAlign: "center" }}>
-        <p style={{ color: colors.coral }}>
-          oops — {error || "no data yet"}
-        </p>
-        <p style={{ color: colors.navySoft, fontSize: "0.85rem", marginTop: 8 }}>
-          (data may not be seeded yet — POST /api/jamie/seed)
-        </p>
-      </div>
-    );
-  }
+  if (loading) return <Loading />;
+  if (error || !state) return <ErrorView error={error} />;
 
   const { trip, roster, itinerary, photosUrl, groupChatUrl } = state;
-  const visibleRoster = roster.slice(0, 9);
+  const visibleRoster = roster.slice(0, 6);
+  const days: Array<"fri" | "sat" | "sun"> = ["fri", "sat", "sun"];
 
   return (
-    <div style={{ maxWidth: 480, margin: "0 auto" }}>
-      {/* HERO */}
-      <header style={{ padding: "32px 20px 20px" }}>
-        <div
-          style={{
-            fontFamily: fonts.script,
-            fontSize: "1.4rem",
-            color: colors.coral,
-            transform: "rotate(-2deg)",
-          }}
-        >
-          we're going to newport ❤️
-        </div>
-        <h1
+    <div style={{ maxWidth: 640, margin: "0 auto" }}>
+      <EditorialHero
+        src="/jamie/newport/hero-harbor.jpg"
+        alt="The Oliver Hazard Perry tall ship docked in Newport Harbor"
+        eyebrow="A Newport Bachelorette"
+        headline={`For ${trip.bride}`}
+        dateline="Newport, Rhode Island · July 10–13, 2026"
+        height={620}
+        priority
+      />
+
+      <div
+        style={{
+          padding: "32px 24px 0",
+          display: "flex",
+          flexDirection: "column",
+          gap: 18,
+        }}
+      >
+        <p
           style={{
             fontFamily: fonts.display,
             fontStyle: "italic",
-            fontWeight: 900,
-            fontSize: "2.6rem",
-            lineHeight: 1,
-            marginTop: 6,
-            color: colors.navy,
+            fontSize: 19,
+            lineHeight: 1.55,
+            color: colors.ink,
+            margin: 0,
+            letterSpacing: "-0.005em",
           }}
         >
-          jamie&apos;s bach
-          <br />
-          <span style={{ color: colors.coral }}>2026 ⚓</span>
-        </h1>
-        <p
-          style={{
-            marginTop: 10,
-            fontSize: "0.95rem",
-            color: colors.navySoft,
-          }}
-        >
-          newport · jul 10–13 · party of {trip.partySize}
+          Four days on the Rhode Island coast for {trip.bride.split(" ")[0]} — sail-cloth sunsets,
+          long dinners, and the kind of summer light New England saves for July.
+          Here&apos;s what we&apos;ve planned.
         </p>
-        <div style={{ marginTop: 10 }}>
-          <CurrentWeatherChip />
-        </div>
-      </header>
 
-      {/* COUNTDOWN HERO CARD */}
-      <div style={{ padding: "0 20px" }}>
         <div
           style={{
-            background: sunsetGradient,
-            border: `3px solid ${colors.navy}`,
-            borderRadius: "20px",
-            padding: "32px 20px",
-            textAlign: "center",
-            boxShadow: stickerShadow,
-            transform: "rotate(-1deg)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingTop: 20,
+            borderTop: `1px solid ${colors.mist}`,
+            borderBottom: `1px solid ${colors.mist}`,
+            paddingBottom: 18,
           }}
         >
           <Countdown targetDate={trip.startDate} />
-          <div style={{ fontSize: "3rem", marginTop: 14, lineHeight: 1 }}>
-            ⛵ 🌊 🦞
-          </div>
-          <p
-            style={{
-              fontFamily: fonts.display,
-              fontStyle: "italic",
-              fontWeight: 700,
-              fontSize: "1.4rem",
-              color: colors.navy,
-              marginTop: 14,
-              lineHeight: 1.2,
-            }}
-          >
-            it&apos;s almost time
-          </p>
+          <CurrentWeatherChip />
         </div>
       </div>
 
-      {/* THE SQUAD */}
-      <section style={{ padding: "32px 20px 16px" }}>
-        <SectionHeader emoji="💕" title="the squad" />
+      {/* THE WEEKEND */}
+      <section style={{ padding: "48px 24px 0" }}>
+        <Eyebrow text="The Weekend" />
+        <h2
+          style={{
+            fontFamily: fonts.display,
+            fontWeight: 500,
+            fontSize: "2rem",
+            color: colors.ink,
+            margin: "10px 0 24px",
+            letterSpacing: "-0.015em",
+            lineHeight: 1.05,
+          }}
+        >
+          Three days, planned in pencil.
+        </h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+          {days.map((d) => {
+            const cover = dayCovers[d];
+            return <PhotoCaption key={d} {...cover} ratio="wide" />;
+          })}
+        </div>
+        <Link
+          href="/jamie-bach-2026/itinerary"
+          style={textLinkStyle}
+        >
+          See the full itinerary
+        </Link>
+      </section>
+
+      {/* THE SQUAD PREVIEW */}
+      <section style={{ padding: "56px 24px 0" }}>
+        <Eyebrow text="The Squad" />
+        <h2
+          style={{
+            fontFamily: fonts.display,
+            fontWeight: 500,
+            fontSize: "2rem",
+            color: colors.ink,
+            margin: "10px 0 24px",
+            letterSpacing: "-0.015em",
+            lineHeight: 1.05,
+          }}
+        >
+          The nine of us.
+        </h2>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "12px",
-            marginTop: 14,
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: 16,
           }}
         >
           {visibleRoster.map((a) => (
-            <FaceCircle
+            <PortraitCard
               key={a.id}
               name={a.name.split(" ")[0]}
+              role={a.role === "bride" ? "Bride" : undefined}
               city={a.city}
-              color={colors[a.colorToken]}
               photoUrl={a.photoUrl}
             />
           ))}
         </div>
-        <Link
-          href="/jamie-bach-2026/squad"
-          style={{
-            display: "inline-block",
-            marginTop: 14,
-            color: colors.coral,
-            fontWeight: 600,
-            textDecoration: "none",
-            fontSize: "0.9rem",
-          }}
-        >
-          meet everyone →
+        <Link href="/jamie-bach-2026/squad" style={textLinkStyle}>
+          Meet everyone
         </Link>
       </section>
 
-      {/* WHAT'S THE PLAN */}
-      <section style={{ padding: "16px 20px" }}>
-        <SectionHeader emoji="🌊" title="what's the plan" />
-        <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
-          {itinerary.map((event) => (
-            <div
-              key={event.id}
-              style={{
-                background: "#fff",
-                border: `2px solid ${colors.navy}`,
-                borderRadius: "12px",
-                padding: "10px 14px",
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                boxShadow: stickerShadow,
-              }}
-            >
-              <div style={{ fontSize: "1.4rem" }}>{event.emoji}</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>
-                  {event.title}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.78rem",
-                    color: colors.navySoft,
-                    fontFamily: fonts.mono,
-                  }}
-                >
-                  {event.day.toUpperCase()} · {formatTime(event.startTime)}
-                </div>
-              </div>
-            </div>
-          ))}
+      {/* THE TABLE */}
+      <section style={{ padding: "56px 24px 0" }}>
+        <Eyebrow text="The Table" />
+        <h2
+          style={{
+            fontFamily: fonts.display,
+            fontWeight: 500,
+            fontSize: "2rem",
+            color: colors.ink,
+            margin: "10px 0 24px",
+            letterSpacing: "-0.015em",
+            lineHeight: 1.05,
+          }}
+        >
+          A long weekend at the Burbank Rose Inn.
+        </h2>
+        <PhotoCaption
+          src="/jamie/newport/cottage.jpg"
+          alt="Coastal cottage with white picket fence"
+          ratio="wide"
+          caption="A 9-bed Victorian a five-minute walk to the harbor."
+        />
+        <Link href="/jamie-bach-2026/lodging" style={textLinkStyle}>
+          See the inn
+        </Link>
+      </section>
+
+      {/* CTAs */}
+      <section style={{ padding: "56px 24px 64px" }}>
+        <Eyebrow text="Stay Connected" />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+            marginTop: 18,
+          }}
+        >
+          <ExternalLink
+            href={photosUrl}
+            label="Shared photo album"
+            hint={photosUrl ? "Open in iCloud" : "Coming soon"}
+          />
+          <ExternalLink
+            href={groupChatUrl}
+            label="Group chat"
+            hint={groupChatUrl ? "Join the iMessage thread" : "Coming soon"}
+          />
         </div>
-        <Link
-          href="/jamie-bach-2026/itinerary"
-          style={{
-            display: "inline-block",
-            marginTop: 14,
-            color: colors.coral,
-            fontWeight: 600,
-            textDecoration: "none",
-            fontSize: "0.9rem",
-          }}
-        >
-          full itinerary →
-        </Link>
-      </section>
-
-      {/* PHOTOS + GROUP CHAT CTAs */}
-      <section style={{ padding: "16px 20px 40px" }}>
-        <CTAButton
-          href={photosUrl || "#"}
-          disabled={!photosUrl}
-          emoji="📸"
-          label={photosUrl ? "add to our shared photos" : "shared album coming soon"}
-          color={colors.lime}
-        />
-        <div style={{ height: 12 }} />
-        <CTAButton
-          href={groupChatUrl || "#"}
-          disabled={!groupChatUrl}
-          emoji="💬"
-          label={groupChatUrl ? "join the group chat" : "group chat coming soon"}
-          color={colors.lavender}
-        />
       </section>
     </div>
   );
 }
 
-function SectionHeader({ emoji, title }: { emoji: string; title: string }) {
+function Eyebrow({ text }: { text: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-      <span style={{ fontSize: "1.5rem" }}>{emoji}</span>
-      <h2
-        style={{
-          fontFamily: fonts.display,
-          fontStyle: "italic",
-          fontWeight: 900,
-          fontSize: "1.4rem",
-          color: colors.navy,
-          margin: 0,
-        }}
-      >
-        {title}
-      </h2>
+    <div
+      style={{
+        fontFamily: fonts.body,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.24em",
+        textTransform: "uppercase",
+        color: colors.brass,
+      }}
+    >
+      {text}
     </div>
   );
 }
 
-function FaceCircle({
-  name,
-  city,
-  color,
-  photoUrl,
-}: {
-  name: string;
-  city: string;
-  color: string;
-  photoUrl: string;
-}) {
-  return (
-    <div style={{ textAlign: "center" }}>
-      <div
-        style={{
-          width: "100%",
-          aspectRatio: "1",
-          borderRadius: "50%",
-          background: color,
-          border: `3px solid ${colors.navy}`,
-          boxShadow: "3px 3px 0 #1F2A44",
-          backgroundImage: photoUrl ? `url(${photoUrl})` : undefined,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: fonts.display,
-          fontStyle: "italic",
-          fontWeight: 900,
-          fontSize: "1.4rem",
-          color: colors.navy,
-        }}
-      >
-        {!photoUrl && name[0]}
-      </div>
-      <div
-        style={{
-          fontWeight: 700,
-          fontSize: "0.78rem",
-          marginTop: 6,
-          lineHeight: 1.1,
-        }}
-      >
-        {name.toLowerCase()}
-      </div>
-      <div
-        style={{
-          fontSize: "0.65rem",
-          color: colors.navySoft,
-          fontFamily: fonts.mono,
-          marginTop: 1,
-        }}
-      >
-        {city}
-      </div>
-    </div>
-  );
-}
+const textLinkStyle = {
+  display: "inline-block",
+  marginTop: 24,
+  fontFamily: "Inter, system-ui, sans-serif",
+  fontSize: 12,
+  fontWeight: 600,
+  letterSpacing: "0.2em",
+  textTransform: "uppercase" as const,
+  color: colors.ink,
+  borderBottom: `1px solid ${colors.brass}`,
+  paddingBottom: 4,
+  textDecoration: "none",
+};
 
-function CTAButton({
+function ExternalLink({
   href,
-  emoji,
   label,
-  color,
-  disabled,
+  hint,
 }: {
-  href: string;
-  emoji: string;
+  href?: string | null;
   label: string;
-  color: string;
-  disabled?: boolean;
+  hint: string;
 }) {
-  const style = {
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    width: "100%",
-    background: disabled ? "#fff" : color,
-    border: `3px solid ${colors.navy}`,
-    borderRadius: "12px",
-    padding: "14px 18px",
-    boxShadow: stickerShadow,
-    color: colors.navy,
-    fontWeight: 700,
-    fontSize: "1rem",
-    fontFamily: fonts.body,
-    textDecoration: "none",
-    opacity: disabled ? 0.55 : 1,
-    cursor: disabled ? "default" : "pointer",
-  } as const;
-
-  if (disabled) {
-    return (
-      <div style={style}>
-        <span style={{ fontSize: "1.4rem" }}>{emoji}</span>
-        <span>{label}</span>
-      </div>
-    );
-  }
+  const disabled = !href;
+  const content = (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "baseline",
+        padding: "18px 0",
+        borderBottom: `1px solid ${colors.mist}`,
+        opacity: disabled ? 0.5 : 1,
+      }}
+    >
+      <span
+        style={{
+          fontFamily: fonts.display,
+          fontWeight: 500,
+          fontSize: 19,
+          color: colors.ink,
+          letterSpacing: "-0.005em",
+        }}
+      >
+        {label}
+      </span>
+      <span
+        style={{
+          fontFamily: fonts.body,
+          fontSize: 11,
+          fontWeight: 500,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: colors.inkSoft,
+        }}
+      >
+        {hint}
+      </span>
+    </div>
+  );
+  if (disabled) return content;
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={style}>
-      <span style={{ fontSize: "1.4rem" }}>{emoji}</span>
-      <span>{label}</span>
+    <a
+      href={href!}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ textDecoration: "none" }}
+    >
+      {content}
     </a>
   );
 }
 
-function formatTime(t24: string): string {
-  const [h, m] = t24.split(":").map(Number);
-  const period = h >= 12 ? "pm" : "am";
-  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
-  return `${h12}${m ? ":" + String(m).padStart(2, "0") : ""}${period}`;
+function Loading() {
+  return (
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p
+        style={{
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: 11,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: colors.inkSoft,
+        }}
+      >
+        Loading
+      </p>
+    </div>
+  );
+}
+
+function ErrorView({ error }: { error: string | null }) {
+  return (
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p style={{ color: colors.coral, fontFamily: fonts.body }}>
+        {error || "No data yet."}
+      </p>
+    </div>
+  );
 }

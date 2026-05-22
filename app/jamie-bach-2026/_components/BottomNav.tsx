@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { colors, fonts } from "@/lib/jamie/brand";
 
 const tabs = [
-  { href: "/jamie-bach-2026", label: "home", emoji: "🏠" },
-  { href: "/jamie-bach-2026/itinerary", label: "trip", emoji: "🌊" },
-  { href: "/jamie-bach-2026/squad", label: "squad", emoji: "💕" },
-  { href: "/jamie-bach-2026/expenses", label: "$$", emoji: "💸" },
+  { href: "/jamie-bach-2026", label: "Home" },
+  { href: "/jamie-bach-2026/itinerary", label: "Trip" },
+  { href: "/jamie-bach-2026/squad", label: "Squad" },
+  { href: "/jamie-bach-2026/expenses", label: "Cost" },
 ];
 
 export default function BottomNav() {
@@ -21,11 +21,11 @@ export default function BottomNav() {
         bottom: 0,
         left: 0,
         right: 0,
-        background: colors.cream,
-        borderTop: `3px solid ${colors.navy}`,
+        background: colors.paper,
+        borderTop: `1px solid ${colors.mist}`,
         display: "flex",
         justifyContent: "space-around",
-        padding: "10px 0 22px",
+        padding: "14px 0 26px",
         zIndex: 50,
         fontFamily: fonts.body,
       }}
@@ -41,15 +41,30 @@ export default function BottomNav() {
             style={{
               textAlign: "center",
               textDecoration: "none",
-              color: active ? colors.coral : colors.navy,
-              fontWeight: active ? 700 : 500,
-              fontSize: "0.78rem",
+              color: colors.ink,
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
               flex: 1,
               padding: "4px 0",
+              position: "relative",
             }}
           >
-            <div style={{ fontSize: "1.4rem", lineHeight: 1 }}>{tab.emoji}</div>
-            <div style={{ marginTop: "4px" }}>{tab.label}</div>
+            <span>{tab.label}</span>
+            {active && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: -8,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 18,
+                  height: 1,
+                  background: colors.brass,
+                }}
+              />
+            )}
           </Link>
         );
       })}

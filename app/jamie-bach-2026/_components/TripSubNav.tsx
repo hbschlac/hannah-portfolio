@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { colors, fonts } from "@/lib/jamie/brand";
 
 const tabs = [
-  { href: "/jamie-bach-2026/itinerary", label: "itinerary", emoji: "📅" },
-  { href: "/jamie-bach-2026/lodging", label: "lodging", emoji: "🏠" },
-  { href: "/jamie-bach-2026/travel", label: "travel", emoji: "✈️" },
-  { href: "/jamie-bach-2026/packing", label: "pack", emoji: "🧳" },
+  { href: "/jamie-bach-2026/itinerary", label: "Itinerary" },
+  { href: "/jamie-bach-2026/lodging", label: "Lodging" },
+  { href: "/jamie-bach-2026/travel", label: "Travel" },
+  { href: "/jamie-bach-2026/packing", label: "Pack" },
 ];
 
 export default function TripSubNav() {
@@ -16,11 +16,13 @@ export default function TripSubNav() {
   return (
     <div
       style={{
-        padding: "0 12px",
+        padding: "0 24px",
         display: "flex",
-        gap: 8,
+        gap: 22,
         overflowX: "auto",
         WebkitOverflowScrolling: "touch",
+        borderBottom: `1px solid ${colors.mist}`,
+        marginTop: 8,
       }}
     >
       {tabs.map((tab) => {
@@ -31,19 +33,21 @@ export default function TripSubNav() {
             href={tab.href}
             style={{
               flexShrink: 0,
-              padding: "6px 12px",
-              borderRadius: 999,
-              border: `2px solid ${colors.navy}`,
-              background: active ? colors.coral : "#fff",
-              color: colors.navy,
-              fontWeight: active ? 700 : 600,
-              fontSize: "0.82rem",
+              padding: "12px 0",
+              color: active ? colors.ink : colors.inkSoft,
+              fontWeight: 600,
+              fontSize: 11,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
               textDecoration: "none",
               fontFamily: fonts.body,
-              boxShadow: active ? "2px 2px 0 #1F2A44" : "none",
+              borderBottom: active
+                ? `1px solid ${colors.brass}`
+                : "1px solid transparent",
+              marginBottom: -1,
             }}
           >
-            {tab.emoji} {tab.label}
+            {tab.label}
           </Link>
         );
       })}

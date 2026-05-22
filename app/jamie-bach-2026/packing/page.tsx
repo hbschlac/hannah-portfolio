@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
+import { useState, useEffect } from "react";
 import PasswordGate from "../_components/PasswordGate";
 import BottomNav from "../_components/BottomNav";
 import SectionHeader from "../_components/SectionHeader";
 import TripSubNav from "../_components/TripSubNav";
 import { useGuestState } from "../_components/useGuestState";
-import { colors, fonts, stickerShadow } from "@/lib/jamie/brand";
-import { useState, useEffect } from "react";
+import { colors, fonts } from "@/lib/jamie/brand";
 
 const STORAGE_KEY = "jamie-pack-checks";
 
@@ -47,60 +48,61 @@ function Body() {
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
-  const tilts = [-1, 1, -0.6, 0.6];
-
   return (
-    <div style={{ maxWidth: 480, margin: "0 auto" }}>
-      <SectionHeader kicker="don't forget anything 🧳" title="pack list" />
+    <div style={{ maxWidth: 640, margin: "0 auto" }}>
+      <SectionHeader
+        kicker="The Pack List"
+        title="What to bring."
+        dek="Saved on this device. Check things off as you go."
+      />
       <TripSubNav />
-      <p
+
+      <div
         style={{
-          padding: "0 20px",
-          color: colors.navySoft,
-          fontFamily: fonts.script,
-          fontSize: "1.05rem",
-          marginTop: -6,
+          position: "relative",
+          width: "100%",
+          aspectRatio: "16 / 9",
+          marginTop: 24,
         }}
       >
-        check things off as you go — saved on this device only
-      </p>
+        <Image
+          src="/jamie/newport/newport-summer.jpg"
+          alt="A sailboat passing a Newport channel marker"
+          fill
+          sizes="(max-width: 768px) 100vw, 640px"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
 
-      <div style={{ padding: "16px 20px 40px", display: "flex", flexDirection: "column", gap: 14 }}>
-        {state.packlist.map((cat, i) => (
-          <div
+      <div style={{ padding: "32px 24px 64px" }}>
+        {state.packlist.map((cat) => (
+          <section
             key={cat.name}
             style={{
-              background: "#fff",
-              border: `3px solid ${colors.navy}`,
-              borderRadius: 14,
-              padding: 16,
-              boxShadow: stickerShadow,
-              transform: `rotate(${tilts[i % tilts.length] * 0.5}deg)`,
+              paddingTop: 28,
+              paddingBottom: 4,
+              borderTop: `1px solid ${colors.mist}`,
+              marginTop: 24,
             }}
           >
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-              <span style={{ fontSize: "1.5rem" }}>{cat.emoji}</span>
-              <h3
-                style={{
-                  fontFamily: fonts.display,
-                  fontStyle: "italic",
-                  fontWeight: 900,
-                  fontSize: "1.3rem",
-                  color: colors.navy,
-                  margin: 0,
-                }}
-              >
-                {cat.name}
-              </h3>
+            <div
+              style={{
+                fontFamily: fonts.body,
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: colors.brass,
+                marginBottom: 8,
+              }}
+            >
+              {cat.name}
             </div>
             <ul
               style={{
-                margin: "12px 0 0",
+                margin: 0,
                 padding: 0,
                 listStyle: "none",
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
               }}
             >
               {cat.items.map((item) => {
@@ -112,42 +114,50 @@ function Body() {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 10,
-                      padding: "8px 10px",
-                      background: checked ? colors.lime : colors.cream,
-                      border: `2px solid ${colors.navy}`,
-                      borderRadius: 8,
+                      gap: 14,
+                      padding: "12px 0",
+                      borderBottom: `1px solid ${colors.mist}`,
                       cursor: "pointer",
-                      fontSize: "0.95rem",
+                      fontFamily: fonts.body,
+                      fontSize: 15,
+                      color: checked ? colors.inkSoft : colors.ink,
                       textDecoration: checked ? "line-through" : "none",
-                      opacity: checked ? 0.65 : 1,
                       userSelect: "none",
                     }}
                   >
                     <span
+                      aria-hidden
                       style={{
-                        width: 20,
-                        height: 20,
-                        border: `2px solid ${colors.navy}`,
-                        borderRadius: 5,
-                        background: checked ? colors.navy : "#fff",
-                        color: "#fff",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "0.85rem",
-                        fontWeight: 700,
+                        width: 14,
+                        height: 14,
+                        border: `1px solid ${colors.ink}`,
+                        background: checked ? colors.ink : "transparent",
                         flexShrink: 0,
+                        position: "relative",
                       }}
                     >
-                      {checked ? "✓" : ""}
+                      {checked && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -55%)",
+                            color: colors.paper,
+                            fontSize: 10,
+                            lineHeight: 1,
+                          }}
+                        >
+                          ✓
+                        </span>
+                      )}
                     </span>
                     {item.label}
                   </li>
                 );
               })}
             </ul>
-          </div>
+          </section>
         ))}
       </div>
     </div>
@@ -156,17 +166,28 @@ function Body() {
 
 function Loading() {
   return (
-    <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <div style={{ fontSize: "2rem" }}>🧳</div>
-      <p style={{ color: colors.navySoft, marginTop: 12 }}>loading...</p>
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p
+        style={{
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: 11,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: colors.inkSoft,
+        }}
+      >
+        Loading
+      </p>
     </div>
   );
 }
 
 function ErrorView({ error }: { error: string | null }) {
   return (
-    <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <p style={{ color: colors.coral }}>oops — {error || "no data"}</p>
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p style={{ color: colors.coral, fontFamily: fonts.body }}>
+        {error || "No data yet."}
+      </p>
     </div>
   );
 }

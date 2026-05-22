@@ -4,22 +4,24 @@ import PasswordGate from "../_components/PasswordGate";
 import BottomNav from "../_components/BottomNav";
 import SectionHeader from "../_components/SectionHeader";
 import TripSubNav from "../_components/TripSubNav";
+import EditorialHero from "../_components/EditorialHero";
+import ImageMosaic from "../_components/ImageMosaic";
 import { useGuestState } from "../_components/useGuestState";
-import { colors, fonts, stickerShadow, sunsetGradient } from "@/lib/jamie/brand";
-import type { Attendee, RoomAssignment } from "@/lib/jamie/types";
+import { colors, fonts } from "@/lib/jamie/brand";
+import type { Attendee } from "@/lib/jamie/types";
 
-const ROOM_PHOTOS = [
-  "https://burbankrose.com/wp-content/uploads/2024/06/Briar-Rose-Suite-Cover-1-min.jpg",
-  "https://burbankrose.com/wp-content/uploads/2024/06/Golden-Rose-Suite-Cover-2-min.jpg",
-  "https://burbankrose.com/wp-content/uploads/2024/06/Autumn-Rose-Cover-1-min.jpg",
-  "https://burbankrose.com/wp-content/uploads/2024/06/Bourbon-Rose-Cover-1-min.jpg",
-  "https://burbankrose.com/wp-content/uploads/2024/06/Cherry-Rose-Cover-1-min.jpg",
+const ROOM_TILES = [
+  { src: "/jamie/venues/burbank-briar.jpg", alt: "Briar Rose Suite", span: "tall" as const },
+  { src: "/jamie/venues/burbank-golden.jpg", alt: "Golden Rose Suite", span: "tall" as const },
+  { src: "/jamie/venues/burbank-autumn.jpg", alt: "Autumn Rose Suite", span: "wide" as const },
+  { src: "/jamie/venues/burbank-bourbon.jpg", alt: "Bourbon Rose Suite", span: "tall" as const },
+  { src: "/jamie/venues/burbank-cherry.jpg", alt: "Cherry Rose Suite", span: "tall" as const },
 ];
 
 const FLOOR_LABELS: Record<number, string> = {
-  1: "1st floor",
-  2: "2nd floor",
-  3: "3rd floor",
+  1: "First Floor",
+  2: "Second Floor",
+  3: "Third Floor",
 };
 
 export default function LodgingPage() {
@@ -40,324 +42,402 @@ function Body() {
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
-  const byFloor = state.rooms.assignments.reduce<Record<number, typeof state.rooms.assignments>>(
-    (acc, a) => {
-      (acc[a.floor] ||= []).push(a);
-      return acc;
-    },
-    {}
-  );
+  const byFloor = state.rooms.assignments.reduce<
+    Record<number, typeof state.rooms.assignments>
+  >((acc, a) => {
+    (acc[a.floor] ||= []).push(a);
+    return acc;
+  }, {});
 
   const findAttendee = (id: string | null): Attendee | undefined =>
     id ? state.roster.find((r) => r.id === id) : undefined;
 
   return (
-    <div style={{ maxWidth: 480, margin: "0 auto" }}>
-      <SectionHeader kicker="where we're staying 🏠" title="lodging" />
-      <TripSubNav />
+    <div style={{ maxWidth: 640, margin: "0 auto" }}>
+      <EditorialHero
+        src="/jamie/venues/burbank-briar.jpg"
+        alt="The Burbank Rose Inn"
+        eyebrow="The Stay"
+        headline="The Burbank Rose Inn"
+        dateline="111 Memorial Boulevard W · Newport"
+        height={480}
+        priority
+      />
 
-      {/* PHOTOS */}
-      <div style={{ padding: "12px 20px 0" }}>
+      <div style={{ padding: "0 24px" }}>
+        <TripSubNav />
+      </div>
+
+      {/* Intro paragraph + meta */}
+      <section style={{ padding: "32px 24px 0" }}>
+        <p
+          style={{
+            fontFamily: fonts.display,
+            fontStyle: "italic",
+            fontSize: 17,
+            lineHeight: 1.55,
+            color: colors.ink,
+            margin: 0,
+          }}
+        >
+          A nine-bed Victorian a five-minute walk from the harbor. Continental
+          breakfast each morning, a wide front porch, and rooms named after
+          roses.
+        </p>
         <div
           style={{
+            marginTop: 24,
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: 8,
-            border: `3px solid ${colors.navy}`,
-            borderRadius: 14,
-            overflow: "hidden",
-            boxShadow: stickerShadow,
-            background: colors.navy,
+            gap: "18px 24px",
+            paddingTop: 22,
+            borderTop: `1px solid ${colors.mist}`,
+            borderBottom: `1px solid ${colors.mist}`,
+            paddingBottom: 22,
           }}
         >
-          {ROOM_PHOTOS.slice(0, 4).map((src, i) => (
-            <img
-              key={src}
-              src={src}
-              alt={`Burbank Rose room ${i + 1}`}
-              style={{
-                width: "100%",
-                height: 110,
-                objectFit: "cover",
-                display: "block",
-              }}
-            />
-          ))}
+          <Meta label="Check-in" value="Friday, July 10" />
+          <Meta label="Check-out" value="Monday, July 13" />
+          <Meta label="Beds" value="9 · across 3 floors" />
+          <Meta label="Phone" value="(401) 688-7958" href="tel:+14016887958" />
         </div>
-      </div>
-
-      {/* PROPERTY CARD */}
-      <div style={{ padding: "20px 20px 0" }}>
         <div
           style={{
-            background: "#fff",
-            border: `3px solid ${colors.navy}`,
-            borderRadius: 14,
-            padding: 18,
-            boxShadow: stickerShadow,
+            display: "flex",
+            gap: 22,
+            paddingTop: 18,
           }}
         >
-          <h2
-            style={{
-              fontFamily: fonts.display,
-              fontStyle: "italic",
-              fontWeight: 900,
-              fontSize: "1.5rem",
-              color: colors.navy,
-              margin: 0,
-              lineHeight: 1.1,
-            }}
+          <a
+            href="https://maps.google.com/?q=111+Memorial+Blvd+W+Newport+RI+02840"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={textLinkStyle}
           >
-            the burbank rose inn
-          </h2>
-          <p style={{ marginTop: 6, fontSize: "0.9rem", color: colors.navySoft }}>
-            111 Memorial Blvd W · Newport, RI 02840
-          </p>
-          <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
-            <Pill href="https://maps.google.com/?q=111+Memorial+Blvd+W+Newport+RI+02840" emoji="📍">
-              open in maps
-            </Pill>
-            <Pill href="https://burbankrose.com" emoji="🌐">
-              site
-            </Pill>
-            <Pill href="tel:+14016887958" emoji="📞">
-              (401) 688-7958
-            </Pill>
-          </div>
-          <div
-            style={{
-              marginTop: 14,
-              padding: "10px 12px",
-              background: colors.cream,
-              border: `2px solid ${colors.navy}`,
-              borderRadius: 10,
-              fontSize: "0.85rem",
-              fontFamily: fonts.mono,
-            }}
+            Open in maps
+          </a>
+          <a
+            href="https://burbankrose.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={textLinkStyle}
           >
-            <div>check-in:&nbsp; FRI 7/10</div>
-            <div>check-out: MON 7/13</div>
-          </div>
-          <div style={{ marginTop: 12, fontSize: "0.85rem", color: colors.navySoft }}>
-            ☕ continental breakfast included · 🌊 walk to the harbor
-          </div>
+            Visit the inn
+          </a>
         </div>
-      </div>
+      </section>
 
-      {/* ROOM ASSIGNMENTS */}
-      <section style={{ padding: "32px 20px 0" }}>
-        <SubHeader emoji="🛏️" title="the rooms" />
-        <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* Photo mosaic */}
+      <section style={{ padding: "40px 24px 0" }}>
+        <Eyebrow text="The Rooms" />
+        <h2 style={h2Style}>Five named for roses.</h2>
+        <div style={{ marginTop: 18 }}>
+          <ImageMosaic tiles={ROOM_TILES} />
+        </div>
+      </section>
+
+      {/* Assignments */}
+      <section style={{ padding: "48px 24px 0" }}>
+        <Eyebrow text="Who Sleeps Where" />
+        <h2 style={h2Style}>The assignments.</h2>
+        <div style={{ marginTop: 18 }}>
           {[1, 2, 3].map((floor) => (
             <div
               key={floor}
               style={{
-                background: "#fff",
-                border: `3px solid ${colors.navy}`,
-                borderRadius: 12,
-                padding: 14,
-                boxShadow: stickerShadow,
+                padding: "18px 0",
+                borderBottom: `1px solid ${colors.mist}`,
               }}
             >
               <div
                 style={{
-                  fontFamily: fonts.mono,
-                  fontWeight: 700,
-                  fontSize: "0.78rem",
-                  letterSpacing: "0.08em",
-                  color: colors.coral,
+                  fontFamily: fonts.body,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: colors.brass,
+                  marginBottom: 10,
                 }}
               >
-                {FLOOR_LABELS[floor].toUpperCase()}
+                {FLOOR_LABELS[floor]}
               </div>
-              <div style={{ marginTop: 6, display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 6,
+                }}
+              >
                 {(byFloor[floor] || []).map((a, i) => {
                   const person = findAttendee(a.attendeeId);
                   return (
-                    <BedChip
+                    <div
                       key={`${floor}-${i}`}
-                      bed={a.bed}
-                      personName={person?.name.split(" ")[0]}
-                      color={person ? colors[person.colorToken] : "#fff"}
-                    />
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "baseline",
+                        fontFamily: fonts.body,
+                        fontSize: 14,
+                        color: colors.ink,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: fonts.display,
+                          fontWeight: 500,
+                          fontSize: 17,
+                          letterSpacing: "-0.005em",
+                        }}
+                      >
+                        {person?.name ?? "—"}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: 11,
+                          letterSpacing: "0.16em",
+                          textTransform: "uppercase",
+                          color: colors.inkSoft,
+                        }}
+                      >
+                        {a.bed}
+                      </span>
+                    </div>
                   );
                 })}
               </div>
             </div>
           ))}
         </div>
-        <p style={{ marginTop: 10, color: colors.navySoft, fontFamily: fonts.script, fontSize: "1rem" }}>
-          rooms get assigned closer to the trip — stay tuned ✨
+        <p
+          style={{
+            marginTop: 20,
+            fontFamily: fonts.display,
+            fontStyle: "italic",
+            fontSize: 14,
+            color: colors.inkSoft,
+          }}
+        >
+          Final assignments locked closer to the trip.
         </p>
       </section>
 
-      {/* EMERGENCY */}
-      <section style={{ padding: "28px 20px 40px" }}>
-        <SubHeader emoji="🆘" title="emergency info" />
-        <div
-          style={{
-            marginTop: 12,
-            background: "#fff",
-            border: `3px solid ${colors.navy}`,
-            borderRadius: 12,
-            padding: 16,
-            boxShadow: stickerShadow,
-            fontSize: "0.88rem",
-            lineHeight: 1.6,
-          }}
-        >
-          <div style={{ marginBottom: 10 }}>
-            <strong>house staff:</strong>{" "}
-            <a
-              href={`tel:${state.emergency.houseStaffPhone.replace(/\D/g, "")}`}
-              style={{ color: colors.navy }}
-            >
-              {state.emergency.houseStaffPhone}
-            </a>
-          </div>
-          <div style={{ marginBottom: 10 }}>
-            <strong>nearest hospital:</strong>
-            <br />
-            {state.emergency.nearestHospital.name}
-            <br />
-            <a
-              href={`https://maps.google.com/?q=${encodeURIComponent(
-                state.emergency.nearestHospital.address
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: colors.navy, textDecoration: "underline" }}
-            >
-              {state.emergency.nearestHospital.address}
-            </a>
-            <br />
-            <a
-              href={`tel:${state.emergency.nearestHospital.phone.replace(/\D/g, "")}`}
-              style={{ color: colors.navy }}
-            >
-              {state.emergency.nearestHospital.phone}
-            </a>
-          </div>
-          <div>
-            <strong>planners on call:</strong>
-            <ul style={{ margin: "6px 0 0", paddingLeft: 20 }}>
-              {state.emergency.planners.map((p) => (
-                <li key={p.phone}>
-                  {p.name} —{" "}
-                  <a
-                    href={`tel:${p.phone.replace(/\D/g, "")}`}
-                    style={{ color: colors.navy }}
-                  >
-                    {p.phone}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+      {/* Emergency */}
+      <section style={{ padding: "48px 24px 64px" }}>
+        <Eyebrow text="Just in Case" />
+        <h2 style={h2Style}>Numbers worth saving.</h2>
+        <div style={{ marginTop: 18 }}>
+          <EmergencyRow
+            label="House staff"
+            value={state.emergency.houseStaffPhone}
+            href={`tel:${state.emergency.houseStaffPhone.replace(/\D/g, "")}`}
+          />
+          <EmergencyRow
+            label="Nearest hospital"
+            value={state.emergency.nearestHospital.name}
+            sub={state.emergency.nearestHospital.address}
+            href={`https://maps.google.com/?q=${encodeURIComponent(
+              state.emergency.nearestHospital.address
+            )}`}
+          />
+          <EmergencyRow
+            label="Hospital phone"
+            value={state.emergency.nearestHospital.phone}
+            href={`tel:${state.emergency.nearestHospital.phone.replace(/\D/g, "")}`}
+          />
+          {state.emergency.planners.map((p) => (
+            <EmergencyRow
+              key={p.phone}
+              label={`Planner — ${p.name}`}
+              value={p.phone}
+              href={`tel:${p.phone.replace(/\D/g, "")}`}
+            />
+          ))}
         </div>
       </section>
     </div>
   );
 }
 
-function SubHeader({ emoji, title }: { emoji: string; title: string }) {
+const h2Style = {
+  fontFamily: fonts.display,
+  fontWeight: 500,
+  fontSize: "1.7rem",
+  color: colors.ink,
+  margin: "10px 0 0",
+  letterSpacing: "-0.015em",
+  lineHeight: 1.08,
+} as const;
+
+function Eyebrow({ text }: { text: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-      <span style={{ fontSize: "1.4rem" }}>{emoji}</span>
-      <h2
-        style={{
-          fontFamily: fonts.display,
-          fontStyle: "italic",
-          fontWeight: 900,
-          fontSize: "1.4rem",
-          color: colors.navy,
-          margin: 0,
-        }}
-      >
-        {title}
-      </h2>
+    <div
+      style={{
+        fontFamily: fonts.body,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: colors.brass,
+      }}
+    >
+      {text}
     </div>
   );
 }
 
-function Pill({
+function Meta({
+  label,
+  value,
   href,
-  emoji,
-  children,
 }: {
+  label: string;
+  value: string;
+  href?: string;
+}) {
+  const content = (
+    <div>
+      <div
+        style={{
+          fontFamily: fonts.body,
+          fontSize: 10,
+          fontWeight: 600,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: colors.inkSoft,
+          marginBottom: 4,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontFamily: fonts.display,
+          fontWeight: 500,
+          fontSize: 17,
+          color: colors.ink,
+          letterSpacing: "-0.005em",
+        }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+  if (href) {
+    return (
+      <a href={href} style={{ textDecoration: "none" }}>
+        {content}
+      </a>
+    );
+  }
+  return content;
+}
+
+function EmergencyRow({
+  label,
+  value,
+  sub,
+  href,
+}: {
+  label: string;
+  value: string;
+  sub?: string;
   href: string;
-  emoji: string;
-  children: React.ReactNode;
 }) {
   return (
     <a
       href={href}
-      target="_blank"
+      target={href.startsWith("http") ? "_blank" : undefined}
       rel="noopener noreferrer"
       style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        padding: "5px 11px",
-        background: colors.lime,
-        border: `2px solid ${colors.navy}`,
-        borderRadius: 999,
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "baseline",
+        padding: "16px 0",
+        borderBottom: `1px solid ${colors.mist}`,
         textDecoration: "none",
-        color: colors.navy,
-        fontWeight: 600,
-        fontSize: "0.78rem",
+        gap: 14,
       }}
     >
-      <span>{emoji}</span>
-      {children}
+      <div>
+        <div
+          style={{
+            fontFamily: fonts.body,
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: colors.inkSoft,
+            marginBottom: 4,
+          }}
+        >
+          {label}
+        </div>
+        <div
+          style={{
+            fontFamily: fonts.display,
+            fontWeight: 500,
+            fontSize: 16,
+            color: colors.ink,
+            letterSpacing: "-0.005em",
+          }}
+        >
+          {value}
+        </div>
+        {sub && (
+          <div
+            style={{
+              fontFamily: fonts.body,
+              fontSize: 12,
+              color: colors.inkSoft,
+              marginTop: 2,
+            }}
+          >
+            {sub}
+          </div>
+        )}
+      </div>
     </a>
   );
 }
 
-function BedChip({
-  bed,
-  personName,
-  color,
-}: {
-  bed: string;
-  personName?: string;
-  color: string;
-}) {
-  return (
-    <div
-      style={{
-        display: "inline-flex",
-        flexDirection: "column",
-        padding: "5px 10px",
-        background: color,
-        border: `2px solid ${colors.navy}`,
-        borderRadius: 8,
-        fontSize: "0.72rem",
-        fontFamily: fonts.mono,
-        minWidth: 60,
-      }}
-    >
-      <span style={{ opacity: 0.7 }}>{bed}</span>
-      <strong style={{ fontFamily: fonts.body, fontSize: "0.85rem" }}>
-        {personName || "—"}
-      </strong>
-    </div>
-  );
-}
+const textLinkStyle = {
+  fontFamily: "Inter, system-ui, sans-serif",
+  fontSize: 12,
+  fontWeight: 600,
+  letterSpacing: "0.2em",
+  textTransform: "uppercase" as const,
+  color: colors.ink,
+  borderBottom: `1px solid ${colors.brass}`,
+  paddingBottom: 4,
+  textDecoration: "none",
+};
 
 function Loading() {
   return (
-    <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <div style={{ fontSize: "2rem" }}>🏠</div>
-      <p style={{ color: colors.navySoft, marginTop: 12 }}>loading...</p>
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p
+        style={{
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: 11,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: colors.inkSoft,
+        }}
+      >
+        Loading
+      </p>
     </div>
   );
 }
 
 function ErrorView({ error }: { error: string | null }) {
   return (
-    <div style={{ padding: "60px 20px", textAlign: "center" }}>
-      <p style={{ color: colors.coral }}>oops — {error || "no data"}</p>
+    <div style={{ padding: "120px 24px", textAlign: "center" }}>
+      <p style={{ color: colors.coral, fontFamily: fonts.body }}>
+        {error || "No data yet."}
+      </p>
     </div>
   );
 }

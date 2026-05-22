@@ -14,7 +14,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
       setDays(d);
     };
     compute();
-    const id = setInterval(compute, 1000 * 60 * 60); // hourly
+    const id = setInterval(compute, 1000 * 60 * 60);
     return () => clearInterval(id);
   }, [targetDate]);
 
@@ -23,19 +23,34 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   return (
     <div
       style={{
-        fontFamily: fonts.mono,
-        fontSize: "0.8rem",
-        letterSpacing: "0.1em",
-        color: colors.navy,
-        background: colors.lime,
-        display: "inline-block",
-        padding: "5px 12px",
-        borderRadius: "999px",
-        border: `2px solid ${colors.navy}`,
-        fontWeight: 700,
+        display: "inline-flex",
+        alignItems: "baseline",
+        gap: 10,
+        color: colors.ink,
+        fontFamily: fonts.body,
       }}
     >
-      T-MINUS {days} DAYS
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: colors.brass,
+        }}
+      >
+        Countdown
+      </span>
+      <span
+        style={{
+          fontFamily: fonts.display,
+          fontWeight: 500,
+          fontSize: 22,
+          letterSpacing: "-0.005em",
+        }}
+      >
+        {days} {days === 1 ? "day" : "days"}
+      </span>
     </div>
   );
 }
