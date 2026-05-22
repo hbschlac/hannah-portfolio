@@ -84,11 +84,11 @@ function Body() {
           </div>
           <p
             style={{
-              fontFamily: fonts.display,
-              fontStyle: "italic",
-              fontSize: 14,
+              fontFamily: fonts.body,
+              fontSize: 13,
               color: colors.inkSoft,
               margin: "14px 0 0",
+              lineHeight: 1.5,
             }}
           >
             Includes everything — Jamie&apos;s share covered by the rest of us.
@@ -147,8 +147,8 @@ function Body() {
             padding: 0,
             listStyle: "none",
             counterReset: "step",
-            fontFamily: fonts.display,
-            fontSize: 16,
+            fontFamily: fonts.body,
+            fontSize: 15,
             lineHeight: 1.55,
             color: colors.ink,
           }}
@@ -181,7 +181,7 @@ function Body() {
               >
                 0{i + 1}
               </span>
-              <span style={{ fontStyle: "italic" }}>{step}</span>
+              <span>{step}</span>
             </li>
           ))}
         </ol>
@@ -273,9 +273,8 @@ function Body() {
         <p
           style={{
             marginTop: 20,
-            fontFamily: fonts.display,
-            fontStyle: "italic",
-            fontSize: 14,
+            fontFamily: fonts.body,
+            fontSize: 13,
             color: colors.inkSoft,
           }}
         >

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import NextImage from "next/image";
 import PasswordGate from "./_components/PasswordGate";
 import BottomNav from "./_components/BottomNav";
 import Countdown from "./_components/Countdown";
@@ -49,8 +50,7 @@ function HomeContent() {
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
-  const { trip, roster, itinerary, photosUrl, groupChatUrl } = state;
-  const visibleRoster = roster.slice(0, 6);
+  const { trip, roster, photosUrl, groupChatUrl } = state;
   const days: Array<"fri" | "sat" | "sun"> = ["fri", "sat", "sun"];
 
   return (
@@ -154,22 +154,21 @@ function HomeContent() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 16,
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "20px 12px",
           }}
         >
-          {visibleRoster.map((a) => (
-            <PortraitCard
+          {roster.map((a) => (
+            <CompactPortrait
               key={a.id}
               name={a.name.split(" ")[0]}
-              role={a.role === "bride" ? "Bride" : undefined}
-              city={a.city}
               photoUrl={a.photoUrl}
+              isBride={a.role === "bride"}
             />
           ))}
         </div>
         <Link href="/jamie-bach-2026/squad" style={textLinkStyle}>
-          Meet everyone
+          Phone numbers & contacts
         </Link>
       </section>
 
@@ -190,10 +189,10 @@ function HomeContent() {
           A long weekend at the Burbank Rose Inn.
         </h2>
         <PhotoCaption
-          src="/jamie/newport/cottage.jpg"
-          alt="Coastal cottage with white picket fence"
+          src="/jamie/venues/burbank-golden.jpg"
+          alt="A suite at the Burbank Rose Inn"
           ratio="wide"
-          caption="A 9-bed Victorian a five-minute walk to the harbor."
+          caption="Three suites at a Victorian inn, five minutes from the harbor."
         />
         <Link href="/jamie-bach-2026/lodging" style={textLinkStyle}>
           See the inn
@@ -223,6 +222,84 @@ function HomeContent() {
           />
         </div>
       </section>
+    </div>
+  );
+}
+
+function CompactPortrait({
+  name,
+  photoUrl,
+  isBride,
+}: {
+  name: string;
+  photoUrl?: string;
+  isBride?: boolean;
+}) {
+  const initial = name.trim()[0]?.toUpperCase() ?? "?";
+  return (
+    <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "1 / 1",
+          background: colors.mist,
+          overflow: "hidden",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {photoUrl ? (
+          <NextImage
+            src={photoUrl}
+            alt={name}
+            fill
+            sizes="(max-width: 768px) 33vw, 200px"
+            style={{ objectFit: "cover" }}
+          />
+        ) : (
+          <span
+            style={{
+              fontFamily: fonts.display,
+              fontWeight: 400,
+              fontSize: "1.8rem",
+              color: colors.inkSoft,
+            }}
+          >
+            {initial}
+          </span>
+        )}
+      </div>
+      <div
+        style={{
+          marginTop: 8,
+          fontFamily: fonts.display,
+          fontWeight: 500,
+          fontSize: 15,
+          color: colors.ink,
+          letterSpacing: "-0.005em",
+          lineHeight: 1.15,
+        }}
+      >
+        {name}
+      </div>
+      {isBride && (
+        <div
+          style={{
+            fontFamily: fonts.body,
+            fontSize: 10,
+            fontWeight: 600,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: colors.brass,
+            marginTop: 2,
+          }}
+        >
+          The Bride
+        </div>
+      )}
     </div>
   );
 }

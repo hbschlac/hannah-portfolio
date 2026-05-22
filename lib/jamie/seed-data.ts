@@ -511,7 +511,7 @@ export const seedTodos: Todos = [
 ];
 
 export const seedExpenses: Expenses = {
-  splitwiseUrl: "",
+  splitwiseUrl: "https://www.splitwise.com/join/hSzXcWPtUfb+ecikr?v=e",
   splitwiseJoined: {
     jamie: false,
     hannah: false,
