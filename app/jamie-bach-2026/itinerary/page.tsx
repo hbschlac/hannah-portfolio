@@ -32,7 +32,7 @@ const dayMeta: Record<
   },
   sun: {
     label: "Day Three — Sunday, July 12",
-    subtitle: "Cliff Walk, one last brunch, and the airport.",
+    subtitle: "One last brunch at CRU — head home whenever.",
     cover: {
       src: "/jamie/newport/newport-rocks.jpg",
       alt: "Newport's Cliff Walk gazebo at sunset",
@@ -89,10 +89,6 @@ const eventCovers: Record<string, { src: string; alt: string }> = {
   "sun-brunch": {
     src: "/jamie/newport/cottage-2.jpg",
     alt: "Newport on a Sunday morning",
-  },
-  "sun-depart": {
-    src: "/jamie/newport/newport-rocks.jpg",
-    alt: "Newport's Cliff Walk gazebo",
   },
 };
 

@@ -26,7 +26,7 @@ const dayCovers: Record<string, { src: string; alt: string; caption: string }> =
   sun: {
     src: "/jamie/newport/newport-rocks.jpg",
     alt: "Newport's Cliff Walk gazebo at sunset",
-    caption: "Sunday — Cliff Walk, last brunch, fly home.",
+    caption: "Sunday — one last brunch at CRU, and home whenever.",
   },
 };
 

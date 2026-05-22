@@ -336,22 +336,8 @@ export const seedItinerary: Itinerary = [
       address: "194 Bellevue Ave, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=CRU+Cafe+Newport+RI",
     },
-    publicNote: "last meal together — Hannah is trying to lock in a reservation.",
-    status: "planned",
-  },
-  {
-    id: "sun-depart",
-    day: "sun",
-    date: "2026-07-12",
-    startTime: "12:30",
-    title: "head home",
-    emoji: "👋",
-    location: {
-      name: "Burbank Rose Inn",
-      address: "111 Memorial Blvd W, Newport, RI 02840",
-      mapsUrl: "https://maps.google.com/?q=111+Memorial+Blvd+W+Newport+RI",
-    },
-    publicNote: "check-out is 11am. plan to leave by 12:00–12:30.",
+    publicNote:
+      "last meal together — Hannah is trying to lock in a reservation. Nothing planned after; head home when you're ready.",
     status: "planned",
   },
 ];
