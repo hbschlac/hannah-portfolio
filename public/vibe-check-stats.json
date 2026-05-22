@@ -1,8 +1,9 @@
 {
-  "generated_at": "2026-05-20T20:16:09.379500+00:00",
+  "generated_at": "2026-05-22T18:10:24.390354+00:00",
   "window_days": 90,
-  "tomatometer": 34,
-  "verdict": "Splat",
+  "vibe_score": 35,
+  "verdict": "mid",
+  "biggest_lever": "broken_in_prod",
   "themes": {
     "does_it_work": {
       "label": "Does it actually work?",
@@ -13,7 +14,9 @@
         "uptime",
         "mttf"
       ],
-      "score": 39
+      "score": 41,
+      "weakest_metric": "broken_in_prod",
+      "weakest_score": 0
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -24,7 +27,9 @@
         "reverts",
         "debug_spiral"
       ],
-      "score": 37
+      "score": 37,
+      "weakest_metric": "debug_spiral",
+      "weakest_score": 0
     },
     "any_mess": {
       "label": "Did I leave a mess?",
@@ -35,68 +40,246 @@
         "todos",
         "secrets_blocked"
       ],
-      "score": 26
+      "score": 26,
+      "weakest_metric": "todos",
+      "weakest_score": 0
     }
   },
   "metrics": {
     "broken_in_prod": {
-      "value": "69",
+      "value": "66",
       "raw": {
-        "emergencies": 69,
-        "total_fixes": 73
+        "emergencies": 66,
+        "total_fixes": 70
       },
       "score": 0,
-      "caption": "hotfixes within 24h of the commit they broke"
+      "caption": "hotfixes within 24h of the commit they broke",
+      "examples": [
+        {
+          "repo": "muse-shopping",
+          "sha": "4318cc4",
+          "msg": "Fix broken CTAs, deploy Next.js frontend, clean up prod for shareable launch",
+          "ts": 1774456596,
+          "broke": "Deploy 250+ brand multi-retailer inventory system",
+          "broke_sha": "19bfeb2",
+          "gap_hours": 0.0
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "f0eeb07",
+          "msg": "Fix product page crash, story navigation, hero CTAs, and dynamic routes",
+          "ts": 1774488349,
+          "broke": "Fix broken CTAs, deploy Next.js frontend, clean up prod for shareable launch",
+          "broke_sha": "4318cc4",
+          "gap_hours": 8.8
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "da27d75",
+          "msg": "fix: correct BrandLogo props on brands slug page",
+          "ts": 1774834317,
+          "broke": "Add auto build-log workflow",
+          "broke_sha": "7bae25a",
+          "gap_hours": 0.4
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "3a83f67",
+          "msg": "fix(auth): handle OAuth-only accounts + set trust proxy for Vercel",
+          "ts": 1776193576,
+          "broke": "Add Claude session status handoff doc",
+          "broke_sha": "f0ebcb5",
+          "gap_hours": 12.4
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "0c92c13",
+          "msg": "fix(auth): set trust proxy in Vercel serverless entry too",
+          "ts": 1776194522,
+          "broke": "fix(auth): handle OAuth-only accounts + set trust proxy for Vercel",
+          "broke_sha": "3a83f67",
+          "gap_hours": 0.3
+        }
+      ],
+      "examples_label": "Hotfixes and the commits they patched",
+      "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1691ms",
+      "value": "1592ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 397
+            "ttfb_ms": 197
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 3130
+            "ttfb_ms": 3265
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1547
+            "ttfb_ms": 1314
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1691
+        "avg_ttfb_ms": 1592
       },
-      "score": 17,
-      "caption": "avg time to first byte across live sites"
+      "score": 23,
+      "caption": "avg time to first byte across live sites",
+      "examples": [
+        {
+          "url": "https://www.muse.shopping",
+          "status": 200,
+          "ttfb_ms": 3265
+        },
+        {
+          "url": "https://kindle.schlacter.me",
+          "status": 200,
+          "ttfb_ms": 1314
+        },
+        {
+          "url": "https://schlacter.me",
+          "status": 200,
+          "ttfb_ms": 197
+        }
+      ],
+      "examples_label": "Live site response times (slowest first)",
+      "how_to_improve": "Slow TTFB usually means a cold serverless function or a DB call on every request. Cache reads at the edge, lazy-load non-critical data, and keep the homepage payload small."
     },
     "mttf": {
       "value": "0.1h",
       "raw": {
         "median_hours": 0.1,
-        "samples": 73
+        "samples": 70
       },
       "score": 100,
-      "caption": "median hours bugs lived before patched"
+      "caption": "median hours bugs lived before patched",
+      "examples": [
+        {
+          "repo": "muse-shopping",
+          "sha": "edf26f5",
+          "msg": "fix(auth): read backend envelope correctly in frontend API client",
+          "ts": 1776381410,
+          "hours": 46.6
+        },
+        {
+          "repo": "nanoclaw",
+          "sha": "d48ef91",
+          "msg": "fix: add CJK font support for Chromium screenshots",
+          "ts": 1772342190,
+          "hours": 37.9
+        },
+        {
+          "repo": "nanoclaw",
+          "sha": "d49af91",
+          "msg": "fix: auto-accept remote-control prompt to prevent immediate exit",
+          "ts": 1773653663,
+          "hours": 28.9
+        },
+        {
+          "repo": "nanoclaw",
+          "sha": "cfabdd8",
+          "msg": "fix broken step references in setup/SKILL.md (#794)",
+          "ts": 1772909932,
+          "hours": 26.1
+        },
+        {
+          "repo": "nanoclaw",
+          "sha": "5b2bafd",
+          "msg": "fix(whatsapp): use sender's JID for DM-with-bot registration, skip trigger (#751)",
+          "ts": 1772992728,
+          "hours": 23.0
+        }
+      ],
+      "examples_label": "Slowest-detected fixes (highest delays)",
+      "how_to_improve": "Long delays mean bugs lived in prod unnoticed. Add a smoke-check on the routes you care about. Get failure alerts to your phone for at least one path per site."
     },
     "fix_to_feature": {
-      "value": "70%",
+      "value": "71%",
       "raw": {
-        "fix": 73,
-        "feat": 31,
-        "total": 253
+        "fix": 70,
+        "feat": 28,
+        "total": 239
       },
-      "score": 12,
-      "caption": "of commits start with 'fix'"
+      "score": 11,
+      "caption": "of commits start with 'fix'",
+      "examples": [
+        {
+          "repo": "muse-shopping",
+          "sha": "718f37a",
+          "msg": "fix(auth): survive missing privacy_consent column on register",
+          "ts": 1776385559
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "68d29d4",
+          "msg": "fix(auth): point Google redirect at www.muse.shopping; remove Apple button",
+          "ts": 1776384781
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "3f11f7e",
+          "msg": "fix(auth): trim Google OAuth env vars at read-site",
+          "ts": 1776382814
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "edf26f5",
+          "msg": "fix(auth): read backend envelope correctly in frontend API client",
+          "ts": 1776381410
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "d01750d",
+          "msg": "fix(auth): mount errorHandler middleware in Vercel serverless entry",
+          "ts": 1776213542
+        }
+      ],
+      "examples_label": "Sample fix commits",
+      "how_to_improve": "Write one more line of plan before each change. Run it locally or in a preview before merging. Pair commit msgs with 'feat:' when you're adding something \u2014 habitual 'fix:' framing skews the number."
     },
     "debug_spiral": {
       "value": "6.0h",
       "raw": {
-        "date": "2026-05-10"
+        "date": "2026-05-10",
+        "total_sessions": 144
       },
       "score": 0,
-      "caption": "longest single debug spiral, capped 6h"
+      "caption": "longest single debug spiral, capped 6h",
+      "examples": [
+        {
+          "session": "b97356b6",
+          "project": "-Users-hannahschlacter-Interior-Design",
+          "hours": 6.0,
+          "date": "2026-05-10"
+        },
+        {
+          "session": "f671d214",
+          "project": "-Users-hannahschlacter-Interior-Design",
+          "hours": 6.0,
+          "date": "2026-04-30"
+        },
+        {
+          "session": "e1e63e70",
+          "project": "-Users-hannahschlacter-Interior-Design",
+          "hours": 6.0,
+          "date": "2026-04-27"
+        },
+        {
+          "session": "ffc1627f",
+          "project": "-Users-hannahschlacter-Interior-Design",
+          "hours": 6.0,
+          "date": "2026-04-23"
+        },
+        {
+          "session": "b0afc1fd",
+          "project": "-Users-hannahschlacter-Interior-Design",
+          "hours": 6.0,
+          "date": "2026-05-04"
+        }
+      ],
+      "examples_label": "Longest single sessions, capped at 6h",
+      "how_to_improve": "When you're 3 hours in and looping, stop. Walk away, then come back and write down what you're actually trying to do. Most 6h sessions would have been 1h with a fresh start."
     },
     "test_coverage": {
       "value": "4/14",
@@ -105,7 +288,43 @@
         "total": 14
       },
       "score": 29,
-      "caption": "repos with any test file at all"
+      "caption": "repos with any test file at all",
+      "examples": [
+        {
+          "repo": "kindle-schlacter-me",
+          "tests": false
+        },
+        {
+          "repo": "claude-code-insights-dashboard",
+          "tests": false
+        },
+        {
+          "repo": "skills-gallery",
+          "tests": false
+        },
+        {
+          "repo": "desktop-scratch",
+          "tests": false
+        },
+        {
+          "repo": "linkedin-feed-case-study",
+          "tests": false
+        },
+        {
+          "repo": "shop-taobao",
+          "tests": false
+        },
+        {
+          "repo": "interior-designer-skill",
+          "tests": false
+        },
+        {
+          "repo": "interior-designer-extension",
+          "tests": false
+        }
+      ],
+      "examples_label": "Repos with zero tests",
+      "how_to_improve": "Pick the one repo you can't afford to break \u2014 your bread-and-butter. Write one happy-path test for the riskiest user flow. One real test beats six theoretical ones."
     },
     "todos": {
       "value": "1255",
@@ -113,7 +332,59 @@
         "count": 1255
       },
       "score": 0,
-      "caption": "TODOs, FIXMEs, HACKs across the codebase"
+      "caption": "TODOs, FIXMEs, HACKs across the codebase",
+      "examples": [
+        {
+          "repo": "claude-code-insights-dashboard",
+          "file": "insight-detector.py",
+          "line": 22,
+          "snippet": "data[\"suggestions\"] = []  # TODO v2: actual pattern detection"
+        },
+        {
+          "repo": "muse-shopping",
+          "file": "frontend/app/onboarding/start/page.tsx",
+          "line": 76,
+          "snippet": "// TODO: Send to backend to actually follow these curators"
+        },
+        {
+          "repo": "muse-shopping",
+          "file": "frontend/scripts/auto-resolver.js",
+          "line": 93,
+          "snippet": "// TODO: Integrate with notification system (email, Slack, PagerDuty, etc.)"
+        },
+        {
+          "repo": "keep-sync",
+          "file": "venv/lib/python3.12/site-packages/pyasn1/codec/der/decoder.py",
+          "line": 23,
+          "snippet": "# TODO: prohibit non-canonical encoding"
+        },
+        {
+          "repo": "keep-sync",
+          "file": "venv/lib/python3.12/site-packages/pyasn1/codec/der/encoder.py",
+          "line": 34,
+          "snippet": "# TODO: move out of sorting key function"
+        },
+        {
+          "repo": "moving-sale",
+          "file": "gen_photo_script.py",
+          "line": 8,
+          "snippet": "ids = json.load(f)  # {IMG_XXXX: drive_file_id}"
+        },
+        {
+          "repo": "moving-sale",
+          "file": "venv/lib/python3.12/site-packages/pyasn1/codec/der/decoder.py",
+          "line": 23,
+          "snippet": "# TODO: prohibit non-canonical encoding"
+        },
+        {
+          "repo": "shop-taobao",
+          "file": "src/content.js",
+          "line": 172,
+          "snippet": "// item.taobao.com/item.htm?id=XXXXX"
+        }
+      ],
+      "examples_label": "Sample TODOs left in code",
+      "how_to_improve": "Half your TODOs are dead \u2014 written, forgotten, irrelevant. Once a month, walk through them: delete what no longer applies, turn what matters into a real task, leave only what's truly pending."
     },
     "secrets_blocked": {
       "value": "13",
@@ -123,16 +394,51 @@
         "total_repos": 14
       },
       "score": 50,
-      "caption": "secret-y patterns gitignored before they leaked"
+      "caption": "secret-y patterns gitignored before they leaked",
+      "examples": [
+        {
+          "repo": "claude-code-insights-dashboard",
+          "reason": "no secret patterns in .gitignore"
+        },
+        {
+          "repo": "skills-gallery",
+          "reason": "no secret patterns in .gitignore"
+        },
+        {
+          "repo": "desktop-scratch",
+          "reason": "no secret patterns in .gitignore"
+        },
+        {
+          "repo": "shop-taobao",
+          "reason": "no secret patterns in .gitignore"
+        },
+        {
+          "repo": "interior-designer-skill",
+          "reason": "no secret patterns in .gitignore"
+        },
+        {
+          "repo": "interior-designer-extension",
+          "reason": "no secret patterns in .gitignore"
+        },
+        {
+          "repo": "twitch-community-research",
+          "reason": "no .gitignore"
+        }
+      ],
+      "examples_label": "Repos missing secret protection",
+      "how_to_improve": "Run `git-sync-fixer` to add a secret-safe .gitignore to every new repo. Already automated \u2014 but you can manually audit unprotected repos by adding .env, credentials.json, *.pem to their .gitignore."
     },
     "reverts": {
       "value": "0",
       "raw": {
         "reverts": 0,
-        "total": 253
+        "total": 239
       },
       "score": 100,
-      "caption": "reverts and 'oops' commits"
+      "caption": "reverts and 'oops' commits",
+      "examples": [],
+      "examples_label": "Revert / oops commits",
+      "how_to_improve": "Reverts mean a change shouldn't have landed. Read the diff before you push, even when you're sure. If you push 'just to try it in prod,' that's the move to cut."
     }
   },
   "repos_scanned": 14
