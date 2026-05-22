@@ -133,7 +133,6 @@ export default function PasswordGate({
         <p
           style={{
             fontFamily: fonts.display,
-            fontStyle: "italic",
             color: colors.inkSoft,
             margin: "16px 0 32px",
             fontSize: 15,

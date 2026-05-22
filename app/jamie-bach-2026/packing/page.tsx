@@ -53,7 +53,7 @@ function Body() {
       <SectionHeader
         kicker="The Pack List"
         title="What to bring."
-        dek="Saved on this device. Check things off as you go."
+        dek="Tap to cross off as you pack. Your checks are saved only on this device — others won't see them."
       />
       <TripSubNav />
 
@@ -66,8 +66,8 @@ function Body() {
         }}
       >
         <Image
-          src="/jamie/newport/newport-summer.jpg"
-          alt="A sailboat passing a Newport channel marker"
+          src="/jamie/venues/packing-flatlay.jpg"
+          alt="An open suitcase, ready for the trip"
           fill
           sizes="(max-width: 768px) 100vw, 640px"
           style={{ objectFit: "cover" }}

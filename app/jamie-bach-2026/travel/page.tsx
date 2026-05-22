@@ -104,7 +104,6 @@ function Body() {
               style={{
                 marginTop: 18,
                 fontFamily: fonts.display,
-                fontStyle: "italic",
                 fontSize: 14,
                 color: colors.inkSoft,
               }}
@@ -121,7 +120,6 @@ function Body() {
         <p
           style={{
             fontFamily: fonts.display,
-            fontStyle: "italic",
             fontSize: 16,
             color: colors.ink,
             lineHeight: 1.55,
@@ -141,7 +139,6 @@ function Body() {
         <p
           style={{
             fontFamily: fonts.display,
-            fontStyle: "italic",
             fontSize: 15,
             color: colors.ink,
             lineHeight: 1.55,

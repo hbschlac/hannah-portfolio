@@ -7,29 +7,9 @@ import BottomNav from "./_components/BottomNav";
 import Countdown from "./_components/Countdown";
 import EditorialHero from "./_components/EditorialHero";
 import PhotoCaption from "./_components/PhotoCaption";
-import PortraitCard from "./_components/PortraitCard";
 import { CurrentWeatherChip } from "./_components/WeatherChip";
 import { useGuestState } from "./_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
-
-// Day → cover photo mapping for the "what's the plan" mosaic
-const dayCovers: Record<string, { src: string; alt: string; caption: string }> = {
-  fri: {
-    src: "/jamie/newport/cliff-walk-real.jpg",
-    alt: "Aerial view of Newport mansions along the Cliff Walk coast",
-    caption: "Friday — settling in, slow lunch, first dinner.",
-  },
-  sat: {
-    src: "/jamie/newport/sailboats-sunset.jpg",
-    alt: "Sailboats silhouetted against a Newport sunset",
-    caption: "Saturday — brunch, sunset cruise, the big dinner.",
-  },
-  sun: {
-    src: "/jamie/newport/newport-rocks.jpg",
-    alt: "Newport's Cliff Walk gazebo at sunset",
-    caption: "Sunday — one last brunch at CRU, and home whenever.",
-  },
-};
 
 export default function JamieBachHome() {
   return (
@@ -51,7 +31,6 @@ function HomeContent() {
   if (error || !state) return <ErrorView error={error} />;
 
   const { trip, roster, photosUrl, groupChatUrl } = state;
-  const days: Array<"fri" | "sat" | "sun"> = ["fri", "sat", "sun"];
 
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
@@ -76,7 +55,6 @@ function HomeContent() {
         <p
           style={{
             fontFamily: fonts.display,
-            fontStyle: "italic",
             fontSize: 19,
             lineHeight: 1.55,
             color: colors.ink,
@@ -104,36 +82,6 @@ function HomeContent() {
           <CurrentWeatherChip />
         </div>
       </div>
-
-      {/* THE WEEKEND */}
-      <section style={{ padding: "48px 24px 0" }}>
-        <Eyebrow text="The Weekend" />
-        <h2
-          style={{
-            fontFamily: fonts.display,
-            fontWeight: 500,
-            fontSize: "2rem",
-            color: colors.ink,
-            margin: "10px 0 24px",
-            letterSpacing: "-0.015em",
-            lineHeight: 1.05,
-          }}
-        >
-          Three days, planned in pencil.
-        </h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-          {days.map((d) => {
-            const cover = dayCovers[d];
-            return <PhotoCaption key={d} {...cover} ratio="wide" />;
-          })}
-        </div>
-        <Link
-          href="/jamie-bach-2026/itinerary"
-          style={textLinkStyle}
-        >
-          See the full itinerary
-        </Link>
-      </section>
 
       {/* THE SQUAD PREVIEW */}
       <section style={{ padding: "56px 24px 0" }}>
@@ -189,8 +137,8 @@ function HomeContent() {
           A long weekend at the Burbank Rose Inn.
         </h2>
         <PhotoCaption
-          src="/jamie/venues/burbank-golden.jpg"
-          alt="A suite at the Burbank Rose Inn"
+          src="/jamie/venues/burbank-exterior.jpg"
+          alt="The Burbank Rose Inn — a green Victorian on Memorial Boulevard"
           ratio="wide"
           caption="Three suites at a Victorian inn, five minutes from the harbor."
         />

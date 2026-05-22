@@ -66,8 +66,8 @@ function Body() {
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
       <EditorialHero
-        src="/jamie/venues/burbank-golden.jpg"
-        alt="The Burbank Rose Inn"
+        src="/jamie/venues/burbank-exterior.jpg"
+        alt="The Burbank Rose Inn — a green Victorian on Memorial Boulevard"
         eyebrow="The Stay"
         headline="The Burbank Rose Inn"
         dateline="111 Memorial Boulevard W · Newport"
@@ -84,7 +84,6 @@ function Body() {
         <p
           style={{
             fontFamily: fonts.display,
-            fontStyle: "italic",
             fontSize: 17,
             lineHeight: 1.55,
             color: colors.ink,
@@ -207,7 +206,7 @@ function Body() {
                       padding: "4px 0",
                     }}
                   >
-                    <span style={b.count === 0 ? { fontStyle: "italic", color: colors.inkSoft } : undefined}>
+                    <span style={b.count === 0 ? { color: colors.inkSoft } : undefined}>
                       {b.label}
                     </span>
                     {b.count > 0 && (
@@ -223,7 +222,6 @@ function Body() {
           style={{
             marginTop: 20,
             fontFamily: fonts.display,
-            fontStyle: "italic",
             fontSize: 14,
             color: colors.inkSoft,
             lineHeight: 1.5,
@@ -233,37 +231,31 @@ function Body() {
         </p>
       </section>
 
-      {/* Emergency */}
+      {/* Burbank Rose contact */}
       <section style={{ padding: "48px 24px 64px" }}>
-        <Eyebrow text="Just in Case" />
-        <h2 style={h2Style}>Numbers worth saving.</h2>
+        <Eyebrow text="Burbank Rose Inn — Contact" />
+        <h2 style={h2Style}>For the inn directly.</h2>
         <div style={{ marginTop: 18 }}>
           <EmergencyRow
-            label="House staff"
-            value={state.emergency.houseStaffPhone}
-            href={`tel:${state.emergency.houseStaffPhone.replace(/\D/g, "")}`}
+            label="Address"
+            value="111 Memorial Blvd W, Newport, RI 02840"
+            href="https://maps.google.com/?q=111+Memorial+Blvd+W+Newport+RI+02840"
           />
           <EmergencyRow
-            label="Nearest hospital"
-            value={state.emergency.nearestHospital.name}
-            sub={state.emergency.nearestHospital.address}
-            href={`https://maps.google.com/?q=${encodeURIComponent(
-              state.emergency.nearestHospital.address
-            )}`}
+            label="Phone"
+            value="(401) 688-7958"
+            href="tel:+14016887958"
           />
           <EmergencyRow
-            label="Hospital phone"
-            value={state.emergency.nearestHospital.phone}
-            href={`tel:${state.emergency.nearestHospital.phone.replace(/\D/g, "")}`}
+            label="Email"
+            value="Burbankrose@yahoo.com"
+            href="mailto:Burbankrose@yahoo.com"
           />
-          {state.emergency.planners.map((p) => (
-            <EmergencyRow
-              key={p.phone}
-              label={`Planner — ${p.name}`}
-              value={p.phone}
-              href={`tel:${p.phone.replace(/\D/g, "")}`}
-            />
-          ))}
+          <EmergencyRow
+            label="Website"
+            value="burbankrose.com"
+            href="https://burbankrose.com"
+          />
         </div>
       </section>
     </div>

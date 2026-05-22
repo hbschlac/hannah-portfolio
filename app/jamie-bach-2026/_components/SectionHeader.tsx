@@ -46,7 +46,6 @@ export default function SectionHeader({ kicker, title, dek }: Props) {
         <p
           style={{
             fontFamily: fonts.display,
-            fontStyle: "italic",
             fontSize: 16,
             color: colors.inkSoft,
             margin: "12px 0 0",

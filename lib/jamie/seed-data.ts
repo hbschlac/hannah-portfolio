@@ -284,7 +284,8 @@ export const seedItinerary: Itinerary = [
       address: "2 Bowen's Landing, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=2+Bowen%27s+Landing+Newport+RI",
     },
-    dressCode: "SOFT-SOLED SHOES ONLY — no heels!",
+    dressCode:
+      "Jamie wears white. Everyone else wears blue. Soft-soled shoes only — no heels.",
     bring: ["light jacket", "sunset selfie energy"],
     publicNote:
       "leave the inn by 7:15 — check-in 7:15pm sharp, boat leaves on time. drinks served onboard.",
@@ -303,7 +304,8 @@ export const seedItinerary: Itinerary = [
       address: "345 Thames St, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=Midtown+Oyster+Bar+Newport+RI",
     },
-    dressCode: "semi-formal",
+    dressCode:
+      "Jamie wears white. Everyone else wears blue. Semi-formal.",
     publicNote: "the big dinner.",
     status: "planned",
   },
@@ -557,8 +559,15 @@ export const seedPacklist: Packlist = [
     emoji: "🍝",
     items: [
       { id: "p6", label: "fri night fit (dressy casual)" },
-      { id: "p7", label: "sat night fit (semi-formal)" },
+      { id: "p7", label: "sat night fit (semi-formal) — BLUE (Jamie wears white)" },
       { id: "p8", label: "comfy shoes for the cruise — NO heels" },
+    ],
+  },
+  {
+    name: "for the group",
+    emoji: "🍬",
+    items: [
+      { id: "p16", label: "candy for the candy salad (any kind — bring a bag)" },
     ],
   },
   {

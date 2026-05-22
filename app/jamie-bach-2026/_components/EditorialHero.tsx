@@ -87,7 +87,6 @@ export default function EditorialHero({
           <div
             style={{
               fontFamily: fonts.display,
-              fontStyle: "italic",
               fontSize: "1.05rem",
               marginTop: 14,
               opacity: 0.92,

@@ -34,61 +34,61 @@ const dayMeta: Record<
     label: "Day Three — Sunday, July 12",
     subtitle: "One last brunch at CRU — head home whenever.",
     cover: {
-      src: "/jamie/newport/newport-rocks.jpg",
-      alt: "Newport's Cliff Walk gazebo at sunset",
+      src: "/jamie/venues/brunch-table.jpg",
+      alt: "A brunch table spread",
     },
   },
 };
 
-// Per-event editorial thumbnail
+// Per-event editorial thumbnail — actual venue photos where available
 const eventCovers: Record<string, { src: string; alt: string }> = {
   "fri-lunch": {
     src: "/jamie/newport/newport-flag.jpg",
-    alt: "Newport harbor with a flag flying",
+    alt: "Downtown Newport harbor",
   },
   "fri-cliff-walk": {
     src: "/jamie/newport/cliff-walk-real.jpg",
     alt: "Aerial view of Newport's Cliff Walk mansions",
   },
   "fri-pasta-beach": {
-    src: "/jamie/venues/pasta-beach.jpg",
-    alt: "Pasta Beach Newport",
+    src: "/jamie/venues/pasta-beach-interior.jpg",
+    alt: "Pasta Beach Newport — interior dining room",
   },
   "fri-games": {
-    src: "/jamie/venues/burbank-briar.jpg",
-    alt: "Burbank Rose Inn common area",
+    src: "/jamie/venues/candy-salad.jpg",
+    alt: "Bowl of candy for the candy salad",
   },
   "sat-coffee": {
-    src: "/jamie/newport/cottage.jpg",
-    alt: "Newport morning",
+    src: "/jamie/venues/coffee-pastries.jpg",
+    alt: "Coffee + pastries spread",
   },
   "sat-pilates": {
-    src: "/jamie/newport/newport-summer.jpg",
-    alt: "Newport summer morning",
+    src: "/jamie/venues/thrive-newport.jpg",
+    alt: "Thrive Newport reformer pilates studio",
   },
   "sat-wallys": {
     src: "/jamie/newport/oysters.jpg",
-    alt: "A Newport lobster shack",
+    alt: "Newport seafood shack",
   },
   "sat-beach": {
-    src: "/jamie/newport/cliff-walk.jpg",
-    alt: "Newport's Easton's Beach harbor",
+    src: "/jamie/venues/easton-beach.jpg",
+    alt: "Easton's Beach, Newport",
   },
   "sat-cruise": {
     src: "/jamie/venues/gansett-sunset.jpg",
     alt: "Gansett Cruises sunset sail",
   },
   "sat-oyster": {
-    src: "/jamie/venues/mooring-patio.jpg",
-    alt: "Newport waterfront dining",
+    src: "/jamie/venues/midtown-oyster.jpg",
+    alt: "Midtown Oyster Bar — Newport",
   },
   "sat-out": {
     src: "/jamie/newport/sunset-harbor.jpg",
     alt: "Newport at night",
   },
   "sun-brunch": {
-    src: "/jamie/newport/cottage-2.jpg",
-    alt: "Newport on a Sunday morning",
+    src: "/jamie/venues/brunch-table.jpg",
+    alt: "Brunch table spread",
   },
 };
 
@@ -284,7 +284,6 @@ function EventEntry({ event }: { event: ItineraryEvent }) {
           <p
             style={{
               fontFamily: fonts.display,
-              fontStyle: "italic",
               fontSize: 14,
               color: colors.ink,
               margin: "12px 0 0",

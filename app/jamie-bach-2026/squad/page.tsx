@@ -37,7 +37,7 @@ function Body() {
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
       <SectionHeader
-        kicker="The Cast"
+        kicker="Squad"
         title="Nine on the trip."
         dek="Phone numbers below each photo — tap to call. Tap the @handle for Instagram."
       />
@@ -45,8 +45,8 @@ function Body() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "32px 16px",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "28px 14px",
           padding: "16px 24px 64px",
         }}
       >

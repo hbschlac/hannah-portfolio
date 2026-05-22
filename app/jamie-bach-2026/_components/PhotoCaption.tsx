@@ -57,7 +57,6 @@ export default function PhotoCaption({
             <span
               style={{
                 fontFamily: fonts.display,
-                fontStyle: "italic",
                 fontSize: 14,
                 color: colors.ink,
                 lineHeight: 1.4,

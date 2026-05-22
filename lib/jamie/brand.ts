@@ -3,22 +3,22 @@
 // Photo-led · serif headlines · single coral pop · brass hairlines
 
 export const colors = {
-  // Editorial palette — ecru base (cooler / more neutral than warm beige)
-  paper: "#EFEAE0",       // ecru background
+  // Editorial palette — true off-white ecru base
+  paper: "#F7F3E9",       // off-white ecru background (lighter than the prior #EFEAE0)
   ink: "#1A1A1A",         // body + headlines
   inkSoft: "#5C544A",     // captions, secondary
   coral: "#C8453A",       // single editorial pop (sparingly)
   brass: "#9B7B3F",       // rule lines, small accents
-  mist: "#E2DCCF",        // card dividers, hairlines
+  mist: "#EAE2D2",        // card dividers, hairlines (bumped so they stay visible on lighter paper)
 
   // Back-compat aliases for old token names — let legacy code keep compiling.
-  cream: "#EFEAE0",       // → paper
+  cream: "#F7F3E9",       // → paper
   navy: "#1A1A1A",        // → ink
   navySoft: "#5C544A",    // → inkSoft
   tangerine: "#9B7B3F",   // → brass
   butter: "#9B7B3F",      // → brass
-  lime: "#E2DCCF",        // → mist
-  lavender: "#E2DCCF",    // → mist
+  lime: "#EAE2D2",        // → mist
+  lavender: "#EAE2D2",    // → mist
 } as const;
 
 export const fonts = {
