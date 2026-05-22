@@ -2,27 +2,41 @@
 
 import PasswordGate from "../_components/PasswordGate";
 import BottomNav from "../_components/BottomNav";
-import SectionHeader from "../_components/SectionHeader";
 import TripSubNav from "../_components/TripSubNav";
 import EditorialHero from "../_components/EditorialHero";
 import ImageMosaic from "../_components/ImageMosaic";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
-import type { Attendee } from "@/lib/jamie/types";
+
+// Source of truth: Burbank Rose Inn invoice (Reservation #1016, 1/8/26) +
+// May 12 email from Dawn confirming room contents. Two suites, eight beds,
+// Fri 7/10 → Sun 7/12 (two nights).
+const SUITES = [
+  {
+    name: "Golden Rose Suite",
+    coverSrc: "/jamie/venues/burbank-golden.jpg",
+    beds: [
+      { label: "King bed", count: 1 },
+      { label: "Twin bed", count: 2 },
+    ],
+    sleeps: 4,
+  },
+  {
+    name: "Cherry Rose Suite",
+    coverSrc: "/jamie/venues/burbank-cherry.jpg",
+    beds: [
+      { label: "Queen bed", count: 1 },
+      { label: "Queen pullout", count: 1 },
+    ],
+    sleeps: 4,
+  },
+] as const;
 
 const ROOM_TILES = [
-  { src: "/jamie/venues/burbank-briar.jpg", alt: "Briar Rose Suite", span: "tall" as const },
   { src: "/jamie/venues/burbank-golden.jpg", alt: "Golden Rose Suite", span: "tall" as const },
-  { src: "/jamie/venues/burbank-autumn.jpg", alt: "Autumn Rose Suite", span: "wide" as const },
-  { src: "/jamie/venues/burbank-bourbon.jpg", alt: "Bourbon Rose Suite", span: "tall" as const },
   { src: "/jamie/venues/burbank-cherry.jpg", alt: "Cherry Rose Suite", span: "tall" as const },
+  { src: "/jamie/venues/burbank-briar.jpg", alt: "Burbank Rose Inn common space", span: "wide" as const },
 ];
-
-const FLOOR_LABELS: Record<number, string> = {
-  1: "First Floor",
-  2: "Second Floor",
-  3: "Third Floor",
-};
 
 export default function LodgingPage() {
   return (
@@ -42,20 +56,10 @@ function Body() {
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
-  const byFloor = state.rooms.assignments.reduce<
-    Record<number, typeof state.rooms.assignments>
-  >((acc, a) => {
-    (acc[a.floor] ||= []).push(a);
-    return acc;
-  }, {});
-
-  const findAttendee = (id: string | null): Attendee | undefined =>
-    id ? state.roster.find((r) => r.id === id) : undefined;
-
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
       <EditorialHero
-        src="/jamie/venues/burbank-briar.jpg"
+        src="/jamie/venues/burbank-golden.jpg"
         alt="The Burbank Rose Inn"
         eyebrow="The Stay"
         headline="The Burbank Rose Inn"
@@ -68,7 +72,7 @@ function Body() {
         <TripSubNav />
       </div>
 
-      {/* Intro paragraph + meta */}
+      {/* Intro + meta */}
       <section style={{ padding: "32px 24px 0" }}>
         <p
           style={{
@@ -80,9 +84,10 @@ function Body() {
             margin: 0,
           }}
         >
-          A nine-bed Victorian a five-minute walk from the harbor. Continental
-          breakfast each morning, a wide front porch, and rooms named after
-          roses.
+          Two suites at a Victorian inn, five minutes from the harbor. Eight
+          beds across the Golden and Cherry Rose suites — nine of us, so one
+          set of bunk-mates. Continental breakfast each morning and a wide
+          front porch.
         </p>
         <div
           style={{
@@ -97,17 +102,11 @@ function Body() {
           }}
         >
           <Meta label="Check-in" value="Friday, July 10" />
-          <Meta label="Check-out" value="Monday, July 13" />
-          <Meta label="Beds" value="9 · across 3 floors" />
+          <Meta label="Check-out" value="Sunday, July 12" />
+          <Meta label="Beds" value="8 · across 2 suites" />
           <Meta label="Phone" value="(401) 688-7958" href="tel:+14016887958" />
         </div>
-        <div
-          style={{
-            display: "flex",
-            gap: 22,
-            paddingTop: 18,
-          }}
-        >
+        <div style={{ display: "flex", gap: 22, paddingTop: 18 }}>
           <a
             href="https://maps.google.com/?q=111+Memorial+Blvd+W+Newport+RI+02840"
             target="_blank"
@@ -129,84 +128,85 @@ function Body() {
 
       {/* Photo mosaic */}
       <section style={{ padding: "40px 24px 0" }}>
-        <Eyebrow text="The Rooms" />
-        <h2 style={h2Style}>Five named for roses.</h2>
+        <Eyebrow text="The Suites" />
+        <h2 style={h2Style}>Golden and Cherry.</h2>
         <div style={{ marginTop: 18 }}>
           <ImageMosaic tiles={ROOM_TILES} />
         </div>
       </section>
 
-      {/* Assignments */}
+      {/* Suite-by-suite breakdown */}
       <section style={{ padding: "48px 24px 0" }}>
-        <Eyebrow text="Who Sleeps Where" />
-        <h2 style={h2Style}>The assignments.</h2>
+        <Eyebrow text="Bed Layout" />
+        <h2 style={h2Style}>Who sleeps where.</h2>
         <div style={{ marginTop: 18 }}>
-          {[1, 2, 3].map((floor) => (
+          {SUITES.map((suite) => (
             <div
-              key={floor}
+              key={suite.name}
               style={{
-                padding: "18px 0",
+                padding: "22px 0",
                 borderBottom: `1px solid ${colors.mist}`,
               }}
             >
               <div
                 style={{
-                  fontFamily: fonts.body,
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: "0.22em",
-                  textTransform: "uppercase",
-                  color: colors.brass,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
                   marginBottom: 10,
                 }}
               >
-                {FLOOR_LABELS[floor]}
+                <h3
+                  style={{
+                    fontFamily: fonts.display,
+                    fontWeight: 500,
+                    fontSize: 22,
+                    color: colors.ink,
+                    margin: 0,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  {suite.name}
+                </h3>
+                <span
+                  style={{
+                    fontFamily: fonts.body,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: colors.brass,
+                  }}
+                >
+                  Sleeps {suite.sleeps}
+                </span>
               </div>
-              <div
+              <ul
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 6,
+                  margin: 0,
+                  padding: 0,
+                  listStyle: "none",
+                  fontFamily: fonts.body,
+                  fontSize: 14,
+                  color: colors.ink,
                 }}
               >
-                {(byFloor[floor] || []).map((a, i) => {
-                  const person = findAttendee(a.attendeeId);
-                  return (
-                    <div
-                      key={`${floor}-${i}`}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "baseline",
-                        fontFamily: fonts.body,
-                        fontSize: 14,
-                        color: colors.ink,
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: fonts.display,
-                          fontWeight: 500,
-                          fontSize: 17,
-                          letterSpacing: "-0.005em",
-                        }}
-                      >
-                        {person?.name ?? "—"}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 11,
-                          letterSpacing: "0.16em",
-                          textTransform: "uppercase",
-                          color: colors.inkSoft,
-                        }}
-                      >
-                        {a.bed}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+                {suite.beds.map((b) => (
+                  <li
+                    key={b.label}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      padding: "4px 0",
+                    }}
+                  >
+                    <span>{b.label}</span>
+                    <span style={{ color: colors.inkSoft }}>
+                      ×{b.count}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
@@ -217,9 +217,11 @@ function Body() {
             fontStyle: "italic",
             fontSize: 14,
             color: colors.inkSoft,
+            lineHeight: 1.5,
           }}
         >
-          Final assignments locked closer to the trip.
+          Eight beds for nine of us — Hannah&apos;s sorting room assignments
+          closer to the trip.
         </p>
       </section>
 

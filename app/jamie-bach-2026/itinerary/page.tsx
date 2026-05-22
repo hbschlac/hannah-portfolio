@@ -18,8 +18,8 @@ const dayMeta: Record<
     label: "Day One — Friday, July 10",
     subtitle: "Settling in, a slow lunch, a long first dinner.",
     cover: {
-      src: "/jamie/newport/harbor-day.jpg",
-      alt: "Schooner sailing past the Newport coast",
+      src: "/jamie/newport/cliff-walk-real.jpg",
+      alt: "Aerial view of Newport mansions along the Cliff Walk coast",
     },
   },
   sat: {
@@ -32,10 +32,10 @@ const dayMeta: Record<
   },
   sun: {
     label: "Day Three — Sunday, July 12",
-    subtitle: "Slow morning, settling up, one last toast.",
+    subtitle: "Cliff Walk, one last brunch, and the airport.",
     cover: {
-      src: "/jamie/newport/cliff-walk.jpg",
-      alt: "Newport harbor of moored boats",
+      src: "/jamie/newport/newport-rocks.jpg",
+      alt: "Newport's Cliff Walk gazebo at sunset",
     },
   },
 };

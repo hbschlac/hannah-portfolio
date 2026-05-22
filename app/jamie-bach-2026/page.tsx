@@ -14,8 +14,8 @@ import { colors, fonts } from "@/lib/jamie/brand";
 // Day → cover photo mapping for the "what's the plan" mosaic
 const dayCovers: Record<string, { src: string; alt: string; caption: string }> = {
   fri: {
-    src: "/jamie/newport/harbor-day.jpg",
-    alt: "Sailing schooner past the Newport coastline",
+    src: "/jamie/newport/cliff-walk-real.jpg",
+    alt: "Aerial view of Newport mansions along the Cliff Walk coast",
     caption: "Friday — settling in, slow lunch, first dinner.",
   },
   sat: {
@@ -24,9 +24,9 @@ const dayCovers: Record<string, { src: string; alt: string; caption: string }> =
     caption: "Saturday — brunch, sunset cruise, the big dinner.",
   },
   sun: {
-    src: "/jamie/newport/cliff-walk.jpg",
-    alt: "Newport harbor of moored boats",
-    caption: "Sunday — slow morning, settling up, last toast.",
+    src: "/jamie/newport/newport-rocks.jpg",
+    alt: "Newport's Cliff Walk gazebo at sunset",
+    caption: "Sunday — Cliff Walk, last brunch, fly home.",
   },
 };
 
