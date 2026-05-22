@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
+import { useState } from "react";
 import PasswordGate from "../_components/PasswordGate";
 import BottomNav from "../_components/BottomNav";
 import SectionHeader from "../_components/SectionHeader";
-import PortraitCard from "../_components/PortraitCard";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
 import type { Attendee } from "@/lib/jamie/types";
@@ -38,123 +39,129 @@ function Body() {
       <SectionHeader
         kicker="The Cast"
         title="Nine on the trip."
-        dek="A roster — bride, sister, two co-planners, and five who said yes."
+        dek="Phone numbers below each photo — tap to call. Tap the @handle for Instagram."
       />
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "28px 16px",
-          padding: "16px 24px 56px",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "32px 16px",
+          padding: "16px 24px 64px",
         }}
       >
         {state.roster.map((person) => (
-          <PortraitCard
-            key={person.id}
-            name={person.name}
-            role={person.role !== "guest" ? roleLabels[person.role] : undefined}
-            city={person.city}
-            photoUrl={person.photoUrl}
-          />
+          <SquadPerson key={person.id} person={person} />
         ))}
       </div>
+    </div>
+  );
+}
 
-      {/* Contact directory */}
-      <section style={{ padding: "0 24px 48px" }}>
-        <div
+function SquadPerson({ person }: { person: Attendee }) {
+  const initial = person.name.trim()[0]?.toUpperCase() ?? "?";
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImage = !!person.photoUrl && !imgFailed;
+  const role = person.role !== "guest" ? roleLabels[person.role] : undefined;
+
+  return (
+    <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "1 / 1",
+          background: colors.mist,
+          overflow: "hidden",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {showImage ? (
+          <Image
+            src={person.photoUrl}
+            alt={person.name}
+            fill
+            sizes="(max-width: 768px) 50vw, 280px"
+            style={{ objectFit: "cover" }}
+            onError={() => setImgFailed(true)}
+          />
+        ) : (
+          <span
+            style={{
+              fontFamily: fonts.display,
+              fontWeight: 400,
+              fontSize: "3rem",
+              color: colors.inkSoft,
+            }}
+          >
+            {initial}
+          </span>
+        )}
+      </div>
+
+      <div
+        style={{
+          marginTop: 14,
+          fontFamily: fonts.display,
+          fontWeight: 500,
+          fontSize: 19,
+          color: colors.ink,
+          letterSpacing: "-0.005em",
+          lineHeight: 1.15,
+        }}
+      >
+        {person.name}
+      </div>
+      <div
+        style={{
+          fontFamily: fonts.body,
+          fontSize: 11,
+          fontWeight: 500,
+          color: colors.inkSoft,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          marginTop: 4,
+        }}
+      >
+        {role ? `${role} · ${person.city}` : person.city}
+      </div>
+
+      {person.phone && (
+        <a
+          href={`tel:${person.phone.replace(/\D/g, "")}`}
           style={{
+            display: "block",
+            marginTop: 10,
             fontFamily: fonts.body,
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: colors.brass,
-            marginBottom: 14,
-            paddingTop: 24,
-            borderTop: `1px solid ${colors.mist}`,
+            fontSize: 13,
+            color: colors.ink,
+            textDecoration: "none",
           }}
         >
-          Contact Directory
-        </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {state.roster.map((p) => (
-            <div
-              key={p.id}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "baseline",
-                padding: "14px 0",
-                borderBottom: `1px solid ${colors.mist}`,
-                fontFamily: fonts.body,
-                gap: 12,
-                flexWrap: "wrap",
-              }}
-            >
-              <div>
-                <div
-                  style={{
-                    fontFamily: fonts.display,
-                    fontWeight: 500,
-                    fontSize: 17,
-                    color: colors.ink,
-                    letterSpacing: "-0.005em",
-                  }}
-                >
-                  {p.name}
-                </div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: colors.inkSoft,
-                    marginTop: 2,
-                  }}
-                >
-                  {p.city}
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  gap: 14,
-                  fontSize: 12,
-                  color: colors.ink,
-                }}
-              >
-                {p.phone && (
-                  <a
-                    href={`tel:${p.phone}`}
-                    style={{
-                      color: colors.ink,
-                      textDecoration: "none",
-                      borderBottom: `1px solid ${colors.mist}`,
-                    }}
-                  >
-                    {p.phone}
-                  </a>
-                )}
-                {p.instagram && (
-                  <a
-                    href={`https://instagram.com/${p.instagram}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      color: colors.inkSoft,
-                      textDecoration: "none",
-                      borderBottom: `1px solid ${colors.mist}`,
-                    }}
-                  >
-                    @{p.instagram}
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+          {person.phone}
+        </a>
+      )}
+      {person.instagram && (
+        <a
+          href={`https://instagram.com/${person.instagram}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "block",
+            marginTop: 4,
+            fontFamily: fonts.body,
+            fontSize: 12,
+            color: colors.brass,
+            textDecoration: "none",
+            letterSpacing: "0.02em",
+          }}
+        >
+          @{person.instagram}
+        </a>
+      )}
     </div>
   );
 }
