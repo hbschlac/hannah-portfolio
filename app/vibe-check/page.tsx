@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import statsJson from "../../public/vibe-check-stats.json";
 import historyJson from "../../public/vibe-check-history.json";
+import lessonsJson from "../../public/vibe-coach-lessons.json";
 
 export const metadata: Metadata = {
   title: "Vibe Check — schlacter.me",
@@ -65,9 +66,25 @@ type HistoryEntry = {
   theme_scores: Record<string, number>;
   biggest_lever?: string;
 };
+type Lesson = {
+  habit: string;
+  framing: string;
+  evidence_count: number;
+  evidence_summary: string;
+  weeks_in_flight: number;
+  status: string;
+};
+type LessonsFile = {
+  generated_at: string;
+  sessions_analyzed: number;
+  lessons_in_flight: Lesson[];
+  lessons_graduated: { habit: string; weeks_in_flight?: number }[];
+  going_well: { note: string }[];
+};
 
 const stats = statsJson as Stats;
 const history = historyJson as HistoryEntry[];
+const lessons = lessonsJson as LessonsFile;
 
 const METRIC_LABELS: Record<string, string> = {
   broken_in_prod: "Broken in prod",
@@ -163,6 +180,109 @@ function Sparkline({ data }: { data: HistoryEntry[] }) {
         </div>
         <div style={{ color: "#8A8A8A" }}>over {data.length} weeks</div>
       </div>
+    </div>
+  );
+}
+
+function LessonsCard({ lessons }: { lessons: LessonsFile }) {
+  if (
+    !lessons.lessons_in_flight?.length &&
+    !lessons.going_well?.length
+  ) {
+    return null;
+  }
+  return (
+    <div
+      className="mt-6 rounded-xl p-6"
+      style={{ background: "#FFFFFF", border: "1px solid #E8E4DC" }}
+    >
+      <p
+        className="text-xs uppercase tracking-wider"
+        style={{ color: "#8A8A8A" }}
+      >
+        Habits I&apos;m trying to break
+      </p>
+      <p className="text-xs mt-1" style={{ color: "#8A8A8A" }}>
+        Extracted weekly from my own session transcripts by{" "}
+        <code style={{ background: "#F8F6F2", padding: "1px 4px" }}>
+          vibe-coach
+        </code>
+        . The lessons get written into my global CLAUDE.md so the next session
+        enforces them automatically.
+      </p>
+      {lessons.lessons_in_flight?.length > 0 && (
+        <ul className="mt-5 space-y-4">
+          {lessons.lessons_in_flight.map((l, i) => (
+            <li key={i}>
+              <p
+                className="text-sm"
+                style={{ color: "#1A1A1A" }}
+              >
+                <span style={{ color: "#C62828" }}>→</span> {l.habit}
+              </p>
+              <p
+                className="text-xs mt-1 leading-relaxed"
+                style={{ color: "#5C5C5C" }}
+              >
+                {l.framing}
+              </p>
+              <p
+                className="text-xs mt-1"
+                style={{ color: "#8A8A8A" }}
+              >
+                Evidence: {l.evidence_summary} ·{" "}
+                {l.weeks_in_flight}{" "}
+                {l.weeks_in_flight === 1 ? "week" : "weeks"} in flight
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+      {lessons.lessons_graduated?.length > 0 && (
+        <div className="mt-5">
+          <p
+            className="text-xs uppercase tracking-wider mb-2"
+            style={{ color: "#8A8A8A" }}
+          >
+            Graduated (sustained ≥3 weeks)
+          </p>
+          <ul className="space-y-1">
+            {lessons.lessons_graduated.map((g, i) => (
+              <li
+                key={i}
+                className="text-xs"
+                style={{ color: "#2E7D32" }}
+              >
+                ✓ {g.habit}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {lessons.going_well?.length > 0 && (
+        <div className="mt-5">
+          <p
+            className="text-xs uppercase tracking-wider mb-2"
+            style={{ color: "#8A8A8A" }}
+          >
+            Going well, keep doing it
+          </p>
+          <ul className="space-y-1">
+            {lessons.going_well.map((g, i) => (
+              <li
+                key={i}
+                className="text-xs"
+                style={{ color: "#558B2F" }}
+              >
+                ✓ {g.note}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <p className="text-xs mt-5" style={{ color: "#8A8A8A" }}>
+        {lessons.sessions_analyzed} sessions analyzed · refreshed Saturdays
+      </p>
     </div>
   );
 }
@@ -595,6 +715,9 @@ export default function VibeCheckPage() {
         {improver_activity && (
           <ImproverActivityCard activity={improver_activity} />
         )}
+
+        {/* Lessons in flight (vibe-coach) */}
+        <LessonsCard lessons={lessons} />
 
         {/* Themes */}
         <div className="mt-10 space-y-6">

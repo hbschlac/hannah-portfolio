@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-05-22T18:55:00Z",
+  "sessions_analyzed": 8,
+  "lessons_in_flight": [
+    {
+      "habit": "Break sessions at the 2-hour mark",
+      "framing": "Long sessions ≠ productive sessions. Force a commit and re-orient at 2h.",
+      "evidence_count": 5,
+      "evidence_summary": "5 of 8 recent sessions hit the 6-hour cap",
+      "weeks_in_flight": 1,
+      "status": "in-progress"
+    },
+    {
+      "habit": "Grep before re-implementing",
+      "framing": "Check if the utility already exists before writing it. Habit lives in CLAUDE.md so the next session enforces it.",
+      "evidence_count": 3,
+      "evidence_summary": "Almost wrote safe_msg twice in one session",
+      "weeks_in_flight": 1,
+      "status": "in-progress"
+    },
+    {
+      "habit": "End research sessions with a written handoff",
+      "framing": "Any research session ≥1h ends with a one-page note. Otherwise the next session restarts the search from zero.",
+      "evidence_count": 1,
+      "evidence_summary": "One 6-hour session produced zero artifacts",
+      "weeks_in_flight": 1,
+      "status": "in-progress"
+    }
+  ],
+  "lessons_graduated": [],
+  "going_well": [
+    {
+      "note": "Dry-runs caught real bugs before prod (awk truncation in vibe-improver)"
+    },
+    {
+      "note": "Zero hotfix sequences in the last 7 days (vs 69 in the 30-day baseline)"
+    }
+  ]
+}
