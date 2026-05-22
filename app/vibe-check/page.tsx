@@ -33,6 +33,20 @@ type Focus = {
   score: number;
   actions: string[];
 };
+type ImproverAction = {
+  date: string;
+  metric: string;
+  repo: string;
+  status: "opened" | "skipped" | "failed";
+  pr_url: string | null;
+};
+type ImproverActivity = {
+  total_runs_30d: number;
+  opened_30d: number;
+  skipped_30d: number;
+  failed_30d: number;
+  recent: ImproverAction[];
+};
 type Stats = {
   generated_at: string;
   window_days: number;
@@ -40,6 +54,7 @@ type Stats = {
   verdict: string;
   biggest_lever?: string;
   focus?: Focus;
+  improver_activity?: ImproverActivity;
   themes: Record<string, Theme>;
   metrics: Record<string, Metric>;
   repos_scanned: number;
@@ -148,6 +163,93 @@ function Sparkline({ data }: { data: HistoryEntry[] }) {
         </div>
         <div style={{ color: "#8A8A8A" }}>over {data.length} weeks</div>
       </div>
+    </div>
+  );
+}
+
+function ImproverActivityCard({ activity }: { activity: ImproverActivity }) {
+  const hasRuns = activity.total_runs_30d > 0;
+  return (
+    <div
+      className="mt-6 rounded-xl p-6"
+      style={{ background: "#FFFFFF", border: "1px solid #E8E4DC" }}
+    >
+      <p
+        className="text-xs uppercase tracking-wider"
+        style={{ color: "#8A8A8A" }}
+      >
+        Improver activity (last 30 days)
+      </p>
+      {!hasRuns ? (
+        <p className="text-sm mt-3" style={{ color: "#5C5C5C" }}>
+          The improver runs every Monday at 9am and opens a draft PR
+          targeting the weakest metric. First run: next Monday. Check back
+          for the loop closing.
+        </p>
+      ) : (
+        <>
+          <div className="mt-3 flex gap-4 text-xs" style={{ color: "#5C5C5C" }}>
+            <span>
+              <strong style={{ color: "#2E7D32" }}>
+                {activity.opened_30d}
+              </strong>{" "}
+              opened
+            </span>
+            <span>
+              <strong style={{ color: "#8A8A8A" }}>
+                {activity.skipped_30d}
+              </strong>{" "}
+              skipped
+            </span>
+            {activity.failed_30d > 0 && (
+              <span>
+                <strong style={{ color: "#C62828" }}>
+                  {activity.failed_30d}
+                </strong>{" "}
+                failed
+              </span>
+            )}
+          </div>
+          {activity.recent.length > 0 && (
+            <ul className="mt-4 space-y-2">
+              {activity.recent.map((a, i) => (
+                <li
+                  key={i}
+                  className="text-xs flex items-baseline gap-3"
+                  style={{ color: "#1A1A1A" }}
+                >
+                  <span style={{ color: "#8A8A8A" }}>{a.date}</span>
+                  <span style={{ color: "#5C5C5C" }}>
+                    {METRIC_LABELS[a.metric] ?? a.metric}
+                  </span>
+                  <span style={{ color: "#8A8A8A" }}>· {a.repo}</span>
+                  {a.pr_url ? (
+                    <a
+                      href={a.pr_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-auto underline"
+                      style={{ color: "#1A1A1A" }}
+                    >
+                      see PR →
+                    </a>
+                  ) : (
+                    <span
+                      className="ml-auto italic"
+                      style={{ color: "#8A8A8A" }}
+                    >
+                      {a.status}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+      <p className="text-xs mt-4" style={{ color: "#8A8A8A" }}>
+        Autonomous engine — opens draft PRs only, never auto-merges.
+      </p>
     </div>
   );
 }
@@ -363,6 +465,7 @@ export default function VibeCheckPage() {
     verdict,
     biggest_lever,
     focus,
+    improver_activity,
     themes,
     metrics,
     generated_at,
@@ -487,6 +590,11 @@ export default function VibeCheckPage() {
 
         {/* Focus card */}
         {focus && <FocusCard focus={focus} />}
+
+        {/* Improver activity */}
+        {improver_activity && (
+          <ImproverActivityCard activity={improver_activity} />
+        )}
 
         {/* Themes */}
         <div className="mt-10 space-y-6">

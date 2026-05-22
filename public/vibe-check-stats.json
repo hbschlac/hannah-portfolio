@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-22T18:23:47.545067+00:00",
+  "generated_at": "2026-05-22T18:37:20.038232+00:00",
   "window_days": 90,
-  "vibe_score": 41,
+  "vibe_score": 42,
   "verdict": "mid",
   "biggest_lever": "broken_in_prod",
   "focus": {
@@ -13,6 +13,13 @@
       "Before merging any auth/payment/data PR, run the actual user flow in preview first."
     ]
   },
+  "improver_activity": {
+    "total_runs_30d": 0,
+    "opened_30d": 0,
+    "skipped_30d": 0,
+    "failed_30d": 0,
+    "recent": []
+  },
   "themes": {
     "does_it_work": {
       "label": "Does it actually work?",
@@ -23,7 +30,7 @@
         "uptime",
         "mttf"
       ],
-      "score": 34,
+      "score": 37,
       "weakest_metric": "broken_in_prod",
       "weakest_score": 0
     },
@@ -114,42 +121,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1952ms",
+      "value": "1716ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 403,
-            "ttfb_ms": 36
+            "ttfb_ms": 37
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2884
+            "ttfb_ms": 2510
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1019
+            "ttfb_ms": 923
           }
         },
         "ok_rate": 0.67,
-        "avg_ttfb_ms": 1952
+        "avg_ttfb_ms": 1716
       },
-      "score": 2,
+      "score": 11,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2884
+          "ttfb_ms": 2510
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1019
+          "ttfb_ms": 923
         },
         {
           "url": "https://schlacter.me",
           "status": 403,
-          "ttfb_ms": 36
+          "ttfb_ms": 37
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -251,7 +258,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-05-10",
-        "total_sessions": 149
+        "total_sessions": 150
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
