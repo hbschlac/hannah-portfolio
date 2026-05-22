@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import statsJson from "../../public/vibe-check-stats.json";
+import historyJson from "../../public/vibe-check-history.json";
 
 export const metadata: Metadata = {
   title: "Vibe Check — schlacter.me",
@@ -15,7 +16,6 @@ type Metric = {
   caption: string;
   examples?: Example[];
   examples_label?: string;
-  how_to_improve?: string;
   raw?: Record<string, unknown>;
 };
 type Theme = {
@@ -27,18 +27,32 @@ type Theme = {
   weakest_metric?: string;
   weakest_score?: number;
 };
+type Focus = {
+  metric: string;
+  headline: string;
+  score: number;
+  actions: string[];
+};
 type Stats = {
   generated_at: string;
   window_days: number;
   vibe_score: number;
   verdict: string;
   biggest_lever?: string;
+  focus?: Focus;
   themes: Record<string, Theme>;
   metrics: Record<string, Metric>;
   repos_scanned: number;
 };
+type HistoryEntry = {
+  generated_at: string;
+  vibe_score: number;
+  theme_scores: Record<string, number>;
+  biggest_lever?: string;
+};
 
 const stats = statsJson as Stats;
+const history = historyJson as HistoryEntry[];
 
 const METRIC_LABELS: Record<string, string> = {
   broken_in_prod: "Broken in prod",
@@ -80,6 +94,100 @@ function scoreBigColor(score: number): string {
   if (score >= 60) return "#2E7D32";
   if (score >= 35) return "#F57C00";
   return "#C62828";
+}
+
+function Sparkline({ data }: { data: HistoryEntry[] }) {
+  if (data.length < 2) return null;
+  const points = data.map((d) => d.vibe_score);
+  const w = 240;
+  const h = 60;
+  const pad = 4;
+  const min = Math.min(...points, 0);
+  const max = Math.max(...points, 100);
+  const range = max - min || 1;
+  const xStep = (w - pad * 2) / (points.length - 1);
+  const coords = points.map((p, i) => {
+    const x = pad + i * xStep;
+    const y = pad + (h - pad * 2) * (1 - (p - min) / range);
+    return { x, y, val: p };
+  });
+  const path = coords
+    .map((c, i) => `${i === 0 ? "M" : "L"}${c.x.toFixed(1)},${c.y.toFixed(1)}`)
+    .join(" ");
+  const last = coords[coords.length - 1];
+  const first = coords[0];
+  const delta = points[points.length - 1] - points[0];
+  const arrow = delta > 0 ? "↑" : delta < 0 ? "↓" : "→";
+  const sign = delta > 0 ? "+" : "";
+  const trendColor =
+    delta > 0 ? "#2E7D32" : delta < 0 ? "#C62828" : "#8A8A8A";
+
+  return (
+    <div className="flex items-center gap-4">
+      <svg
+        width={w}
+        height={h}
+        viewBox={`0 0 ${w} ${h}`}
+        style={{ display: "block" }}
+      >
+        <path
+          d={path}
+          fill="none"
+          stroke="#1A1A1A"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx={first.x} cy={first.y} r="2.5" fill="#8A8A8A" />
+        <circle cx={last.x} cy={last.y} r="3" fill={scoreBigColor(last.val)} />
+      </svg>
+      <div className="text-xs leading-tight" style={{ color: "#5C5C5C" }}>
+        <div style={{ color: trendColor }}>
+          {arrow} {sign}
+          {delta} pts
+        </div>
+        <div style={{ color: "#8A8A8A" }}>over {data.length} weeks</div>
+      </div>
+    </div>
+  );
+}
+
+function FocusCard({ focus }: { focus: Focus }) {
+  return (
+    <div
+      className="mt-8 rounded-xl p-6"
+      style={{ background: "#FFFFFF", border: "1px solid #E8E4DC" }}
+    >
+      <p
+        className="text-xs uppercase tracking-wider"
+        style={{ color: "#8A8A8A" }}
+      >
+        What I&apos;m working on this month
+      </p>
+      <p className="text-base mt-2" style={{ color: "#1A1A1A" }}>
+        {focus.headline}
+      </p>
+      <p className="text-xs mt-1" style={{ color: "#8A8A8A" }}>
+        Targeting <strong>{METRIC_LABELS[focus.metric] ?? focus.metric}</strong>
+        {" "}({focus.score}/100, lowest sub-score).
+      </p>
+      <ul className="mt-4 space-y-2">
+        {focus.actions.map((a, i) => (
+          <li
+            key={i}
+            className="text-sm leading-relaxed flex gap-3"
+            style={{ color: "#1A1A1A" }}
+          >
+            <span style={{ color: "#8A8A8A" }}>→</span>
+            <span>{a}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="text-xs mt-4" style={{ color: "#8A8A8A" }}>
+        Refreshed every Sunday. Next score in this metric tells the story.
+      </p>
+    </div>
+  );
 }
 
 function renderExample(metricKey: string, ex: Example, i: number) {
@@ -177,7 +285,7 @@ function renderExample(metricKey: string, ex: Example, i: number) {
     );
   }
 
-  // default: commit-like
+  // default
   return (
     <li key={i} className="text-xs leading-relaxed">
       <span className="font-mono" style={{ color: "#8A8A8A" }}>
@@ -244,22 +352,6 @@ function MetricCard({
             </ul>
           </div>
         )}
-        {metric.how_to_improve && (
-          <div>
-            <p
-              className="text-xs uppercase tracking-wider mb-1"
-              style={{ color: "#8A8A8A" }}
-            >
-              How to fix it
-            </p>
-            <p
-              className="text-xs leading-relaxed"
-              style={{ color: "#1A1A1A" }}
-            >
-              {metric.how_to_improve}
-            </p>
-          </div>
-        )}
       </div>
     </details>
   );
@@ -270,6 +362,7 @@ export default function VibeCheckPage() {
     vibe_score,
     verdict,
     biggest_lever,
+    focus,
     themes,
     metrics,
     generated_at,
@@ -305,10 +398,11 @@ export default function VibeCheckPage() {
           Anyone can hold down a camera shutter. Doesn&apos;t make them a
           photographer. Anyone can vibe code. Doesn&apos;t make them a software
           engineer. This page is an honest, self-graded report card of how much
-          my vibe coding actually holds up.
+          my vibe coding actually holds up — and what I&apos;m doing about the
+          gaps.
         </p>
 
-        {/* Vibe Score — clickable */}
+        {/* Vibe Score */}
         <details
           className="mt-12 rounded-2xl p-10 group"
           style={{ background: "#FFFFFF", border: "1px solid #E8E4DC" }}
@@ -329,18 +423,33 @@ export default function VibeCheckPage() {
             <p className="text-base mt-2" style={{ color: "#1A1A1A" }}>
               {verdict}
             </p>
-            <p className="text-xs mt-3" style={{ color: "#8A8A8A" }}>
+            {history.length >= 2 ? (
+              <div className="mt-5 flex justify-center">
+                <Sparkline data={history} />
+              </div>
+            ) : (
+              <p className="text-xs mt-4" style={{ color: "#8A8A8A" }}>
+                first measurement · check back next week for trend
+              </p>
+            )}
+            <p className="text-xs mt-4" style={{ color: "#8A8A8A" }}>
               click for how this number gets made →
             </p>
           </summary>
-          <div className="mt-6 pt-6 text-left" style={{ borderTop: "1px solid #E8E4DC" }}>
+          <div
+            className="mt-6 pt-6 text-left"
+            style={{ borderTop: "1px solid #E8E4DC" }}
+          >
             <p
               className="text-xs uppercase tracking-wider mb-3"
               style={{ color: "#8A8A8A" }}
             >
               How {vibe_score} gets calculated
             </p>
-            <p className="text-sm leading-relaxed" style={{ color: "#1A1A1A" }}>
+            <p
+              className="text-sm leading-relaxed"
+              style={{ color: "#1A1A1A" }}
+            >
               Average of three theme scores below. Each theme = average of 3
               sub-metrics. Each metric scored 0–100 (higher = better) against a
               clear threshold (e.g. 0 fix commits = 100, 80% fix commits = 0).
@@ -373,29 +482,11 @@ export default function VibeCheckPage() {
               {themes.do_i_know.score} +{" "}
               {themes.any_mess.score}) ÷ 3 = {vibe_score}
             </p>
-            {biggest_lever && (
-              <div
-                className="mt-5 p-3 rounded text-xs"
-                style={{
-                  background: "#FFF8E1",
-                  border: "1px solid #F0E0A8",
-                  color: "#5C5C5C",
-                }}
-              >
-                <span className="uppercase tracking-wider" style={{ color: "#8A8A8A" }}>
-                  Biggest lever to pull →
-                </span>{" "}
-                <span style={{ color: "#1A1A1A" }}>
-                  {METRIC_LABELS[biggest_lever] ?? biggest_lever}
-                </span>
-                <span style={{ color: "#5C5C5C" }}>
-                  {" "}
-                  ({metrics[biggest_lever]?.score}/100). Open it below for how to fix.
-                </span>
-              </div>
-            )}
           </div>
         </details>
+
+        {/* Focus card */}
+        {focus && <FocusCard focus={focus} />}
 
         {/* Themes */}
         <div className="mt-10 space-y-6">
@@ -443,11 +534,14 @@ export default function VibeCheckPage() {
                       <strong style={{ color: "#C62828" }}>
                         {METRIC_LABELS[theme.weakest_metric]}
                       </strong>{" "}
-                      ({theme.weakest_score}/100) — open it for how to fix.
+                      ({theme.weakest_score}/100).
                     </>
                   )}
                 </p>
-                <div className="space-y-1 divide-y" style={{ borderColor: "#F0EDE6" }}>
+                <div
+                  className="space-y-1 divide-y"
+                  style={{ borderColor: "#F0EDE6" }}
+                >
                   {theme.metric_keys.map((mk) => {
                     const m = metrics[mk];
                     if (!m) return null;
@@ -467,19 +561,24 @@ export default function VibeCheckPage() {
           <div className="mt-3 leading-relaxed space-y-2">
             <p>
               Every metric is computed from data I can&apos;t fudge: my own
-              commit history (<code>hbschlac/*</code>), my Claude Code session
-              logs (<code>~/.claude/projects/</code>), and direct{" "}
-              <code>curl</code> hits to my live sites. No API keys, no third
-              parties.
+              commit history (<code>hbschlac/*</code>, public repos only), my
+              Claude Code session logs, and direct <code>curl</code> hits to
+              live sites. No API keys, no third parties.
             </p>
             <p>
               Each metric is scored 0–100 (higher = better). Theme score is the
               average of its metrics. Vibe Score is the average of theme
               scores. Window: rolling {window_days} days. {repos_scanned} repos
-              scanned.
+              scanned. Sparkline shows weekly Vibe Score history.
             </p>
             <p style={{ color: "#8A8A8A" }}>
               Refreshed weekly · last run {fmtDate(generated_at)}
+              {biggest_lever && (
+                <>
+                  {" "}· biggest lever:{" "}
+                  {METRIC_LABELS[biggest_lever] ?? biggest_lever}
+                </>
+              )}
             </p>
           </div>
         </details>
