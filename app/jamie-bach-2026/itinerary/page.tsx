@@ -42,25 +42,57 @@ const dayMeta: Record<
 
 // Per-event editorial thumbnail
 const eventCovers: Record<string, { src: string; alt: string }> = {
-  "fri-picnic": {
+  "fri-lunch": {
     src: "/jamie/newport/newport-flag.jpg",
     alt: "Newport harbor with a flag flying",
+  },
+  "fri-cliff-walk": {
+    src: "/jamie/newport/cliff-walk-real.jpg",
+    alt: "Aerial view of Newport's Cliff Walk mansions",
   },
   "fri-pasta-beach": {
     src: "/jamie/venues/pasta-beach.jpg",
     alt: "Pasta Beach Newport",
   },
+  "fri-games": {
+    src: "/jamie/venues/burbank-briar.jpg",
+    alt: "Burbank Rose Inn common area",
+  },
+  "sat-coffee": {
+    src: "/jamie/newport/cottage.jpg",
+    alt: "Newport morning",
+  },
+  "sat-pilates": {
+    src: "/jamie/newport/newport-summer.jpg",
+    alt: "Newport summer morning",
+  },
   "sat-wallys": {
     src: "/jamie/newport/oysters.jpg",
     alt: "A Newport lobster shack",
+  },
+  "sat-beach": {
+    src: "/jamie/newport/cliff-walk.jpg",
+    alt: "Newport's Easton's Beach harbor",
   },
   "sat-cruise": {
     src: "/jamie/venues/gansett-sunset.jpg",
     alt: "Gansett Cruises sunset sail",
   },
-  "sat-mooring": {
+  "sat-oyster": {
     src: "/jamie/venues/mooring-patio.jpg",
-    alt: "The Mooring patio overlooking Newport Harbor",
+    alt: "Newport waterfront dining",
+  },
+  "sat-out": {
+    src: "/jamie/newport/sunset-harbor.jpg",
+    alt: "Newport at night",
+  },
+  "sun-brunch": {
+    src: "/jamie/newport/cottage-2.jpg",
+    alt: "Newport on a Sunday morning",
+  },
+  "sun-depart": {
+    src: "/jamie/newport/newport-rocks.jpg",
+    alt: "Newport's Cliff Walk gazebo",
   },
 };
 

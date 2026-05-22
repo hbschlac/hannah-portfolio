@@ -9,7 +9,8 @@ import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
 
 // Source of truth: Burbank Rose Inn invoice (Reservation #1016, 1/8/26) +
-// May 12 email from Dawn confirming room contents. Two suites, eight beds,
+// May 12 email from Dawn confirming room contents. Hannah noted on 5/22 that
+// a third suite is also booked — exact suite + beds TBD; placeholder below.
 // Fri 7/10 → Sun 7/12 (two nights).
 const SUITES = [
   {
@@ -29,6 +30,12 @@ const SUITES = [
       { label: "Queen pullout", count: 1 },
     ],
     sleeps: 4,
+  },
+  {
+    name: "Third Rose Suite",
+    coverSrc: "/jamie/venues/burbank-briar.jpg",
+    beds: [{ label: "Bed layout — confirming with the inn", count: 0 }],
+    sleeps: 0,
   },
 ] as const;
 
@@ -84,10 +91,8 @@ function Body() {
             margin: 0,
           }}
         >
-          Two suites at a Victorian inn, five minutes from the harbor. Eight
-          beds across the Golden and Cherry Rose suites — nine of us, so one
-          set of bunk-mates. Continental breakfast each morning and a wide
-          front porch.
+          Three suites at a Victorian inn, five minutes from the harbor.
+          Continental breakfast each morning and a wide front porch.
         </p>
         <div
           style={{
@@ -101,9 +106,9 @@ function Body() {
             paddingBottom: 22,
           }}
         >
-          <Meta label="Check-in" value="Friday, July 10" />
-          <Meta label="Check-out" value="Sunday, July 12" />
-          <Meta label="Beds" value="8 · across 2 suites" />
+          <Meta label="Check-in" value="Fri July 10 · 3:00 pm" />
+          <Meta label="Check-out" value="Sun July 12 · 11:00 am" />
+          <Meta label="Suites" value="3 · sleeping nine" />
           <Meta label="Phone" value="(401) 688-7958" href="tel:+14016887958" />
         </div>
         <div style={{ display: "flex", gap: 22, paddingTop: 18 }}>
@@ -168,18 +173,20 @@ function Body() {
                 >
                   {suite.name}
                 </h3>
-                <span
-                  style={{
-                    fontFamily: fonts.body,
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: colors.brass,
-                  }}
-                >
-                  Sleeps {suite.sleeps}
-                </span>
+                {suite.sleeps > 0 && (
+                  <span
+                    style={{
+                      fontFamily: fonts.body,
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: colors.brass,
+                    }}
+                  >
+                    Sleeps {suite.sleeps}
+                  </span>
+                )}
               </div>
               <ul
                 style={{
@@ -200,10 +207,12 @@ function Body() {
                       padding: "4px 0",
                     }}
                   >
-                    <span>{b.label}</span>
-                    <span style={{ color: colors.inkSoft }}>
-                      ×{b.count}
+                    <span style={b.count === 0 ? { fontStyle: "italic", color: colors.inkSoft } : undefined}>
+                      {b.label}
                     </span>
+                    {b.count > 0 && (
+                      <span style={{ color: colors.inkSoft }}>×{b.count}</span>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -220,8 +229,7 @@ function Body() {
             lineHeight: 1.5,
           }}
         >
-          Eight beds for nine of us — Hannah&apos;s sorting room assignments
-          closer to the trip.
+          Room assignments TBD — Hannah&apos;s sorting closer to the trip.
         </p>
       </section>
 

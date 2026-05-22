@@ -60,7 +60,7 @@ function HomeContent() {
         alt="The Oliver Hazard Perry tall ship docked in Newport Harbor"
         eyebrow="A Newport Bachelorette"
         headline={`For ${trip.bride}`}
-        dateline="Newport, Rhode Island · July 10–13, 2026"
+        dateline="Newport, Rhode Island · July 10–12, 2026"
         height={620}
         priority
       />

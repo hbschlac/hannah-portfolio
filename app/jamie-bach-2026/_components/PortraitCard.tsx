@@ -16,17 +16,18 @@ export default function PortraitCard({ name, role, city, photoUrl }: Props) {
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = !!photoUrl && !imgFailed;
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
       <div
         style={{
           position: "relative",
           width: "100%",
-          aspectRatio: "3 / 4",
+          aspectRatio: "1 / 1",
           background: colors.mist,
           overflow: "hidden",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          borderRadius: "50%",
         }}
       >
         {showImage ? (
@@ -34,7 +35,7 @@ export default function PortraitCard({ name, role, city, photoUrl }: Props) {
             src={photoUrl!}
             alt={name}
             fill
-            sizes="(max-width: 768px) 50vw, 240px"
+            sizes="(max-width: 768px) 33vw, 200px"
             style={{ objectFit: "cover" }}
             onError={() => setImgFailed(true)}
           />
@@ -43,7 +44,7 @@ export default function PortraitCard({ name, role, city, photoUrl }: Props) {
             style={{
               fontFamily: fonts.display,
               fontWeight: 400,
-              fontSize: "3.4rem",
+              fontSize: "2.6rem",
               color: colors.inkSoft,
               letterSpacing: "-0.02em",
             }}
@@ -52,12 +53,12 @@ export default function PortraitCard({ name, role, city, photoUrl }: Props) {
           </span>
         )}
       </div>
-      <div style={{ marginTop: 10 }}>
+      <div style={{ marginTop: 12 }}>
         <div
           style={{
             fontFamily: fonts.display,
             fontWeight: 500,
-            fontSize: 19,
+            fontSize: 18,
             color: colors.ink,
             lineHeight: 1.15,
             letterSpacing: "-0.005em",
@@ -68,13 +69,15 @@ export default function PortraitCard({ name, role, city, photoUrl }: Props) {
         <div
           style={{
             fontFamily: fonts.body,
-            fontSize: 12,
+            fontSize: 11,
             color: colors.inkSoft,
-            letterSpacing: "0.05em",
-            marginTop: 3,
+            letterSpacing: "0.08em",
+            marginTop: 4,
+            textTransform: "uppercase",
+            fontWeight: 500,
           }}
         >
-          {role ? `${role.toUpperCase()} · ${city}` : city.toUpperCase()}
+          {role ? `${role} · ${city}` : city}
         </div>
       </div>
     </div>

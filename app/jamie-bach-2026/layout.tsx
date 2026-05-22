@@ -3,7 +3,7 @@ import { colors, fonts } from "@/lib/jamie/brand";
 
 export const metadata = {
   title: "Jamie's Bachelorette · Newport",
-  description: "Newport, Rhode Island · July 10–13, 2026",
+  description: "Newport, Rhode Island · July 10–12, 2026",
 };
 
 export default function JamieBachLayout({ children }: { children: ReactNode }) {
@@ -17,7 +17,7 @@ export default function JamieBachLayout({ children }: { children: ReactNode }) {
       />
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap"
       />
       <div
         style={{

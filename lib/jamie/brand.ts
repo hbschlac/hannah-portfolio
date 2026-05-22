@@ -3,30 +3,31 @@
 // Photo-led · serif headlines · single coral pop · brass hairlines
 
 export const colors = {
-  // Editorial palette
-  paper: "#F4EFE6",       // warm off-white background
-  ink: "#161616",         // body + headlines
+  // Editorial palette — ecru base (cooler / more neutral than warm beige)
+  paper: "#EFEAE0",       // ecru background
+  ink: "#1A1A1A",         // body + headlines
   inkSoft: "#5C544A",     // captions, secondary
   coral: "#C8453A",       // single editorial pop (sparingly)
   brass: "#9B7B3F",       // rule lines, small accents
-  mist: "#E8E2D5",        // card dividers, hairlines
+  mist: "#E2DCCF",        // card dividers, hairlines
 
   // Back-compat aliases for old token names — let legacy code keep compiling.
-  // All map into the editorial system.
-  cream: "#F4EFE6",       // → paper
-  navy: "#161616",        // → ink
+  cream: "#EFEAE0",       // → paper
+  navy: "#1A1A1A",        // → ink
   navySoft: "#5C544A",    // → inkSoft
   tangerine: "#9B7B3F",   // → brass
   butter: "#9B7B3F",      // → brass
-  lime: "#E8E2D5",        // → mist
-  lavender: "#E8E2D5",    // → mist
+  lime: "#E2DCCF",        // → mist
+  lavender: "#E2DCCF",    // → mist
 } as const;
 
 export const fonts = {
-  display: '"Fraunces", "Playfair Display", Georgia, serif',
+  // Playfair Display — calmer, classic editorial serif (less wonky than Fraunces).
+  display:
+    '"Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif',
   body: '"Inter", system-ui, -apple-system, sans-serif',
   // Aliases kept (mapped to body) so legacy refs compile; we don't decorate with these anymore.
-  script: '"Fraunces", Georgia, serif',
+  script: '"Playfair Display", Georgia, serif',
   mono: '"Inter", system-ui, sans-serif',
 } as const;
 

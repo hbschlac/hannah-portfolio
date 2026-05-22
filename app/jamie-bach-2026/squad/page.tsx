@@ -44,8 +44,8 @@ function Body() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "32px 18px",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "28px 16px",
           padding: "16px 24px 56px",
         }}
       >
