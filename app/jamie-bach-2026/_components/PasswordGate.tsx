@@ -27,7 +27,13 @@ export default function PasswordGate({
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    if (sessionStorage.getItem(storageKey) === "true") {
+    // Read from localStorage so the unlock survives tab close, browser restart,
+    // and new-tab navigations from shared links (iMessage, Notes, etc.).
+    // Also accept a legacy sessionStorage value so anyone already in stays in.
+    if (
+      localStorage.getItem(storageKey) === "true" ||
+      sessionStorage.getItem(storageKey) === "true"
+    ) {
       setUnlocked(true);
     }
     setChecking(false);
@@ -38,9 +44,9 @@ export default function PasswordGate({
     const valid =
       input === guestPassword || (adminPassword && input === adminPassword);
     if (valid) {
-      sessionStorage.setItem(storageKey, "true");
+      localStorage.setItem(storageKey, "true");
       if (adminPassword && input === adminPassword) {
-        sessionStorage.setItem("jamie-bach-unlocked", "true");
+        localStorage.setItem("jamie-bach-unlocked", "true");
       }
       setUnlocked(true);
       setError(false);
