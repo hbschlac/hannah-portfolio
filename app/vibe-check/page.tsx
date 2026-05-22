@@ -117,6 +117,7 @@ const METRIC_LABELS: Record<string, string> = {
   broken_in_prod: "Broken in prod",
   uptime: "Live site latency",
   mttf: "Mean time to fix",
+  cron_health: "Scheduled task health",
   fix_to_feature: "Fix-to-feature ratio",
   reverts: "Revert / oops count",
   debug_spiral: "Longest debug spiral",
@@ -693,6 +694,23 @@ function renderExample(metricKey: string, ex: Example, i: number) {
         <span style={{ color: "#5C5C5C" }}>
           {String(ex.status)} · {String(ex.ttfb_ms)}ms
         </span>
+      </li>
+    );
+  }
+
+  if (metricKey === "cron_health") {
+    return (
+      <li key={i} className="text-xs leading-relaxed">
+        <span className="font-mono" style={{ color: "#1A1A1A" }}>
+          {String(ex.task)}
+        </span>{" "}
+        <span style={{ color: "#C62828" }}>
+          {String(ex.days_stale)}d stale ({String(ex.ratio)}× expected)
+        </span>
+        <div style={{ color: "#8A8A8A" }}>
+          last ran {String(ex.last_run)} · expected every{" "}
+          {String(ex.expected_period_days)}d
+        </div>
       </li>
     );
   }
