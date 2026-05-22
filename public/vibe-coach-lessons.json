@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-22T19:10:00Z",
-  "sessions_analyzed": 8,
+  "generated_at": "2026-05-22T19:20:00Z",
+  "sessions_analyzed": 9,
   "lessons_in_flight": [
     {
       "habit": "Break sessions at the 2-hour mark",
-      "framing": "Long sessions ≠ productive sessions. Force a commit and re-orient at 2h.",
+      "framing": "Long sessions \u2260 productive sessions. Force a commit and re-orient at 2h.",
       "evidence_count": 5,
       "evidence_summary": "5 of 8 recent sessions hit the 6-hour cap",
       "weeks_in_flight": 1,
@@ -22,9 +22,18 @@
     },
     {
       "habit": "End research sessions with a written handoff",
-      "framing": "Any research session ≥1h ends with a one-page note. Otherwise the next session restarts the search from zero.",
+      "framing": "Any research session \u22651h ends with a one-page note. Otherwise the next session restarts the search from zero.",
       "evidence_count": 1,
       "evidence_summary": "One 6-hour session produced zero artifacts",
+      "weeks_in_flight": 1,
+      "status": "in-progress",
+      "attribution": "tool_caught"
+    },
+    {
+      "habit": "Audit scheduled-task sessions that hit the 6h cap with no work",
+      "framing": "Cron tasks running to the cap with zero Edits/Writes are likely stuck, not productive. Verify their lastRunAt completion vs the cap timeout.",
+      "evidence_count": 4,
+      "evidence_summary": "4 cron sessions (reddit-pulse-health-check, claude-reddit-pulse, calmar-bug-fixer, resume trigger) hit 6h cap with 0 Edits/Writes",
       "weeks_in_flight": 1,
       "status": "in-progress",
       "attribution": "tool_caught"
@@ -32,27 +41,67 @@
   ],
   "lessons_graduated": [],
   "going_well": [
-    { "note": "Dry-runs caught real bugs before prod (awk truncation in vibe-improver)" },
-    { "note": "Zero hotfix sequences in the last 7 days (vs 69 in the 30-day baseline)" }
+    {
+      "note": "Dry-runs caught real bugs before prod (awk truncation in vibe-improver)"
+    },
+    {
+      "note": "Zero hotfix sequences in the last 7 days (vs 69 in the 30-day baseline)"
+    }
   ],
   "claude_quality": {
     "headline": "How well is Claude executing my vibe-coding?",
     "subhead": "Three signals: how often I have to course-correct, how well Claude follows my custom rules, and who's driving the habit fixes.",
     "override_trend": [
-      { "week": "2026-W16", "override_rate": 0.032, "sessions": 2, "user_msgs": 63, "overrides": 2 },
-      { "week": "2026-W17", "override_rate": 0.032, "sessions": 10, "user_msgs": 217, "overrides": 7 },
-      { "week": "2026-W18", "override_rate": 0.011, "sessions": 12, "user_msgs": 187, "overrides": 2 },
-      { "week": "2026-W19", "override_rate": 0.0, "sessions": 16, "user_msgs": 95, "overrides": 0 },
-      { "week": "2026-W20", "override_rate": 0.022, "sessions": 6, "user_msgs": 91, "overrides": 2 },
-      { "week": "2026-W21", "override_rate": 0.028, "sessions": 11, "user_msgs": 178, "overrides": 5 }
+      {
+        "week": "2026-W16",
+        "override_rate": 0.032,
+        "sessions": 2,
+        "user_msgs": 63,
+        "overrides": 2
+      },
+      {
+        "week": "2026-W17",
+        "override_rate": 0.032,
+        "sessions": 10,
+        "user_msgs": 217,
+        "overrides": 7
+      },
+      {
+        "week": "2026-W18",
+        "override_rate": 0.011,
+        "sessions": 12,
+        "user_msgs": 187,
+        "overrides": 2
+      },
+      {
+        "week": "2026-W19",
+        "override_rate": 0.0,
+        "sessions": 16,
+        "user_msgs": 95,
+        "overrides": 0
+      },
+      {
+        "week": "2026-W20",
+        "override_rate": 0.022,
+        "sessions": 6,
+        "user_msgs": 91,
+        "overrides": 2
+      },
+      {
+        "week": "2026-W21",
+        "override_rate": 0.027,
+        "sessions": 11,
+        "user_msgs": 184,
+        "overrides": 5
+      }
     ],
-    "override_caveat": "Detects course-correction language (\"no\", \"actually\", \"wait\", \"that's wrong\"). Noisy in weeks where I'm refining requirements vs catching mistakes — won't fully separate productive corrections from Claude failures.",
+    "override_caveat": "Detects course-correction language (\"no\", \"actually\", \"wait\", \"that's wrong\"). Noisy in weeks where I'm refining requirements vs catching mistakes \u2014 won't fully separate productive corrections from Claude failures.",
     "claude_md_compliance": {
       "audited_at": "2026-05-22T19:10:00Z",
       "sample_session": "3270008a",
       "rules": [
         {
-          "rule": "Scope discipline — boring vs ambitious framing before >2 moving parts",
+          "rule": "Scope discipline \u2014 boring vs ambitious framing before >2 moving parts",
           "score": 90,
           "notes": "Framed boring vs ambitious 4 times this session (privacy fixes, vibe-improver, vibe-coach, claude-quality). One miss on page UI changes."
         },
@@ -62,7 +111,7 @@
           "notes": "Verified gh auth + local clones before vibe-improver run. Skipped pre-checks on aggregator + page changes."
         },
         {
-          "rule": "Deploy verification — confirmed live URL after every push",
+          "rule": "Deploy verification \u2014 confirmed live URL after every push",
           "score": 100,
           "notes": "Every push followed by curl + grep verification in background. Zero \"declared done before verified\" instances."
         },
@@ -77,7 +126,7 @@
     "attribution_breakdown": {
       "claude_proactive": 1,
       "hannah_corrected": 1,
-      "tool_caught": 1,
+      "tool_caught": 2,
       "explainer": "Each habit in flight gets tagged with who first surfaced it. claude_proactive = Claude flagged the issue in the moment. hannah_corrected = Hannah noticed and pushed back. tool_caught = an automated check (linter, test, vibe-improver) caught it before review."
     }
   }

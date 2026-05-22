@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-22T18:45:59.306689+00:00",
+  "generated_at": "2026-05-22T19:29:22.819152+00:00",
   "window_days": 90,
-  "vibe_score": 41,
+  "vibe_score": 48,
   "verdict": "mid",
   "biggest_lever": "broken_in_prod",
   "focus": {
@@ -14,11 +14,18 @@
     ]
   },
   "improver_activity": {
-    "total_runs_30d": 1,
+    "total_runs_30d": 2,
     "opened_30d": 1,
-    "skipped_30d": 0,
+    "skipped_30d": 1,
     "failed_30d": 0,
     "recent": [
+      {
+        "date": "2026-05-22",
+        "metric": "broken_in_prod",
+        "repo": "muse-shopping",
+        "status": "skipped",
+        "pr_url": null
+      },
       {
         "date": "2026-05-22",
         "metric": "broken_in_prod",
@@ -38,7 +45,7 @@
         "uptime",
         "mttf"
       ],
-      "score": 33,
+      "score": 55,
       "weakest_metric": "broken_in_prod",
       "weakest_score": 0
     },
@@ -129,42 +136,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "2054ms",
+      "value": "228ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 403,
-            "ttfb_ms": 35
+            "ttfb_ms": 33
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 3086
+            "ttfb_ms": 161
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1021
+            "ttfb_ms": 294
           }
         },
         "ok_rate": 0.67,
-        "avg_ttfb_ms": 2054
+        "avg_ttfb_ms": 228
       },
-      "score": 0,
+      "score": 65,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
-          "url": "https://www.muse.shopping",
-          "status": 200,
-          "ttfb_ms": 3086
-        },
-        {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1021
+          "ttfb_ms": 294
+        },
+        {
+          "url": "https://www.muse.shopping",
+          "status": 200,
+          "ttfb_ms": 161
         },
         {
           "url": "https://schlacter.me",
           "status": 403,
-          "ttfb_ms": 35
+          "ttfb_ms": 33
         }
       ],
       "examples_label": "Live site response times (slowest first)",
