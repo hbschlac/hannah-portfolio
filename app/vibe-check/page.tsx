@@ -74,12 +74,39 @@ type Lesson = {
   weeks_in_flight: number;
   status: string;
 };
+type OverrideWeek = {
+  week: string;
+  override_rate: number;
+  sessions: number;
+  user_msgs: number;
+  overrides: number;
+};
+type ComplianceRule = { rule: string; score: number; notes: string };
+type ClaudeQuality = {
+  headline: string;
+  subhead: string;
+  override_trend: OverrideWeek[];
+  override_caveat: string;
+  claude_md_compliance: {
+    audited_at: string;
+    sample_session: string;
+    rules: ComplianceRule[];
+    weighted_score: number;
+  };
+  attribution_breakdown: {
+    claude_proactive: number;
+    hannah_corrected: number;
+    tool_caught: number;
+    explainer: string;
+  };
+};
 type LessonsFile = {
   generated_at: string;
   sessions_analyzed: number;
   lessons_in_flight: Lesson[];
   lessons_graduated: { habit: string; weeks_in_flight?: number }[];
   going_well: { note: string }[];
+  claude_quality?: ClaudeQuality;
 };
 
 const stats = statsJson as Stats;
@@ -179,6 +206,227 @@ function Sparkline({ data }: { data: HistoryEntry[] }) {
           {delta} pts
         </div>
         <div style={{ color: "#8A8A8A" }}>over {data.length} weeks</div>
+      </div>
+    </div>
+  );
+}
+
+function OverrideSparkline({ data }: { data: OverrideWeek[] }) {
+  if (data.length < 2) return null;
+  const w = 240;
+  const h = 50;
+  const pad = 4;
+  const rates = data.map((d) => d.override_rate);
+  const min = 0;
+  const max = Math.max(...rates, 0.05);
+  const range = max - min || 1;
+  const xStep = (w - pad * 2) / (data.length - 1);
+  const coords = rates.map((r, i) => ({
+    x: pad + i * xStep,
+    y: pad + (h - pad * 2) * (1 - (r - min) / range),
+    val: r,
+  }));
+  const path = coords
+    .map((c, i) => `${i === 0 ? "M" : "L"}${c.x.toFixed(1)},${c.y.toFixed(1)}`)
+    .join(" ");
+  const last = coords[coords.length - 1];
+  const first = coords[0];
+  const deltaPct = (rates[rates.length - 1] - rates[0]) * 100;
+  // For override rate, DOWN is good (fewer corrections)
+  const trendColor =
+    deltaPct < 0 ? "#2E7D32" : deltaPct > 0 ? "#C62828" : "#8A8A8A";
+  const arrow = deltaPct < 0 ? "↓" : deltaPct > 0 ? "↑" : "→";
+
+  return (
+    <div className="flex items-center gap-4">
+      <svg
+        width={w}
+        height={h}
+        viewBox={`0 0 ${w} ${h}`}
+        style={{ display: "block" }}
+      >
+        <path
+          d={path}
+          fill="none"
+          stroke="#1A1A1A"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx={first.x} cy={first.y} r="2.5" fill="#8A8A8A" />
+        <circle cx={last.x} cy={last.y} r="3" fill={trendColor} />
+      </svg>
+      <div className="text-xs leading-tight" style={{ color: "#5C5C5C" }}>
+        <div>{(last.val * 100).toFixed(1)}% this week</div>
+        <div style={{ color: trendColor }}>
+          {arrow} {deltaPct > 0 ? "+" : ""}
+          {deltaPct.toFixed(1)} pts
+        </div>
+        <div style={{ color: "#8A8A8A" }}>over {data.length} weeks</div>
+      </div>
+    </div>
+  );
+}
+
+function ClaudeQualityCard({ q }: { q: ClaudeQuality }) {
+  const total =
+    q.attribution_breakdown.claude_proactive +
+    q.attribution_breakdown.hannah_corrected +
+    q.attribution_breakdown.tool_caught;
+
+  return (
+    <div
+      className="mt-6 rounded-xl p-6"
+      style={{ background: "#FFFFFF", border: "1px solid #E8E4DC" }}
+    >
+      <p
+        className="text-xs uppercase tracking-wider"
+        style={{ color: "#8A8A8A" }}
+      >
+        {q.headline}
+      </p>
+      <p className="text-xs mt-1 leading-relaxed" style={{ color: "#8A8A8A" }}>
+        {q.subhead}
+      </p>
+
+      {/* Override rate */}
+      <div
+        className="mt-5 pt-5"
+        style={{ borderTop: "1px solid #F0EDE6" }}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm" style={{ color: "#1A1A1A" }}>
+              Override rate
+            </p>
+            <p
+              className="text-xs mt-1 leading-relaxed max-w-md"
+              style={{ color: "#8A8A8A" }}
+            >
+              How often I have to course-correct Claude per user message.
+              Lower = Claude predicting my intent better.
+            </p>
+          </div>
+          <OverrideSparkline data={q.override_trend} />
+        </div>
+        <p
+          className="text-xs mt-3 italic leading-relaxed"
+          style={{ color: "#8A8A8A" }}
+        >
+          ⚠ {q.override_caveat}
+        </p>
+      </div>
+
+      {/* CLAUDE.md compliance */}
+      <div
+        className="mt-5 pt-5"
+        style={{ borderTop: "1px solid #F0EDE6" }}
+      >
+        <div className="flex items-baseline justify-between gap-4">
+          <p className="text-sm" style={{ color: "#1A1A1A" }}>
+            CLAUDE.md compliance
+          </p>
+          <div
+            className="text-2xl font-light"
+            style={{ color: scoreColor(q.claude_md_compliance.weighted_score) }}
+          >
+            {q.claude_md_compliance.weighted_score}
+          </div>
+        </div>
+        <p
+          className="text-xs mt-1 leading-relaxed"
+          style={{ color: "#8A8A8A" }}
+        >
+          Sampled session: {q.claude_md_compliance.sample_session}. Each rule
+          scored against actual session behavior.
+        </p>
+        <ul className="mt-3 space-y-2">
+          {q.claude_md_compliance.rules.map((r, i) => (
+            <li key={i} className="text-xs flex gap-3 items-baseline">
+              <span
+                className="font-mono shrink-0"
+                style={{ color: scoreColor(r.score), minWidth: "2rem" }}
+              >
+                {r.score}
+              </span>
+              <span>
+                <span style={{ color: "#1A1A1A" }}>{r.rule}</span>
+                <span style={{ color: "#8A8A8A" }}> — {r.notes}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Attribution breakdown */}
+      <div
+        className="mt-5 pt-5"
+        style={{ borderTop: "1px solid #F0EDE6" }}
+      >
+        <p className="text-sm" style={{ color: "#1A1A1A" }}>
+          Who&apos;s driving the habit fixes?
+        </p>
+        <p
+          className="text-xs mt-1 leading-relaxed"
+          style={{ color: "#8A8A8A" }}
+        >
+          {q.attribution_breakdown.explainer}
+        </p>
+        {total > 0 && (
+          <div className="mt-3 flex gap-2">
+            <div
+              className="rounded p-3 flex-1 text-center"
+              style={{ background: "#F8F6F2" }}
+            >
+              <div
+                className="text-xl font-light"
+                style={{ color: "#2E7D32" }}
+              >
+                {q.attribution_breakdown.claude_proactive}
+              </div>
+              <div
+                className="text-xs mt-1"
+                style={{ color: "#5C5C5C" }}
+              >
+                Claude proactive
+              </div>
+            </div>
+            <div
+              className="rounded p-3 flex-1 text-center"
+              style={{ background: "#F8F6F2" }}
+            >
+              <div
+                className="text-xl font-light"
+                style={{ color: "#F57C00" }}
+              >
+                {q.attribution_breakdown.hannah_corrected}
+              </div>
+              <div
+                className="text-xs mt-1"
+                style={{ color: "#5C5C5C" }}
+              >
+                Hannah corrected
+              </div>
+            </div>
+            <div
+              className="rounded p-3 flex-1 text-center"
+              style={{ background: "#F8F6F2" }}
+            >
+              <div
+                className="text-xl font-light"
+                style={{ color: "#5C6BC0" }}
+              >
+                {q.attribution_breakdown.tool_caught}
+              </div>
+              <div
+                className="text-xs mt-1"
+                style={{ color: "#5C5C5C" }}
+              >
+                Tool caught
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -718,6 +966,11 @@ export default function VibeCheckPage() {
 
         {/* Lessons in flight (vibe-coach) */}
         <LessonsCard lessons={lessons} />
+
+        {/* Claude-quality panel (vibe-coach v2) */}
+        {lessons.claude_quality && (
+          <ClaudeQualityCard q={lessons.claude_quality} />
+        )}
 
         {/* Themes */}
         <div className="mt-10 space-y-6">

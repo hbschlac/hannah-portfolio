@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-22T18:55:00Z",
+  "generated_at": "2026-05-22T19:10:00Z",
   "sessions_analyzed": 8,
   "lessons_in_flight": [
     {
@@ -8,7 +8,8 @@
       "evidence_count": 5,
       "evidence_summary": "5 of 8 recent sessions hit the 6-hour cap",
       "weeks_in_flight": 1,
-      "status": "in-progress"
+      "status": "in-progress",
+      "attribution": "hannah_corrected"
     },
     {
       "habit": "Grep before re-implementing",
@@ -16,7 +17,8 @@
       "evidence_count": 3,
       "evidence_summary": "Almost wrote safe_msg twice in one session",
       "weeks_in_flight": 1,
-      "status": "in-progress"
+      "status": "in-progress",
+      "attribution": "claude_proactive"
     },
     {
       "habit": "End research sessions with a written handoff",
@@ -24,16 +26,59 @@
       "evidence_count": 1,
       "evidence_summary": "One 6-hour session produced zero artifacts",
       "weeks_in_flight": 1,
-      "status": "in-progress"
+      "status": "in-progress",
+      "attribution": "tool_caught"
     }
   ],
   "lessons_graduated": [],
   "going_well": [
-    {
-      "note": "Dry-runs caught real bugs before prod (awk truncation in vibe-improver)"
+    { "note": "Dry-runs caught real bugs before prod (awk truncation in vibe-improver)" },
+    { "note": "Zero hotfix sequences in the last 7 days (vs 69 in the 30-day baseline)" }
+  ],
+  "claude_quality": {
+    "headline": "How well is Claude executing my vibe-coding?",
+    "subhead": "Three signals: how often I have to course-correct, how well Claude follows my custom rules, and who's driving the habit fixes.",
+    "override_trend": [
+      { "week": "2026-W16", "override_rate": 0.032, "sessions": 2, "user_msgs": 63, "overrides": 2 },
+      { "week": "2026-W17", "override_rate": 0.032, "sessions": 10, "user_msgs": 217, "overrides": 7 },
+      { "week": "2026-W18", "override_rate": 0.011, "sessions": 12, "user_msgs": 187, "overrides": 2 },
+      { "week": "2026-W19", "override_rate": 0.0, "sessions": 16, "user_msgs": 95, "overrides": 0 },
+      { "week": "2026-W20", "override_rate": 0.022, "sessions": 6, "user_msgs": 91, "overrides": 2 },
+      { "week": "2026-W21", "override_rate": 0.028, "sessions": 11, "user_msgs": 178, "overrides": 5 }
+    ],
+    "override_caveat": "Detects course-correction language (\"no\", \"actually\", \"wait\", \"that's wrong\"). Noisy in weeks where I'm refining requirements vs catching mistakes — won't fully separate productive corrections from Claude failures.",
+    "claude_md_compliance": {
+      "audited_at": "2026-05-22T19:10:00Z",
+      "sample_session": "3270008a",
+      "rules": [
+        {
+          "rule": "Scope discipline — boring vs ambitious framing before >2 moving parts",
+          "score": 90,
+          "notes": "Framed boring vs ambitious 4 times this session (privacy fixes, vibe-improver, vibe-coach, claude-quality). One miss on page UI changes."
+        },
+        {
+          "rule": "Constraint check before coding",
+          "score": 60,
+          "notes": "Verified gh auth + local clones before vibe-improver run. Skipped pre-checks on aggregator + page changes."
+        },
+        {
+          "rule": "Deploy verification — confirmed live URL after every push",
+          "score": 100,
+          "notes": "Every push followed by curl + grep verification in background. Zero \"declared done before verified\" instances."
+        },
+        {
+          "rule": "Don't punt work back to Hannah",
+          "score": 80,
+          "notes": "Mostly self-sufficient. One legitimate UI handoff (\"hit Run now in the sidebar\") that I couldn't drive myself."
+        }
+      ],
+      "weighted_score": 83
     },
-    {
-      "note": "Zero hotfix sequences in the last 7 days (vs 69 in the 30-day baseline)"
+    "attribution_breakdown": {
+      "claude_proactive": 1,
+      "hannah_corrected": 1,
+      "tool_caught": 1,
+      "explainer": "Each habit in flight gets tagged with who first surfaced it. claude_proactive = Claude flagged the issue in the moment. hannah_corrected = Hannah noticed and pushed back. tool_caught = an automated check (linter, test, vibe-improver) caught it before review."
     }
-  ]
+  }
 }
