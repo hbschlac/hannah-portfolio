@@ -70,8 +70,8 @@ function HomeContent() {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            flexDirection: "column",
+            gap: 14,
             paddingTop: 20,
             borderTop: `1px solid ${colors.mist}`,
             borderBottom: `1px solid ${colors.mist}`,

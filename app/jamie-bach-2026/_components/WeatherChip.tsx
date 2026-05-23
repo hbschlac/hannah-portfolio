@@ -51,7 +51,6 @@ export function CurrentWeatherChip() {
   return (
     <div
       style={{
-        textAlign: "right",
         fontFamily: fonts.body,
         color: colors.inkSoft,
       }}
@@ -62,7 +61,7 @@ export function CurrentWeatherChip() {
           target="_blank"
           rel="noopener noreferrer"
           style={{
-            display: "block",
+            display: "inline-block",
             fontSize: 12,
             fontWeight: 600,
             letterSpacing: "0.18em",
@@ -80,12 +79,12 @@ export function CurrentWeatherChip() {
       <div
         style={{
           marginTop: current ? 6 : 0,
-          fontSize: 11,
-          letterSpacing: "0.08em",
+          fontSize: 12,
+          letterSpacing: "0.04em",
           color: colors.inkSoft,
         }}
       >
-        ☀️ Typical July: {TYPICAL_JULY_HIGH_F}° high · {TYPICAL_JULY_LOW_F}° low
+        ☀️ Typical July in Newport: {TYPICAL_JULY_HIGH_F}° high · {TYPICAL_JULY_LOW_F}° low
       </div>
     </div>
   );

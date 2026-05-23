@@ -23,11 +23,12 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   return (
     <div
       style={{
-        display: "inline-flex",
+        display: "flex",
         alignItems: "baseline",
-        gap: 10,
+        gap: 12,
         color: colors.ink,
         fontFamily: fonts.body,
+        flexWrap: "wrap",
       }}
     >
       <span
@@ -44,12 +45,12 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
       <span
         style={{
           fontFamily: fonts.display,
-          fontWeight: 500,
-          fontSize: 22,
-          letterSpacing: "-0.005em",
+          fontWeight: 600,
+          fontSize: 26,
+          letterSpacing: "-0.01em",
         }}
       >
-        {days} {days === 1 ? "day" : "days"}
+        {days} {days === 1 ? "day" : "days"} to go
       </span>
     </div>
   );

@@ -22,12 +22,12 @@ export const colors = {
 } as const;
 
 export const fonts = {
-  // Playfair Display — calmer, classic editorial serif (less wonky than Fraunces).
-  display:
-    '"Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif',
+  // Outfit — friendly rounded sans for display + headlines.
+  // Body keeps Inter for paragraph copy.
+  display: '"Outfit", "Inter", system-ui, -apple-system, sans-serif',
   body: '"Inter", system-ui, -apple-system, sans-serif',
-  // Aliases kept (mapped to body) so legacy refs compile; we don't decorate with these anymore.
-  script: '"Playfair Display", Georgia, serif',
+  // Aliases kept (mapped to display/body) so legacy refs compile.
+  script: '"Outfit", system-ui, sans-serif',
   mono: '"Inter", system-ui, sans-serif',
 } as const;
 
