@@ -30,7 +30,7 @@ function HomeContent() {
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
-  const { trip, roster, photosUrl, groupChatUrl } = state;
+  const { trip, roster, groupChatUrl } = state;
 
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
@@ -158,11 +158,6 @@ function HomeContent() {
             marginTop: 18,
           }}
         >
-          <ExternalLink
-            href={photosUrl}
-            label="Shared photo album"
-            hint={photosUrl ? "Open in iCloud" : "Coming soon"}
-          />
           <ExternalLink
             href={groupChatUrl}
             label="Group chat"
