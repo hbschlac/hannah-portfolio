@@ -1,15 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import PasswordGate from "../_components/PasswordGate";
 import BottomNav from "../_components/BottomNav";
 import SectionHeader from "../_components/SectionHeader";
 import TripSubNav from "../_components/TripSubNav";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
-
-const STORAGE_KEY = "jamie-pack-checks";
 
 export default function PackingPage() {
   return (
@@ -26,25 +23,6 @@ export default function PackingPage() {
 
 function Body() {
   const { state, error, loading } = useGuestState();
-  const [checks, setChecks] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      try {
-        setChecks(JSON.parse(raw));
-      } catch {}
-    }
-  }, []);
-
-  const toggle = (id: string) => {
-    setChecks((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      return next;
-    });
-  };
-
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
@@ -53,7 +31,7 @@ function Body() {
       <SectionHeader
         kicker="The Pack List"
         title="What to bring."
-        dek="Tap to cross off as you pack. Your checks are saved only on this device — others won't see them."
+        dek="A starting point — adjust to your own packing style."
       />
       <TripSubNav />
 
@@ -105,57 +83,20 @@ function Body() {
                 listStyle: "none",
               }}
             >
-              {cat.items.map((item) => {
-                const checked = !!checks[item.id];
-                return (
-                  <li
-                    key={item.id}
-                    onClick={() => toggle(item.id)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 14,
-                      padding: "12px 0",
-                      borderBottom: `1px solid ${colors.mist}`,
-                      cursor: "pointer",
-                      fontFamily: fonts.body,
-                      fontSize: 15,
-                      color: checked ? colors.inkSoft : colors.ink,
-                      textDecoration: checked ? "line-through" : "none",
-                      userSelect: "none",
-                    }}
-                  >
-                    <span
-                      aria-hidden
-                      style={{
-                        width: 14,
-                        height: 14,
-                        border: `1px solid ${colors.ink}`,
-                        background: checked ? colors.ink : "transparent",
-                        flexShrink: 0,
-                        position: "relative",
-                      }}
-                    >
-                      {checked && (
-                        <span
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -55%)",
-                            color: colors.paper,
-                            fontSize: 10,
-                            lineHeight: 1,
-                          }}
-                        >
-                          ✓
-                        </span>
-                      )}
-                    </span>
-                    {item.label}
-                  </li>
-                );
-              })}
+              {cat.items.map((item) => (
+                <li
+                  key={item.id}
+                  style={{
+                    padding: "12px 0",
+                    borderBottom: `1px solid ${colors.mist}`,
+                    fontFamily: fonts.body,
+                    fontSize: 15,
+                    color: colors.ink,
+                  }}
+                >
+                  {item.label}
+                </li>
+              ))}
             </ul>
           </section>
         ))}
