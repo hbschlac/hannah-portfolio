@@ -2,8 +2,21 @@ import type { ReactNode } from "react";
 import { colors, fonts } from "@/lib/jamie/brand";
 
 export const metadata = {
+  metadataBase: new URL("https://jamiesbach.schlacter.me"),
   title: "Jamie's Bachelorette · Newport",
   description: "Newport, Rhode Island · July 10–12, 2026",
+  openGraph: {
+    title: "Jamie's Bachelorette · Newport",
+    description: "Newport, Rhode Island · July 10–12, 2026",
+    url: "https://jamiesbach.schlacter.me",
+    siteName: "Jamie's Bach",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Jamie's Bachelorette · Newport",
+    description: "Newport, Rhode Island · July 10–12, 2026",
+  },
 };
 
 export default function JamieBachLayout({ children }: { children: ReactNode }) {
