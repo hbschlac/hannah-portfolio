@@ -83,7 +83,7 @@ function HomeContent() {
         </div>
       </div>
 
-      {/* JAMIE — tiny side-by-side throwback banner */}
+      {/* JAMIE — single throwback hero */}
       <section style={{ padding: "56px 24px 0" }}>
         <Eyebrow text="The Bride" />
         <h2
@@ -101,34 +101,20 @@ function HomeContent() {
         </h2>
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 8,
+            position: "relative",
+            width: "100%",
+            aspectRatio: "4 / 3",
+            overflow: "hidden",
+            background: colors.mist,
           }}
         >
-          {[
-            { src: "/jamie/jamie-beach.jpg", alt: "Toddler Jamie at the beach" },
-            { src: "/jamie/jamie-purse.jpg", alt: "Toddler Jamie in a floral dress with a tiny white purse" },
-          ].map((p) => (
-            <div
-              key={p.src}
-              style={{
-                position: "relative",
-                width: "100%",
-                aspectRatio: "1 / 1",
-                overflow: "hidden",
-                background: colors.mist,
-              }}
-            >
-              <NextImage
-                src={p.src}
-                alt={p.alt}
-                fill
-                sizes="(max-width: 768px) 50vw, 320px"
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-          ))}
+          <NextImage
+            src="/jamie/jamie-beach.jpg"
+            alt="Toddler Jamie at the beach"
+            fill
+            sizes="(max-width: 768px) 100vw, 640px"
+            style={{ objectFit: "cover" }}
+          />
         </div>
       </section>
 
