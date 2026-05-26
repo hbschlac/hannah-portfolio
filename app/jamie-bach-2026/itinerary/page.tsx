@@ -59,8 +59,8 @@ const eventCovers: Record<string, { src: string; alt: string }> = {
     alt: "Bowl of candy for the candy salad",
   },
   "sat-coffee": {
-    src: "/jamie/venues/coffee-pastries.jpg",
-    alt: "Morning coffee at Nitro Bar",
+    src: "/jamie/venues/nitro-bar.jpg",
+    alt: "Iced coffees from above — Nitro Bar Newport",
   },
   "sat-pilates": {
     src: "/jamie/venues/thrive-newport.jpg",
