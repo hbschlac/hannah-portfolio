@@ -17,8 +17,8 @@ export default function PasswordGate({
   guestPassword,
   adminPassword,
   storageKey,
-  title = "Jamie's Bachelorette",
-  subtitle = "Newport, Rhode Island · July 10–12, 2026",
+  title = "Jamie's Bach",
+  subtitle = "July 10–12, 2026",
   children,
 }: Props) {
   const [unlocked, setUnlocked] = useState(false);
@@ -115,7 +115,7 @@ export default function PasswordGate({
             marginBottom: 14,
           }}
         >
-          Newport · 2026
+          A Newport Bachelorette
         </div>
         <h1
           style={{
