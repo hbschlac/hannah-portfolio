@@ -7,34 +7,37 @@ import EditorialHero from "../_components/EditorialHero";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
 
-// Source of truth: Burbank Rose Inn invoice (Reservation #1016, 1/8/26) +
-// May 12 email from Dawn confirming room contents. Hannah noted on 5/22 that
-// a third suite is also booked — exact suite + beds TBD; placeholder below.
-// Fri 7/10 → Sun 7/12 (two nights).
+// Source of truth: Hannah's email to Jamie (1/8/26) — 3 rooms reserved, one
+// per floor. The third room isn't listed on burbankrose.com but is booked.
+// Each room sleeps 4 → 12 spots for 9 of us. Fri 7/10 → Sun 7/12 (two nights).
 const SUITES = [
   {
-    name: "Golden Rose Suite",
-    coverSrc: "/jamie/venues/burbank-golden.jpg",
+    name: "First Floor",
+    coverSrc: "/jamie/venues/burbank-briar.jpg",
     beds: [
-      { label: "King bed", count: 1 },
-      { label: "Twin bed", count: 2 },
+      { label: "Full bed", count: 1 },
+      { label: "Queen pullout", count: 1 },
+      { label: "Kitchen + living room", count: 1 },
     ],
     sleeps: 4,
   },
   {
-    name: "Cherry Rose Suite",
+    name: "Middle Floor",
+    coverSrc: "/jamie/venues/burbank-golden.jpg",
+    beds: [
+      { label: "King bed", count: 1 },
+      { label: "Bunk bed", count: 1 },
+    ],
+    sleeps: 4,
+  },
+  {
+    name: "Top Floor",
     coverSrc: "/jamie/venues/burbank-cherry.jpg",
     beds: [
       { label: "Queen bed", count: 1 },
       { label: "Queen pullout", count: 1 },
     ],
     sleeps: 4,
-  },
-  {
-    name: "Third Rose Suite",
-    coverSrc: "/jamie/venues/burbank-briar.jpg",
-    beds: [{ label: "Bed layout — confirming with the inn", count: 0 }],
-    sleeps: 0,
   },
 ] as const;
 
