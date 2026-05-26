@@ -201,7 +201,7 @@ export const seedItinerary: Itinerary = [
       address: "111 Memorial Blvd W, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=111+Memorial+Blvd+W+Newport+RI",
     },
-    publicNote: "back at the inn for cards, dessert, and an early night.",
+    publicNote: "A fun night in all about Jamie!",
     status: "planned",
   },
 
@@ -211,7 +211,7 @@ export const seedItinerary: Itinerary = [
     day: "sat",
     date: "2026-07-11",
     startTime: "09:00",
-    title: "coffee + pastries",
+    title: "coffee",
     emoji: "☕",
     location: {
       name: "Nitro Bar",

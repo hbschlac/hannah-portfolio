@@ -24,7 +24,7 @@ const dayMeta: Record<
   },
   sat: {
     label: "Day Two — Saturday, July 11",
-    subtitle: "Brunch, a sunset cruise, and the night we built the trip around.",
+    subtitle: "Pilates, fun around Newport, and sunset cruise.",
     cover: {
       src: "/jamie/newport/sailboats-sunset.jpg",
       alt: "Sailboats silhouetted against a Newport sunset",
@@ -60,7 +60,7 @@ const eventCovers: Record<string, { src: string; alt: string }> = {
   },
   "sat-coffee": {
     src: "/jamie/venues/coffee-pastries.jpg",
-    alt: "Coffee + pastries spread",
+    alt: "Morning coffee at Nitro Bar",
   },
   "sat-pilates": {
     src: "/jamie/venues/thrive-newport.jpg",
