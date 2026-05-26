@@ -321,7 +321,8 @@ export const seedItinerary: Itinerary = [
       address: "Thames St, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=The+Landing+Newport+RI",
     },
-    publicNote: "bar crawl through the wharf.",
+    publicNote:
+      "bar crawl through the wharf. Recommended: The Landing, Dockside, Smugglers Waterfront Bar, O'Briens Pub.",
     status: "planned",
   },
 
@@ -339,7 +340,7 @@ export const seedItinerary: Itinerary = [
       mapsUrl: "https://maps.google.com/?q=CRU+Cafe+Newport+RI",
     },
     publicNote:
-      "last meal together — Hannah is trying to lock in a reservation. Nothing planned after; head home when you're ready.",
+      "last meal together — Hannah is trying to lock in a reservation. Nothing planned after; head home when you're ready. The NYC crew aims to leave Newport around 12:00–12:30pm to drive back.",
     status: "planned",
   },
 ];
