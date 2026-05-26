@@ -10,36 +10,23 @@ import { colors, fonts } from "@/lib/jamie/brand";
 // Source of truth: Hannah's email to Jamie (1/8/26) — 3 rooms reserved, one
 // per floor. The third room isn't listed on burbankrose.com but is booked.
 // Each room sleeps 4 → 12 spots for 9 of us. Fri 7/10 → Sun 7/12 (two nights).
-const SUITES = [
+const SUITES: { name: string; beds: string[]; sleeps: number }[] = [
   {
     name: "First Floor",
-    coverSrc: "/jamie/venues/burbank-briar.jpg",
-    beds: [
-      { label: "Full bed", count: 1 },
-      { label: "Queen pullout", count: 1 },
-      { label: "Kitchen + living room", count: 1 },
-    ],
+    beds: ["Full bed", "Queen pullout", "Kitchen + living room"],
     sleeps: 4,
   },
   {
     name: "Middle Floor",
-    coverSrc: "/jamie/venues/burbank-golden.jpg",
-    beds: [
-      { label: "King bed", count: 1 },
-      { label: "Bunk bed", count: 1 },
-    ],
+    beds: ["King bed", "Bunk bed"],
     sleeps: 4,
   },
   {
     name: "Top Floor",
-    coverSrc: "/jamie/venues/burbank-cherry.jpg",
-    beds: [
-      { label: "Queen bed", count: 1 },
-      { label: "Queen pullout", count: 1 },
-    ],
+    beds: ["Queen bed", "Queen pullout"],
     sleeps: 4,
   },
-] as const;
+];
 
 export default function LodgingPage() {
   return (
@@ -184,21 +171,14 @@ function Body() {
                   color: colors.ink,
                 }}
               >
-                {suite.beds.map((b) => (
+                {suite.beds.map((bed) => (
                   <li
-                    key={b.label}
+                    key={bed}
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
                       padding: "4px 0",
                     }}
                   >
-                    <span style={b.count === 0 ? { color: colors.inkSoft } : undefined}>
-                      {b.label}
-                    </span>
-                    {b.count > 0 && (
-                      <span style={{ color: colors.inkSoft }}>×{b.count}</span>
-                    )}
+                    {bed}
                   </li>
                 ))}
               </ul>
