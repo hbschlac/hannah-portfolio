@@ -6,16 +6,11 @@ import SectionHeader from "../_components/SectionHeader";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
 
-const BREAKDOWN: { label: string; perPerson: number }[] = [
-  { label: "Lodging", perPerson: 359.55 },
-  { label: "Rental car", perPerson: 65.45 },
-  { label: "Meals", perPerson: 200 },
+const FIXED: { label: string; perPerson: number }[] = [
+  { label: "Hotel", perPerson: 359.55 },
   { label: "Sunset cruise", perPerson: 52 },
-  { label: "Activity", perPerson: 30 },
-  { label: "Décor", perPerson: 10.91 },
-  { label: "Groceries", perPerson: 10 },
-  { label: "Alcohol (pregame)", perPerson: 8.33 },
-  { label: "Jamie's share covered", perPerson: 32.47 },
+  { label: "Pilates class", perPerson: 30 },
+  { label: "Bach misc", perPerson: 61.71 },
 ];
 
 export default function ExpensesPage() {
@@ -138,148 +133,30 @@ function Body() {
         </a>
       </section>
 
-      {/* How it works */}
-      <section style={{ padding: "40px 24px 0" }}>
-        <Eyebrow text="How It Works" />
-        <ol
-          style={{
-            margin: "14px 0 0",
-            padding: 0,
-            listStyle: "none",
-            counterReset: "step",
-            fontFamily: fonts.body,
-            fontSize: 15,
-            lineHeight: 1.55,
-            color: colors.ink,
-          }}
-        >
-          {[
-            "Join the Splitwise group.",
-            "Add expenses as you go — cabs, groceries, whatever comes up.",
-            "Splitwise tallies who owes whom at the end.",
-            "We settle on Sunday before flying home.",
-          ].map((step, i) => (
-            <li
-              key={i}
-              style={{
-                display: "flex",
-                gap: 16,
-                padding: "12px 0",
-                borderBottom: `1px solid ${colors.mist}`,
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: fonts.body,
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: "0.16em",
-                  color: colors.brass,
-                  flexShrink: 0,
-                  paddingTop: 4,
-                }}
-              >
-                0{i + 1}
-              </span>
-              <span>{step}</span>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* Pre-paid */}
-      <section style={{ padding: "40px 24px 0" }}>
-        <Eyebrow text="Already Covered" />
-        <div style={{ marginTop: 14 }}>
-          {state.expenses.prePaid.map((p) => {
-            const payer =
-              state.roster.find((r) => r.id === p.paidBy)?.name.split(" ")[0] ||
-              p.paidBy;
-            return (
-              <div
-                key={p.label}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                  padding: "14px 0",
-                  borderBottom: `1px solid ${colors.mist}`,
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontFamily: fonts.display,
-                      fontWeight: 500,
-                      fontSize: 17,
-                      color: colors.ink,
-                      letterSpacing: "-0.005em",
-                    }}
-                  >
-                    {p.label}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: fonts.body,
-                      fontSize: 11,
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                      color: colors.inkSoft,
-                      marginTop: 2,
-                    }}
-                  >
-                    Paid by {payer}
-                  </div>
-                </div>
-                <div
-                  style={{
-                    fontFamily: fonts.display,
-                    fontWeight: 500,
-                    fontSize: 17,
-                    color: colors.ink,
-                    letterSpacing: "-0.005em",
-                  }}
-                >
-                  ${p.amount.toLocaleString()}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Breakdown */}
+      {/* Fixed costs */}
       <section style={{ padding: "40px 24px 64px" }}>
-        <Eyebrow text="The Breakdown" />
+        <Eyebrow text="Fixed" />
         <div style={{ marginTop: 14 }}>
-          {BREAKDOWN.map((b) => (
+          {FIXED.map((b) => (
             <div
               key={b.label}
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                padding: "10px 0",
+                padding: "14px 0",
                 borderBottom: `1px solid ${colors.mist}`,
                 fontFamily: fonts.body,
-                fontSize: 14,
+                fontSize: 15,
                 color: colors.ink,
               }}
             >
               <span>{b.label}</span>
-              <span style={{ color: colors.inkSoft }}>${b.perPerson.toFixed(2)}</span>
+              <span style={{ color: colors.inkSoft }}>
+                ${b.perPerson.toFixed(2)}
+              </span>
             </div>
           ))}
         </div>
-        <p
-          style={{
-            marginTop: 20,
-            fontFamily: fonts.body,
-            fontSize: 13,
-            color: colors.inkSoft,
-          }}
-        >
-          Questions? Ping Hannah.
-        </p>
       </section>
     </div>
   );
