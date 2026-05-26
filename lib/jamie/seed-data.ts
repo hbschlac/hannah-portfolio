@@ -233,8 +233,8 @@ export const seedItinerary: Itinerary = [
       address: "70 Memorial Blvd, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=Thrive+Newport+RI",
     },
-    dressCode: "workout fit + grippy socks",
-    publicNote: "reformer class — bring socks if you have them.",
+    dressCode: "workout fit",
+    publicNote: "reformer class — Hannah will check with the studio on what else to bring.",
     status: "planned",
   },
   {
@@ -250,7 +250,7 @@ export const seedItinerary: Itinerary = [
       mapsUrl: "https://maps.google.com/?q=Wally%27s+Wieners+Newport+RI",
     },
     dressCode: "bach merch?",
-    publicNote: "brunch + the famous espresso martini towers.",
+    publicNote: "casual lunch — hot dogs on Thames Street.",
     status: "planned",
   },
   {
@@ -288,7 +288,7 @@ export const seedItinerary: Itinerary = [
       "Jamie wears white. Everyone else wears blue. Soft-soled shoes only — no heels.",
     bring: ["light jacket", "sunset selfie energy"],
     publicNote:
-      "leave the inn by 7:15 — check-in 7:15pm sharp, boat leaves on time. drinks served onboard.",
+      "leave the inn by 7:00pm — check-in at the boat is 7:15pm sharp, the boat leaves on time. drinks served onboard.",
     reservationId: "res-cruise",
     status: "confirmed",
   },
@@ -306,7 +306,7 @@ export const seedItinerary: Itinerary = [
     },
     dressCode:
       "Jamie wears white. Everyone else wears blue. Semi-formal.",
-    publicNote: "the big dinner.",
+    publicNote: "dinner with the full group at Midtown Oyster Bar.",
     status: "planned",
   },
   {
@@ -321,7 +321,7 @@ export const seedItinerary: Itinerary = [
       address: "Thames St, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=The+Landing+Newport+RI",
     },
-    publicNote: "bar crawl through the wharf — pick a starting point and go.",
+    publicNote: "bar crawl through the wharf.",
     status: "planned",
   },
 
@@ -549,7 +549,7 @@ export const seedPacklist: Packlist = [
     items: [
       { id: "p1", label: "swimsuit (or 2)" },
       { id: "p2", label: "coverup" },
-      { id: "p3", label: "beach towel" },
+      { id: "p3", label: "beach towel * (Hannah is confirming with the inn whether they supply these)" },
       { id: "p4", label: "sunscreen" },
       { id: "p5", label: "sunnies" },
     ],
