@@ -34,8 +34,8 @@ const dayMeta: Record<
     label: "Day Three — Sunday, July 12",
     subtitle: "One last brunch at CRU — head home whenever.",
     cover: {
-      src: "/jamie/venues/brunch-table.jpg",
-      alt: "A brunch table spread",
+      src: "/jamie/venues/cru-storefront.jpg",
+      alt: "CRU Cafe storefront in Newport — ivy-covered brick with a striped awning",
     },
   },
 };
@@ -87,8 +87,8 @@ const eventCovers: Record<string, { src: string; alt: string }> = {
     alt: "Newport at night",
   },
   "sun-brunch": {
-    src: "/jamie/venues/brunch-table.jpg",
-    alt: "Brunch table spread",
+    src: "/jamie/venues/cru-interior.jpg",
+    alt: "Inside CRU Cafe — Red Sox flag and the \"GREATEST SAILORS\" sign",
   },
 };
 
