@@ -4,7 +4,6 @@ import PasswordGate from "../_components/PasswordGate";
 import BottomNav from "../_components/BottomNav";
 import TripSubNav from "../_components/TripSubNav";
 import EditorialHero from "../_components/EditorialHero";
-import ImageMosaic from "../_components/ImageMosaic";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
 
@@ -38,12 +37,6 @@ const SUITES = [
     sleeps: 0,
   },
 ] as const;
-
-const ROOM_TILES = [
-  { src: "/jamie/venues/burbank-golden.jpg", alt: "Golden Rose Suite", span: "tall" as const },
-  { src: "/jamie/venues/burbank-cherry.jpg", alt: "Cherry Rose Suite", span: "tall" as const },
-  { src: "/jamie/venues/burbank-briar.jpg", alt: "Burbank Rose Inn common space", span: "wide" as const },
-];
 
 export default function LodgingPage() {
   return (
@@ -127,15 +120,6 @@ function Body() {
           >
             Visit the inn
           </a>
-        </div>
-      </section>
-
-      {/* Photo mosaic */}
-      <section style={{ padding: "40px 24px 0" }}>
-        <Eyebrow text="The Suites" />
-        <h2 style={h2Style}>Golden and Cherry.</h2>
-        <div style={{ marginTop: 18 }}>
-          <ImageMosaic tiles={ROOM_TILES} />
         </div>
       </section>
 
