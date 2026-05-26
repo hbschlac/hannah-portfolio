@@ -207,6 +207,22 @@ export const seedItinerary: Itinerary = [
 
   // ── Saturday ───────────────────────────────────────────────────────────────
   {
+    id: "sat-codough",
+    day: "sat",
+    date: "2026-07-11",
+    startTime: "08:30",
+    title: "co-dough bakery",
+    emoji: "🥐",
+    location: {
+      name: "Co-Dough Bakery",
+      address: "Newport, RI",
+      mapsUrl: "https://maps.google.com/?q=Co-Dough+Bakery+Newport+RI",
+    },
+    publicNote:
+      "fresh hot buns + donuts every Saturday at 8:30am. quick early stop before coffee.",
+    status: "planned",
+  },
+  {
     id: "sat-coffee",
     day: "sat",
     date: "2026-07-11",

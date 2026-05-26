@@ -58,6 +58,10 @@ const eventCovers: Record<string, { src: string; alt: string }> = {
     src: "/jamie/venues/candy-salad.jpg",
     alt: "Bowl of candy for the candy salad",
   },
+  "sat-codough": {
+    src: "/jamie/venues/codough.jpg",
+    alt: "Hot iced cinnamon buns from Co-Dough Bakery, Newport",
+  },
   "sat-coffee": {
     src: "/jamie/venues/nitro-bar.jpg",
     alt: "Iced coffees from above — Nitro Bar Newport",
