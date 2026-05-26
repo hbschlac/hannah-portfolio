@@ -83,6 +83,55 @@ function HomeContent() {
         </div>
       </div>
 
+      {/* JAMIE — tiny side-by-side throwback banner */}
+      <section style={{ padding: "56px 24px 0" }}>
+        <Eyebrow text="The Bride" />
+        <h2
+          style={{
+            fontFamily: fonts.display,
+            fontWeight: 500,
+            fontSize: "2rem",
+            color: colors.ink,
+            margin: "10px 0 18px",
+            letterSpacing: "-0.015em",
+            lineHeight: 1.05,
+          }}
+        >
+          Once upon a time.
+        </h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 8,
+          }}
+        >
+          {[
+            { src: "/jamie/jamie-beach.jpg", alt: "Toddler Jamie at the beach" },
+            { src: "/jamie/jamie-purse.jpg", alt: "Toddler Jamie in a floral dress with a tiny white purse" },
+          ].map((p) => (
+            <div
+              key={p.src}
+              style={{
+                position: "relative",
+                width: "100%",
+                aspectRatio: "1 / 1",
+                overflow: "hidden",
+                background: colors.mist,
+              }}
+            >
+              <NextImage
+                src={p.src}
+                alt={p.alt}
+                fill
+                sizes="(max-width: 768px) 50vw, 320px"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* THE SQUAD PREVIEW */}
       <section style={{ padding: "56px 24px 0" }}>
         <Eyebrow text="The Squad" />
