@@ -6,10 +6,15 @@ import SectionHeader from "../_components/SectionHeader";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
 
+// Hotel splits across all 9 (Jamie pays her share). Cruise + pilates split
+// across the 8 of us so Jamie's share is covered.
+//   Hotel:   $3,955 / 9 = $439.44
+//   Cruise:  $520   / 8 = $65.00
+//   Pilates: $400   / 8 = $50.00
 const FIXED: { label: string; perPerson: number | null }[] = [
-  { label: "Hotel", perPerson: 359.55 },
-  { label: "Sunset cruise", perPerson: 52 },
-  { label: "Pilates class", perPerson: 30 },
+  { label: "Hotel", perPerson: 439.44 },
+  { label: "Sunset cruise", perPerson: 65 },
+  { label: "Pilates class", perPerson: 50 },
   { label: "Bach misc", perPerson: null },
 ];
 
