@@ -6,11 +6,11 @@ import SectionHeader from "../_components/SectionHeader";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
 
-const FIXED: { label: string; perPerson: number }[] = [
+const FIXED: { label: string; perPerson: number | null }[] = [
   { label: "Hotel", perPerson: 359.55 },
   { label: "Sunset cruise", perPerson: 52 },
   { label: "Pilates class", perPerson: 30 },
-  { label: "Bach misc", perPerson: 61.71 },
+  { label: "Bach misc", perPerson: null },
 ];
 
 export default function ExpensesPage() {
@@ -152,7 +152,7 @@ function Body() {
             >
               <span>{b.label}</span>
               <span style={{ color: colors.inkSoft }}>
-                ${b.perPerson.toFixed(2)}
+                {b.perPerson === null ? "TBD" : `$${b.perPerson.toFixed(2)}`}
               </span>
             </div>
           ))}

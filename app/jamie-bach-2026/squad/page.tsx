@@ -62,7 +62,8 @@ function SquadPerson({ person }: { person: Attendee }) {
   const initial = person.name.trim()[0]?.toUpperCase() ?? "?";
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = !!person.photoUrl && !imgFailed;
-  const role = person.role !== "guest" ? roleLabels[person.role] : undefined;
+  // Only the bride gets a role label under her name — drop MOH and Co-Planner.
+  const role = person.role === "bride" ? roleLabels[person.role] : undefined;
 
   return (
     <div style={{ textAlign: "center" }}>
