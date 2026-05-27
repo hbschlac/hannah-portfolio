@@ -11,7 +11,7 @@ export async function GET() {
 
   // Check pullpush.io reachability
   try {
-    const pullpushRes = await fetch(PULLPUSH_TEST_URL, { cache: "no-store", signal: AbortSignal.timeout(8000) });
+    const pullpushRes = await fetch(PULLPUSH_TEST_URL, { cache: "no-store", signal: AbortSignal.timeout(20000) });
     if (!pullpushRes.ok) {
       issues.push(`pullpush.io unreachable (HTTP ${pullpushRes.status})`);
       checks.pullpush = { ok: false };
