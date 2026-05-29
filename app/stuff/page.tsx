@@ -1,0 +1,143 @@
+"use client";
+
+import { useState } from "react";
+import { useStuff } from "./_components/StuffProvider";
+import ItemMenu, { TypeBadge } from "./_components/ItemMenu";
+import NoteIndicator from "./_components/NoteIndicator";
+import SwipeRow from "./_components/SwipeRow";
+import AddSheet from "./_components/AddSheet";
+import type { StuffItem } from "./_data/mock";
+
+export default function FeedPage() {
+  const { items, setItemStatus } = useStuff();
+  const [adding, setAdding] = useState(false);
+
+  const feed = items
+    .filter((it) => it.status === "inbox")
+    .sort((a, b) => b.savedAt.localeCompare(a.savedAt));
+
+  const [hero, ...rest] = feed;
+  const open = (it: StuffItem) => window.open(it.url, "_blank", "noopener");
+
+  return (
+    <>
+      <header className="flex items-center justify-between pb-5 pt-4 md:pt-7">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight md:hidden">
+            Stuff
+          </h1>
+          <h1 className="hidden text-2xl font-semibold tracking-tight md:block">
+            Feed
+          </h1>
+          <p className="text-sm text-neutral-400">{feed.length} to read</p>
+        </div>
+        <button
+          onClick={() => setAdding(true)}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#DB2777] text-xl text-white shadow-sm shadow-pink-200"
+          aria-label="Add link"
+        >
+          +
+        </button>
+      </header>
+
+      {feed.length === 0 && (
+        <div className="mt-24 text-center text-neutral-400">
+          <p className="text-base">All caught up.</p>
+          <p className="mt-1 text-sm">Share or forward something to read later.</p>
+        </div>
+      )}
+
+      {hero && (
+        <article
+          onClick={() => open(hero)}
+          className="cursor-pointer overflow-hidden rounded-3xl border border-[#F5D5DF] bg-[#FDF2F5]"
+        >
+          {hero.image && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={hero.image}
+              alt=""
+              className="h-44 w-full object-cover md:h-72"
+            />
+          )}
+          <div className="p-4">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-neutral-400">{hero.source}</span>
+              <span className="text-xs text-neutral-300">·</span>
+              <span className="text-xs text-neutral-400">{hero.length}</span>
+              <TypeBadge type={hero.type} />
+              <div onClick={(e) => e.stopPropagation()}>
+                <NoteIndicator itemId={hero.id} />
+              </div>
+              <div className="ml-auto" onClick={(e) => e.stopPropagation()}>
+                <ItemMenu item={hero} />
+              </div>
+            </div>
+            <h2 className="mt-1.5 text-lg font-semibold leading-snug">
+              {hero.title}
+            </h2>
+            <p className="mt-1.5 text-sm leading-snug text-neutral-500">
+              {hero.summary}
+            </p>
+          </div>
+        </article>
+      )}
+
+      {rest.length > 0 && (
+        <ul className="mt-3 space-y-2.5 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
+          {rest.map((it) => (
+            <li
+              key={it.id}
+              className="overflow-hidden rounded-2xl border border-neutral-200"
+            >
+              <SwipeRow
+                onRead={() => setItemStatus(it.id, "read")}
+                onArchive={() => setItemStatus(it.id, "saved")}
+                onTap={() => open(it)}
+              >
+                <div className="flex items-start gap-3 px-4 py-3.5">
+                  {it.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={it.image}
+                      alt=""
+                      className="h-14 w-14 flex-shrink-0 rounded-xl object-cover"
+                    />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="truncate text-xs text-neutral-400">
+                        {it.source}
+                      </span>
+                      <span className="text-xs text-neutral-300">·</span>
+                      <span className="whitespace-nowrap text-xs text-neutral-400">
+                        {it.length}
+                      </span>
+                      <TypeBadge type={it.type} />
+                      <NoteIndicator itemId={it.id} />
+                    </div>
+                    <p className="mt-0.5 truncate text-[15px] font-medium leading-tight">
+                      {it.title}
+                    </p>
+                    <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-neutral-500">
+                      {it.summary}
+                    </p>
+                  </div>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <ItemMenu item={it} />
+                  </div>
+                </div>
+              </SwipeRow>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <p className="mt-4 px-2 text-center text-xs text-neutral-300">
+        Swipe a row left for Read / Archive · tap ⋯ for more
+      </p>
+
+      {adding && <AddSheet onClose={() => setAdding(false)} />}
+    </>
+  );
+}
