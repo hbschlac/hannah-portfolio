@@ -64,18 +64,23 @@ export default function StuffProvider({ children }: { children: ReactNode }) {
     const DEMO_NOTE_IDS = new Set(["n1", "n2"]);
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
+      const parsed = raw ? JSON.parse(raw) : null;
+      const v2HasData =
+        parsed &&
+        ((parsed.items || []).length > 0 || (parsed.notes || []).length > 0);
+      if (v2HasData) {
         if (parsed.items) setItems(parsed.items);
         if (parsed.notes) setNotes(parsed.notes);
       } else {
+        // v2 is missing or was created empty by the previous deploy. Try to
+        // recover Hannah's own items from the legacy v1 blob.
         const legacy = localStorage.getItem("stuff-mockup-v1");
         if (legacy) {
-          const parsed = JSON.parse(legacy);
-          const userItems: StuffItem[] = (parsed.items || []).filter(
+          const v1 = JSON.parse(legacy);
+          const userItems: StuffItem[] = (v1.items || []).filter(
             (i: StuffItem) => !DEMO_ITEM_IDS.has(i.id)
           );
-          const userNotes: Note[] = (parsed.notes || []).filter(
+          const userNotes: Note[] = (v1.notes || []).filter(
             (n: Note) => !DEMO_NOTE_IDS.has(n.id)
           );
           if (userItems.length || userNotes.length) {
