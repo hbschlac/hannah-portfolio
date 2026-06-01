@@ -55,13 +55,37 @@ export default function StuffProvider({ children }: { children: ReactNode }) {
   const [focusNoteId, setFocusNoteId] = useState<string | null>(null);
 
   // Load any saved mockup state from a previous visit.
+  // If there's no v2 yet but a v1 (pre-seed-wipe) blob exists, migrate Hannah's
+  // own pasted items/notes over and drop the demo seed (ids i1–i8 / n1–n2).
   useEffect(() => {
+    const DEMO_ITEM_IDS = new Set([
+      "i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8",
+    ]);
+    const DEMO_NOTE_IDS = new Set(["n1", "n2"]);
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed.items) setItems(parsed.items);
         if (parsed.notes) setNotes(parsed.notes);
+      } else {
+        const legacy = localStorage.getItem("stuff-mockup-v1");
+        if (legacy) {
+          const parsed = JSON.parse(legacy);
+          const userItems: StuffItem[] = (parsed.items || []).filter(
+            (i: StuffItem) => !DEMO_ITEM_IDS.has(i.id)
+          );
+          const userNotes: Note[] = (parsed.notes || []).filter(
+            (n: Note) => !DEMO_NOTE_IDS.has(n.id)
+          );
+          if (userItems.length || userNotes.length) {
+            setItems(userItems);
+            setNotes(userNotes);
+            console.info(
+              `[stuff] Migrated ${userItems.length} item(s) and ${userNotes.length} note(s) from v1 → v2.`
+            );
+          }
+        }
       }
     } catch {
       // ignore — fall back to seed
