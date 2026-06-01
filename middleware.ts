@@ -1,24 +1,54 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { COOKIE_NAME, checkPassword } from "@/lib/stuff/auth";
 
 // jamiesbach.schlacter.me — internally serve everything under /jamie-bach-2026
-// so guests land directly on the Bach site. Static assets, /_next, /api, and
-// /jamie/* uploaded files pass through unchanged (the matcher below already
-// excludes them, but we double-check inside in case of edge cases).
+// so guests land directly on the Bach site.
 const BACH_HOST = "jamiesbach.schlacter.me";
 const BACH_PREFIX = "/jamie-bach-2026";
 
+// /stuff routes that must remain reachable without auth.
+const STUFF_PUBLIC = new Set([
+  "/stuff/login",
+  "/stuff/icon",
+  "/stuff/apple-icon",
+  "/api/stuff/login",
+]);
+
 export function middleware(req: NextRequest) {
   const host = (req.headers.get("host") || "").toLowerCase();
-  if (host !== BACH_HOST) return NextResponse.next();
-
   const { pathname } = req.nextUrl;
 
-  // Already on the right route — no rewrite needed.
+  // ── Stuff auth gate ──────────────────────────────────────────────────
+  const isStuffPage =
+    pathname === "/stuff" || pathname.startsWith("/stuff/");
+  const isStuffApi = pathname.startsWith("/api/stuff/");
+  if (isStuffPage || isStuffApi) {
+    if (STUFF_PUBLIC.has(pathname)) return NextResponse.next();
+    const cookie = req.cookies.get(COOKIE_NAME)?.value;
+    if (!checkPassword(cookie)) {
+      if (isStuffApi) {
+        return NextResponse.json(
+          { error: "unauthorized" },
+          { status: 401 }
+        );
+      }
+      const url = req.nextUrl.clone();
+      const search = req.nextUrl.search; // preserves ?add=… from share Shortcut
+      url.pathname = "/stuff/login";
+      url.search = "";
+      url.searchParams.set("next", pathname + search);
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
+
+  // ── Jamie subdomain host rewrite ─────────────────────────────────────
+  if (host !== BACH_HOST) return NextResponse.next();
+
   if (pathname === BACH_PREFIX || pathname.startsWith(`${BACH_PREFIX}/`)) {
     return NextResponse.next();
   }
 
-  // Don't touch static-asset paths even if they slip past the matcher.
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
@@ -34,6 +64,10 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Skip Next internals + API + the /jamie/ asset folder. Match everything else.
-  matcher: ["/((?!_next/|api/|jamie/|favicon\\.ico).*)"],
+  matcher: [
+    // All non-API pages, minus Next internals + the jamie asset dir.
+    "/((?!_next/|api/|jamie/|favicon\\.ico).*)",
+    // Plus the Stuff API so it can be auth-gated.
+    "/api/stuff/:path*",
+  ],
 };

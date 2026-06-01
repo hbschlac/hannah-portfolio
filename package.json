@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.100.1",
     "@upstash/redis": "^1.37.0",
     "app-store-scraper": "^0.18.0",
     "google-play-scraper": "^10.1.2",
