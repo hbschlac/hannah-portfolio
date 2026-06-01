@@ -49,8 +49,8 @@ export default function AddSheet({ onClose }: { onClose: () => void }) {
             </button>
           </div>
           <p className="mt-3 text-[12px] leading-snug text-neutral-400">
-            Sharing from your phone&apos;s share sheet is coming next — for now,
-            paste any URL above.
+            Or share from your iPhone using the &ldquo;Stuff&rdquo; Shortcut in
+            the share sheet.
           </p>
         </div>
       </div>

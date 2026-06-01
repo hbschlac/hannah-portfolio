@@ -104,6 +104,25 @@ export default function StuffProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, notes }));
   }, [items, notes, hydrated]);
 
+  // Share-sheet ingest. The iOS Shortcut routes a shared URL through
+  // `https://schlacter.me/stuff?add=<encoded-url>`; this picks it up once on
+  // arrival, adds the item, then strips the param so a refresh doesn't dupe.
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      const here = new URL(window.location.href);
+      const add = here.searchParams.get("add");
+      if (add) {
+        addItem({ url: add });
+        here.searchParams.delete("add");
+        window.history.replaceState({}, "", here.toString());
+      }
+    } catch {
+      // ignore malformed URL
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated]);
+
   const setItemStatus = (id: string, status: ItemStatus) =>
     setItems((prev) =>
       prev.map((it) => (it.id === id ? { ...it, status } : it))
