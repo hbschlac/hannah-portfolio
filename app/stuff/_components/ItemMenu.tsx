@@ -40,6 +40,7 @@ export default function ItemMenu({ item }: { item: StuffItem }) {
       <button
         aria-label="Item actions"
         onClick={(e) => {
+          e.preventDefault();
           e.stopPropagation();
           setOpen((v) => !v);
         }}
@@ -57,6 +58,7 @@ export default function ItemMenu({ item }: { item: StuffItem }) {
             <button
               key={a.label}
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 a.run();
                 setOpen(false);

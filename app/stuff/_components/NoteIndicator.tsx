@@ -14,6 +14,7 @@ export default function NoteIndicator({ itemId }: { itemId: string }) {
   return (
     <button
       onClick={(e) => {
+        e.preventDefault();
         e.stopPropagation();
         setFocusNoteId(linked[0].id);
         router.push("/stuff/notes");

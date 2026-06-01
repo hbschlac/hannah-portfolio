@@ -6,7 +6,6 @@ import ItemMenu, { TypeBadge } from "./_components/ItemMenu";
 import NoteIndicator from "./_components/NoteIndicator";
 import SwipeRow from "./_components/SwipeRow";
 import AddSheet from "./_components/AddSheet";
-import type { StuffItem } from "./_data/mock";
 
 export default function FeedPage() {
   const { items, setItemStatus } = useStuff();
@@ -17,7 +16,6 @@ export default function FeedPage() {
     .sort((a, b) => b.savedAt.localeCompare(a.savedAt));
 
   const [hero, ...rest] = feed;
-  const open = (it: StuffItem) => window.open(it.url, "_blank", "noopener");
 
   return (
     <>
@@ -42,15 +40,17 @@ export default function FeedPage() {
 
       {feed.length === 0 && (
         <div className="mt-24 text-center text-neutral-400">
-          <p className="text-base">All caught up.</p>
-          <p className="mt-1 text-sm">Share or forward something to read later.</p>
+          <p className="text-base">Nothing here yet.</p>
+          <p className="mt-1 text-sm">Tap + to paste a link to read later.</p>
         </div>
       )}
 
       {hero && (
-        <article
-          onClick={() => open(hero)}
-          className="cursor-pointer overflow-hidden rounded-3xl border border-[#F5D5DF] bg-[#FDF2F5]"
+        <a
+          href={hero.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block cursor-pointer overflow-hidden rounded-3xl border border-[#F5D5DF] bg-[#FDF2F5]"
         >
           {hero.image && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -80,7 +80,7 @@ export default function FeedPage() {
               {hero.summary}
             </p>
           </div>
-        </article>
+        </a>
       )}
 
       {rest.length > 0 && (
@@ -93,9 +93,13 @@ export default function FeedPage() {
               <SwipeRow
                 onRead={() => setItemStatus(it.id, "read")}
                 onArchive={() => setItemStatus(it.id, "saved")}
-                onTap={() => open(it)}
               >
-                <div className="flex items-start gap-3 px-4 py-3.5">
+                <a
+                  href={it.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 px-4 py-3.5"
+                >
                   {it.image && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -123,10 +127,15 @@ export default function FeedPage() {
                       {it.summary}
                     </p>
                   </div>
-                  <div onClick={(e) => e.stopPropagation()}>
+                  <div
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  >
                     <ItemMenu item={it} />
                   </div>
-                </div>
+                </a>
               </SwipeRow>
             </li>
           ))}

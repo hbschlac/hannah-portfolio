@@ -2,27 +2,28 @@
 
 import { useRef, useState, type ReactNode } from "react";
 
-// Swipe a row left to reveal two actions — Read (you read it) and Archive
-// (clearing it without reading). A tap (no real movement) opens the link.
-// Pointer events cover both touch and mouse.
+// Wrap a feed row so the user can swipe it left to reveal Read / Archive
+// buttons. The row's inner content is expected to be a real <a href> link —
+// regular taps just navigate through the anchor (most reliable on iOS PWAs).
+// We only intercept the click when the user actually dragged, or when the
+// action buttons are already showing.
 export default function SwipeRow({
   children,
   onRead,
   onArchive,
-  onTap,
 }: {
   children: ReactNode;
   onRead: () => void;
   onArchive: () => void;
-  onTap: () => void;
 }) {
-  const ACTIONS_WIDTH = 168; // two 84px buttons
+  const ACTIONS_WIDTH = 168;
   const [dx, setDx] = useState(0);
   const [open, setOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
   const startX = useRef<number | null>(null);
   const startDx = useRef(0);
   const moved = useRef(false);
+  const justDragged = useRef(false);
 
   const onDown = (e: React.PointerEvent) => {
     startX.current = e.clientX;
@@ -43,21 +44,32 @@ export default function SwipeRow({
     if (startX.current === null) return;
     startX.current = null;
     setAnimating(true);
-    if (!moved.current) {
-      // a tap: if actions are open, close them; otherwise open the link
-      if (open) {
+    if (moved.current) {
+      // commit to open/closed and remember to swallow the upcoming click
+      justDragged.current = true;
+      if (dx < -ACTIONS_WIDTH / 2) {
+        setOpen(true);
+        setDx(-ACTIONS_WIDTH);
+      } else {
         setOpen(false);
         setDx(0);
-      } else {
-        onTap();
       }
+    }
+  };
+
+  // Runs before the inner anchor's click. Swallow the click if (a) we just
+  // dragged, or (b) the actions panel is already open — in both cases we don't
+  // want the link to navigate.
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (justDragged.current) {
+      justDragged.current = false;
+      e.preventDefault();
+      e.stopPropagation();
       return;
     }
-    // snap open or closed based on how far it was dragged
-    if (dx < -ACTIONS_WIDTH / 2) {
-      setOpen(true);
-      setDx(-ACTIONS_WIDTH);
-    } else {
+    if (open) {
+      e.preventDefault();
+      e.stopPropagation();
       setOpen(false);
       setDx(0);
     }
@@ -65,7 +77,6 @@ export default function SwipeRow({
 
   return (
     <div className="relative overflow-hidden">
-      {/* Revealed action buttons sitting behind the row */}
       <div className="absolute inset-y-0 right-0 flex">
         <button
           onClick={onRead}
@@ -87,6 +98,7 @@ export default function SwipeRow({
         onPointerMove={onMove}
         onPointerUp={finish}
         onPointerCancel={finish}
+        onClickCapture={onClickCapture}
         style={{
           transform: `translateX(${dx}px)`,
           transition: animating ? "transform 0.18s ease-out" : "none",

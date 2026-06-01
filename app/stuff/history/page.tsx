@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useStuff } from "../_components/StuffProvider";
 import ItemMenu, { TypeBadge } from "../_components/ItemMenu";
 import NoteIndicator from "../_components/NoteIndicator";
-import type { StuffItem } from "../_data/mock";
 
 type Filter = "all" | "read" | "saved";
 
@@ -22,8 +21,6 @@ export default function HistoryPage() {
     .filter((it) => it.status !== "inbox")
     .filter((it) => (filter === "all" ? true : it.status === filter))
     .sort((a, b) => b.savedAt.localeCompare(a.savedAt));
-
-  const open = (it: StuffItem) => window.open(it.url, "_blank", "noopener");
 
   return (
     <>
@@ -57,9 +54,14 @@ export default function HistoryPage() {
           {history.map((it) => (
             <li
               key={it.id}
-              onClick={() => open(it)}
-              className="flex cursor-pointer items-center gap-3 rounded-2xl border border-neutral-200 px-4 py-3.5"
+              className="rounded-2xl border border-neutral-200"
             >
+              <a
+                href={it.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 px-4 py-3.5"
+              >
               {it.image && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -89,9 +91,15 @@ export default function HistoryPage() {
                   {it.title}
                 </p>
               </div>
-              <div onClick={(e) => e.stopPropagation()}>
+              <div
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              >
                 <ItemMenu item={it} />
               </div>
+              </a>
             </li>
           ))}
         </ul>

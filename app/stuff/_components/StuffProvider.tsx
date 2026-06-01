@@ -15,7 +15,9 @@ import {
   type Note,
 } from "../_data/mock";
 
-const STORAGE_KEY = "stuff-mockup-v1";
+// v2: empty seed (ship 2026-06-01). Bumping the key reseeds existing devices
+// so the broken demo tiles don't linger after the deploy.
+const STORAGE_KEY = "stuff-mockup-v2";
 
 type Store = {
   items: StuffItem[];
