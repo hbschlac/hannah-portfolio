@@ -22,6 +22,14 @@ export async function POST(req: NextRequest) {
     ? body.via
     : "paste";
 
+  // Dedupe by URL so client-side migration and multi-device captures don't
+  // create copies. If the URL is already saved, just return the existing item.
+  const existingItems = await getItems();
+  const dupe = existingItems.find((i) => i.url === url);
+  if (dupe) {
+    return NextResponse.json({ item: dupe, deduped: true });
+  }
+
   const preview = await scrapeUrl(url);
   const summary = await summarize(preview);
 
@@ -42,8 +50,7 @@ export async function POST(req: NextRequest) {
     status: "inbox",
   };
 
-  const items = await getItems();
-  await setItems([item, ...items]);
+  await setItems([item, ...existingItems]);
 
   return NextResponse.json({ item });
 }

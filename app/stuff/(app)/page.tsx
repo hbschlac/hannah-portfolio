@@ -8,7 +8,7 @@ import SwipeRow from "./_components/SwipeRow";
 import AddSheet from "./_components/AddSheet";
 
 export default function FeedPage() {
-  const { items, setItemStatus } = useStuff();
+  const { items, setItemStatus, migrating } = useStuff();
   const [adding, setAdding] = useState(false);
 
   const feed = items
@@ -38,7 +38,13 @@ export default function FeedPage() {
         </button>
       </header>
 
-      {feed.length === 0 && (
+      {migrating && (
+        <div className="mb-4 rounded-2xl border border-[#F5D5DF] bg-[#FDF2F5] px-4 py-3 text-sm text-[#BE2D6B]">
+          Restoring your saved items… {migrating.done}/{migrating.total}
+        </div>
+      )}
+
+      {feed.length === 0 && !migrating && (
         <div className="mt-24 text-center text-neutral-400">
           <p className="text-base">Nothing here yet.</p>
           <p className="mt-1 text-sm">Tap + to paste a link to read later.</p>

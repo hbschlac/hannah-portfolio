@@ -14,6 +14,7 @@ type Store = {
   items: StuffItem[];
   notes: Note[];
   loading: boolean;
+  migrating: { total: number; done: number } | null;
   setItemStatus: (id: string, status: ItemStatus) => Promise<void>;
   deleteItem: (id: string) => Promise<void>;
   addItem: (partial: { url: string; via?: "share" | "paste" }) => Promise<void>;
@@ -36,6 +37,7 @@ export default function StuffProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<StuffItem[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
+  const [migrating, setMigrating] = useState<{ total: number; done: number } | null>(null);
   const [focusNoteId, setFocusNoteId] = useState<string | null>(null);
 
   // Initial fetch from the backend (Upstash KV via /api/stuff/*).
@@ -86,6 +88,83 @@ export default function StuffProvider({ children }: { children: ReactNode }) {
     },
     []
   );
+
+  // One-time recovery: if this browser still has pre-Phase-2 items in
+  // localStorage (under stuff-mockup-v1 or v2), post each URL to the API so it
+  // gets re-scraped + stored in KV. Server dedupes by URL, so re-running on a
+  // different device with the same URLs is safe. Marks itself done with the
+  // stuff-migrated-to-kv flag so it only runs once per browser.
+  useEffect(() => {
+    if (loading) return;
+    if (localStorage.getItem("stuff-migrated-to-kv") === "true") return;
+
+    const DEMO_IDS = new Set([
+      "i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8",
+    ]);
+    const DEMO_NOTE_IDS = new Set(["n1", "n2"]);
+
+    type Legacy = { items?: StuffItem[]; notes?: Note[] };
+    const readBlob = (key: string): Legacy | null => {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? (JSON.parse(raw) as Legacy) : null;
+      } catch {
+        return null;
+      }
+    };
+
+    const blobs = [readBlob("stuff-mockup-v2"), readBlob("stuff-mockup-v1")];
+    const urls = new Map<string, { title?: string }>();
+    const legacyNotes: Note[] = [];
+    for (const b of blobs) {
+      if (!b) continue;
+      for (const it of b.items || []) {
+        if (DEMO_IDS.has(it.id) || !it.url) continue;
+        if (!urls.has(it.url)) urls.set(it.url, { title: it.title });
+      }
+      for (const n of b.notes || []) {
+        if (DEMO_NOTE_IDS.has(n.id)) continue;
+        if (!legacyNotes.some((x) => x.id === n.id)) legacyNotes.push(n);
+      }
+    }
+
+    if (urls.size === 0 && legacyNotes.length === 0) {
+      localStorage.setItem("stuff-migrated-to-kv", "true");
+      return;
+    }
+
+    (async () => {
+      const list = Array.from(urls.entries());
+      setMigrating({ total: list.length, done: 0 });
+      // Sequential so the order in KV matches the user's original order.
+      for (let i = 0; i < list.length; i++) {
+        const [url, meta] = list[i];
+        try {
+          await fetch("/api/stuff/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url, title: meta.title, via: "paste" }),
+          });
+        } catch {
+          // skip and keep going
+        }
+        setMigrating({ total: list.length, done: i + 1 });
+      }
+      // Notes can go in parallel — no scraping, just KV writes.
+      await Promise.all(
+        legacyNotes.map((n) =>
+          fetch("/api/stuff/notes", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(n),
+          }).catch(() => {})
+        )
+      );
+      localStorage.setItem("stuff-migrated-to-kv", "true");
+      await refresh();
+      setMigrating(null);
+    })();
+  }, [loading, refresh]);
 
   // Share-sheet ingest: iOS Shortcut routes ?add=<encoded URL> here.
   // Wait for the initial fetch so the new item lands on top of the loaded list.
@@ -170,6 +249,7 @@ export default function StuffProvider({ children }: { children: ReactNode }) {
         items,
         notes,
         loading,
+        migrating,
         setItemStatus,
         deleteItem,
         addItem,
