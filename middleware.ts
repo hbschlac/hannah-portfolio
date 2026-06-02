@@ -6,13 +6,18 @@ import { COOKIE_NAME, checkPassword } from "@/lib/stuff/auth";
 const BACH_HOST = "jamiesbach.schlacter.me";
 const BACH_PREFIX = "/jamie-bach-2026";
 
-// /stuff routes that must remain reachable without auth.
-const STUFF_PUBLIC = new Set([
+// /stuff paths that must remain reachable without auth — matched by prefix so
+// the content-hashed icon URLs (e.g. /stuff/icon-13gqup) pass through too.
+const STUFF_PUBLIC_PREFIXES = [
   "/stuff/login",
   "/stuff/icon",
   "/stuff/apple-icon",
   "/api/stuff/login",
-]);
+];
+
+function isStuffPublic(pathname: string): boolean {
+  return STUFF_PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "-") || pathname.startsWith(p + "."));
+}
 
 export function middleware(req: NextRequest) {
   const host = (req.headers.get("host") || "").toLowerCase();
@@ -23,7 +28,7 @@ export function middleware(req: NextRequest) {
     pathname === "/stuff" || pathname.startsWith("/stuff/");
   const isStuffApi = pathname.startsWith("/api/stuff/");
   if (isStuffPage || isStuffApi) {
-    if (STUFF_PUBLIC.has(pathname)) return NextResponse.next();
+    if (isStuffPublic(pathname)) return NextResponse.next();
     const cookie = req.cookies.get(COOKIE_NAME)?.value;
     if (!checkPassword(cookie)) {
       if (isStuffApi) {
