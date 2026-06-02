@@ -8,6 +8,7 @@ export type Preview = {
   description?: string;
   type: ItemType;
   length: string;
+  publishedAt?: string; // ISO
 };
 
 function detectType(host: string): ItemType {
@@ -37,6 +38,27 @@ function matchOg(html: string, prop: string): string | undefined {
   return (
     html.match(re1)?.[1] ?? html.match(re2)?.[1] ?? html.match(re3)?.[1]
   );
+}
+
+// Extract a published date from common OG / schema patterns. Returns ISO or undefined.
+function extractPublished(html: string): string | undefined {
+  const candidates = [
+    matchOg(html, "article:published_time"),
+    matchOg(html, "og:article:published_time"),
+    matchOg(html, "og:pubdate"),
+    matchOg(html, "pubdate"),
+    matchOg(html, "date"),
+    matchOg(html, "DC.date.issued"),
+    html.match(/<time[^>]+datetime=["']([^"']+)["']/i)?.[1],
+    // JSON-LD: look for the first "datePublished":"..."
+    html.match(/"datePublished"\s*:\s*"([^"]+)"/i)?.[1],
+  ].filter((x): x is string => !!x);
+
+  for (const raw of candidates) {
+    const t = Date.parse(raw);
+    if (!Number.isNaN(t)) return new Date(t).toISOString();
+  }
+  return undefined;
 }
 
 function decodeEntities(s: string): string {
@@ -100,6 +122,7 @@ export async function scrapeUrl(url: string): Promise<Preview> {
       description,
       type,
       length: "—",
+      publishedAt: extractPublished(html),
     };
   } catch {
     return fallback;

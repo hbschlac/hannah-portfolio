@@ -6,14 +6,37 @@ import ItemMenu, { TypeBadge } from "./_components/ItemMenu";
 import NoteIndicator from "./_components/NoteIndicator";
 import SwipeRow from "./_components/SwipeRow";
 import AddSheet from "./_components/AddSheet";
+import type { ItemType } from "@/lib/stuff/types";
+
+type TypeFilter = ItemType | "all";
+type SortBy = "added" | "published";
+
+const TYPE_CHIPS: { key: TypeFilter; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "article", label: "Articles" },
+  { key: "video", label: "Videos" },
+  { key: "podcast", label: "Podcasts" },
+];
 
 export default function FeedPage() {
   const { items, setItemStatus, migrating } = useStuff();
   const [adding, setAdding] = useState(false);
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [sortBy, setSortBy] = useState<SortBy>("added");
 
   const feed = items
     .filter((it) => it.status === "inbox")
-    .sort((a, b) => b.savedAt.localeCompare(a.savedAt));
+    .filter((it) => (typeFilter === "all" ? true : it.type === typeFilter))
+    .sort((a, b) => {
+      if (sortBy === "published") {
+        // Fall back to savedAt so items without a scraped publishedAt still
+        // sort sensibly (newest-saved at the top of the "no-date" tail).
+        const ap = a.publishedAt || a.savedAt;
+        const bp = b.publishedAt || b.savedAt;
+        return bp.localeCompare(ap);
+      }
+      return b.savedAt.localeCompare(a.savedAt);
+    });
 
   const [hero, ...rest] = feed;
 
@@ -37,6 +60,38 @@ export default function FeedPage() {
           +
         </button>
       </header>
+
+      <div className="flex items-center gap-2 overflow-x-auto pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        {TYPE_CHIPS.map((c) => (
+          <button
+            key={c.key}
+            onClick={() => setTypeFilter(c.key)}
+            className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+              typeFilter === c.key
+                ? "bg-[#DB2777] text-white"
+                : "bg-neutral-100 text-neutral-500"
+            }`}
+          >
+            {c.label}
+          </button>
+        ))}
+        <div className="ml-auto shrink-0">
+          <button
+            onClick={() =>
+              setSortBy((s) => (s === "added" ? "published" : "added"))
+            }
+            className="flex items-center gap-1 rounded-full border border-neutral-200 px-3 py-1.5 text-sm text-neutral-600"
+            aria-label="Toggle sort"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 4v16M3 8l4-4 4 4M17 20V4M13 16l4 4 4-4" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="whitespace-nowrap">
+              {sortBy === "added" ? "Recently added" : "Recently published"}
+            </span>
+          </button>
+        </div>
+      </div>
 
       {migrating && (
         <div className="mb-4 rounded-2xl border border-[#F5D5DF] bg-[#FDF2F5] px-4 py-3 text-sm text-[#BE2D6B]">

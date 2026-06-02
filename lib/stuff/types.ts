@@ -12,7 +12,8 @@ export type StuffItem = {
   image?: string;
   summary: string;
   length: string;
-  savedAt: string; // ISO
+  savedAt: string; // ISO — when Hannah saved it
+  publishedAt?: string; // ISO — when the article/video/episode was published
   via: "share" | "email" | "paste";
   status: ItemStatus;
 };

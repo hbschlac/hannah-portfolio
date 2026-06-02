@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
     image: preview.image,
     summary,
     length: preview.length,
+    publishedAt: preview.publishedAt,
     savedAt: new Date().toISOString(),
     via,
     status: "inbox",
