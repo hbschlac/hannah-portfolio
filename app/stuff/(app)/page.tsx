@@ -8,6 +8,11 @@ import SwipeRow from "./_components/SwipeRow";
 import AddSheet from "./_components/AddSheet";
 import type { ItemType } from "@/lib/stuff/types";
 
+// Route preview images through the API proxy so publishers that block
+// hotlinking (Fortune, NYT, LinkedIn previews, …) still display.
+const proxy = (u?: string) =>
+  u ? `/api/stuff/image?u=${encodeURIComponent(u)}` : undefined;
+
 type TypeFilter = ItemType | "all";
 type SortBy = "added" | "published";
 
@@ -116,7 +121,7 @@ export default function FeedPage() {
           {hero.image && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={hero.image}
+              src={proxy(hero.image)}
               alt=""
               className="h-44 w-full object-cover md:h-72"
             />
@@ -164,7 +169,7 @@ export default function FeedPage() {
                   {it.image && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={it.image}
+                      src={proxy(it.image)}
                       alt=""
                       className="h-14 w-14 flex-shrink-0 rounded-xl object-cover"
                     />

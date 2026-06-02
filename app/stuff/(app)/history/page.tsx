@@ -5,6 +5,9 @@ import { useStuff } from "../_components/StuffProvider";
 import ItemMenu, { TypeBadge } from "../_components/ItemMenu";
 import NoteIndicator from "../_components/NoteIndicator";
 
+const proxy = (u?: string) =>
+  u ? `/api/stuff/image?u=${encodeURIComponent(u)}` : undefined;
+
 type Filter = "all" | "read" | "saved";
 
 const CHIPS: { key: Filter; label: string }[] = [
@@ -65,7 +68,7 @@ export default function HistoryPage() {
               {it.image && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={it.image}
+                  src={proxy(it.image)}
                   alt=""
                   className="h-12 w-12 flex-shrink-0 rounded-xl object-cover opacity-70 grayscale"
                 />
