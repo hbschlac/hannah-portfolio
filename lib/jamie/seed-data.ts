@@ -185,7 +185,8 @@ export const seedItinerary: Itinerary = [
       address: "7 Memorial Blvd, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=Pasta+Beach+Newport+RI",
     },
-    dressCode: "dressy casual",
+    dressCode:
+      "Something Blue — Jamie wears white, everyone else wears a different shade of blue.",
     publicNote: "dinner #1 — leaving the inn by 5:50.",
     status: "planned",
   },
@@ -194,14 +195,15 @@ export const seedItinerary: Itinerary = [
     day: "fri",
     date: "2026-07-10",
     startTime: "20:00",
-    title: "games & sweet treats",
-    emoji: "🎲",
+    title: "games, candy salad & Mamma Mia sing-along",
+    emoji: "🎬",
     location: {
       name: "Burbank Rose Inn",
       address: "111 Memorial Blvd W, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=111+Memorial+Blvd+W+Newport+RI",
     },
-    publicNote: "A fun night in all about Jamie!",
+    publicNote:
+      "A fun night in all about Jamie — games, the famous candy salad, and a Mamma Mia movie sing-along. Bring your singing voice!",
     status: "planned",
   },
 
@@ -301,7 +303,7 @@ export const seedItinerary: Itinerary = [
       mapsUrl: "https://maps.google.com/?q=2+Bowen%27s+Landing+Newport+RI",
     },
     dressCode:
-      "Jamie wears white. Everyone else wears blue. Soft-soled shoes only — no heels.",
+      "The Last Disco — Jamie wears white, everyone else dresses sparkly + glittery. Soft-soled shoes only — no heels.",
     bring: ["light jacket", "sunset selfie energy"],
     publicNote:
       "leave the inn by 7:00pm — check-in at the boat is 7:15pm sharp, the boat leaves on time. drinks served onboard.",
@@ -321,7 +323,7 @@ export const seedItinerary: Itinerary = [
       mapsUrl: "https://maps.google.com/?q=Midtown+Oyster+Bar+Newport+RI",
     },
     dressCode:
-      "Jamie wears white. Everyone else wears blue. Semi-formal.",
+      "The Last Disco — Jamie wears white, everyone else dresses sparkly + glittery. Semi-formal.",
     publicNote: "dinner with the full group at Midtown Oyster Bar.",
     status: "planned",
   },
@@ -337,6 +339,7 @@ export const seedItinerary: Itinerary = [
       address: "Thames St, Newport, RI 02840",
       mapsUrl: "https://maps.google.com/?q=The+Landing+Newport+RI",
     },
+    dressCode: "The Last Disco — keep it sparkly + glittery.",
     publicNote:
       "bar crawl through the wharf. Recommended: The Landing, Dockside, Smugglers Waterfront Bar, O'Briens Pub.",
     status: "planned",
@@ -461,15 +464,21 @@ export const seedRooms: Rooms = {
 };
 
 export const seedFlights: Flights = {
-  jamie: { attendeeId: "jamie", status: "tbd" },
-  hannah: { attendeeId: "hannah", status: "tbd" },
-  ellie: { attendeeId: "ellie", status: "tbd" },
-  erica: { attendeeId: "erica", status: "tbd" },
-  mahip: { attendeeId: "mahip", status: "tbd" },
-  gwenna: { attendeeId: "gwenna", status: "tbd" },
-  zoe: { attendeeId: "zoe", status: "tbd" },
-  daniella: { attendeeId: "daniella", status: "tbd" },
-  abbey: { attendeeId: "abbey", status: "tbd" },
+  // 7 of us share a booked rental car from NYC; Zoe + Daniella fly into Providence.
+  jamie: { attendeeId: "jamie", status: "tbd", mode: "car" },
+  hannah: { attendeeId: "hannah", status: "tbd", mode: "car" },
+  ellie: { attendeeId: "ellie", status: "tbd", mode: "car" },
+  erica: { attendeeId: "erica", status: "tbd", mode: "car" },
+  mahip: { attendeeId: "mahip", status: "tbd", mode: "car" },
+  gwenna: { attendeeId: "gwenna", status: "tbd", mode: "car" },
+  abbey: { attendeeId: "abbey", status: "tbd", mode: "car" },
+  zoe: { attendeeId: "zoe", status: "tbd", mode: "fly", arrivalAirport: "PVD" },
+  daniella: {
+    attendeeId: "daniella",
+    status: "tbd",
+    mode: "fly",
+    arrivalAirport: "PVD",
+  },
 };
 
 export const seedTodos: Todos = [
@@ -565,7 +574,7 @@ export const seedPacklist: Packlist = [
     items: [
       { id: "p1", label: "swimsuit (or 2)" },
       { id: "p2", label: "coverup" },
-      { id: "p3", label: "beach towel * (Hannah is confirming with the inn whether they supply these)" },
+      { id: "p3", label: "beach towel — TBD if we need to bring our own (Hannah is confirming with the inn)" },
       { id: "p4", label: "sunscreen" },
       { id: "p5", label: "sunnies" },
     ],
@@ -574,9 +583,10 @@ export const seedPacklist: Packlist = [
     name: "dinners",
     emoji: "🍝",
     items: [
-      { id: "p6", label: "fri night fit (dressy casual)" },
-      { id: "p7", label: "sat night fit (semi-formal) — BLUE (Jamie wears white)" },
-      { id: "p8", label: "comfy shoes for the cruise — NO heels" },
+      { id: "p6", label: "fri night fit — Something Blue (a shade of blue; Jamie wears white)" },
+      { id: "p7", label: "sat night fit — The Last Disco (sparkly + glittery; Jamie wears white)" },
+      { id: "p8", label: "comfy shoes for the cruise" },
+      { id: "p17", label: "a sweater or jacket for cool evenings out" },
     ],
   },
   {

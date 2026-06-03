@@ -94,6 +94,7 @@ export type Rooms = {
 export type Flight = {
   attendeeId: AttendeeId;
   status: "tbd" | "pending" | "booked";
+  mode?: "car" | "fly"; // how they're getting to Newport
   airline?: string;
   flightNumber?: string;
   originAirport?: string;

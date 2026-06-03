@@ -6,7 +6,7 @@ import SectionHeader from "../_components/SectionHeader";
 import TripSubNav from "../_components/TripSubNav";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
-import type { Flight, Attendee } from "@/lib/jamie/types";
+import type { Attendee } from "@/lib/jamie/types";
 
 export default function TravelPage() {
   return (
@@ -26,97 +26,31 @@ function Body() {
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
-  const flightsByAirport = Object.values(state.flights).reduce<
-    Record<string, Flight[]>
-  >((acc, f) => {
-    const key = f.arrivalAirport || "tbd";
-    (acc[key] ||= []).push(f);
-    return acc;
-  }, {});
-
-  const tbdFlights = flightsByAirport["tbd"] || [];
-  delete flightsByAirport["tbd"];
-
   const findPerson = (id: string): Attendee | undefined =>
     state.roster.find((r) => r.id === id);
+
+  const flights = Object.values(state.flights);
+  const carPeople = flights
+    .filter((f) => f.mode === "car")
+    .map((f) => findPerson(f.attendeeId))
+    .filter((p): p is Attendee => Boolean(p));
+  const flyPeople = flights
+    .filter((f) => f.mode === "fly")
+    .map((f) => findPerson(f.attendeeId))
+    .filter((p): p is Attendee => Boolean(p));
 
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
       <SectionHeader
         kicker="Getting There"
-        title="Flights & ground."
-        dek="Providence is closer; Boston is bigger. Most of us land on Friday."
+        title="Getting to Newport."
+        dek="Most of us drive up together from NYC; a couple are flying into Providence."
       />
       <TripSubNav />
 
       <section style={{ padding: "32px 24px 0" }}>
-        <Eyebrow text="Arrivals" />
-        <h2 style={h2Style}>Flights, by airport.</h2>
-
-        <div style={{ marginTop: 20 }}>
-          {Object.entries(flightsByAirport).map(([airport, flights]) => (
-            <AirportSection
-              key={airport}
-              airport={airport}
-              flights={flights}
-              findPerson={findPerson}
-            />
-          ))}
-        </div>
-
-        {tbdFlights.length > 0 && (
-          <div style={{ marginTop: 30 }}>
-            <Eyebrow text="Still Booking" />
-            <h3
-              style={{
-                ...h2Style,
-                fontSize: "1.3rem",
-                marginTop: 8,
-              }}
-            >
-              Waiting on these.
-            </h3>
-            <div
-              style={{
-                paddingTop: 14,
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "8px 18px",
-                fontFamily: fonts.body,
-                fontSize: 13,
-                color: colors.inkSoft,
-              }}
-            >
-              {tbdFlights.map((f) => {
-                const p = findPerson(f.attendeeId);
-                if (!p) return null;
-                return (
-                  <span key={f.attendeeId}>
-                    <span style={{ color: colors.ink, fontWeight: 500 }}>
-                      {p.name.split(" ")[0]}
-                    </span>{" "}
-                    · {p.city}
-                  </span>
-                );
-              })}
-            </div>
-            <p
-              style={{
-                marginTop: 18,
-                fontFamily: fonts.display,
-                fontSize: 14,
-                color: colors.inkSoft,
-              }}
-            >
-              Text Hannah your flight info when you book.
-            </p>
-          </div>
-        )}
-      </section>
-
-      <section style={{ padding: "48px 24px 0" }}>
-        <Eyebrow text="On the Ground" />
-        <h2 style={h2Style}>Getting from the airport to the inn.</h2>
+        <Eyebrow text="By Car" />
+        <h2 style={h2Style}>The rental car crew.</h2>
         <p
           style={{
             fontFamily: fonts.display,
@@ -126,132 +60,81 @@ function Body() {
             marginTop: 16,
           }}
         >
-          Most of us are flying into <strong>PVD</strong> (Providence, about 30
-          minutes from Newport) or <strong>BOS</strong> (Boston, about an hour
-          and a half). Rental car groups firm up once flights do — we&apos;ll
-          pair people who land near each other.
+          Seven of us are driving up together — the rental car is{" "}
+          <strong>booked</strong>. The departure time and where we&apos;ll all
+          meet in NYC are still <strong>TBD</strong> — details to come.
         </p>
+        <PeopleList people={carPeople} />
       </section>
 
       <section style={{ padding: "48px 24px 64px" }}>
-        <Eyebrow text="Parking for the Cruise" />
-        <h2 style={h2Style}>Mary Street Lot.</h2>
+        <Eyebrow text="By Air" />
+        <h2 style={h2Style}>Flying into Providence.</h2>
         <p
           style={{
             fontFamily: fonts.display,
-            fontSize: 15,
+            fontSize: 16,
             color: colors.ink,
             lineHeight: 1.55,
-            marginTop: 14,
+            marginTop: 16,
           }}
         >
-          $3/hr, three minutes from the dock. Rideshare also works — Newport
-          parking is rough in July.
+          Zoe and Daniella are flying in and out of <strong>Providence (PVD)</strong>
+          , about 30 minutes from Newport, and will sort their own ride to the
+          inn.
         </p>
+        <PeopleList people={flyPeople} airport="PVD" />
       </section>
     </div>
   );
 }
 
-function AirportSection({
+function PeopleList({
+  people,
   airport,
-  flights,
-  findPerson,
 }: {
-  airport: string;
-  flights: Flight[];
-  findPerson: (id: string) => Attendee | undefined;
+  people: Attendee[];
+  airport?: string;
 }) {
-  const cityName: Record<string, string> = {
-    PVD: "Providence",
-    BOS: "Boston",
-  };
+  if (!people.length) return null;
   return (
-    <div style={{ marginTop: 20 }}>
-      <div
-        style={{
-          fontFamily: fonts.body,
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          color: colors.brass,
-          marginBottom: 8,
-        }}
-      >
-        {airport} — {cityName[airport] || ""}
-      </div>
-      <div style={{ borderTop: `1px solid ${colors.mist}` }}>
-        {flights.map((f) => {
-          const p = findPerson(f.attendeeId);
-          if (!p) return null;
-          return (
-            <div
-              key={f.attendeeId}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "baseline",
-                padding: "14px 0",
-                borderBottom: `1px solid ${colors.mist}`,
-                gap: 12,
-              }}
-            >
-              <div>
-                <div
-                  style={{
-                    fontFamily: fonts.display,
-                    fontWeight: 500,
-                    fontSize: 17,
-                    color: colors.ink,
-                    letterSpacing: "-0.005em",
-                  }}
-                >
-                  {p.name.split(" ")[0]}
-                </div>
-                <div
-                  style={{
-                    fontFamily: fonts.body,
-                    fontSize: 11,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: colors.inkSoft,
-                    marginTop: 2,
-                  }}
-                >
-                  {p.city}
-                </div>
-              </div>
-              <div
-                style={{
-                  fontFamily: fonts.body,
-                  fontSize: 13,
-                  color: colors.ink,
-                  textAlign: "right",
-                }}
-              >
-                <div>
-                  {f.airline && f.flightNumber
-                    ? `${f.airline} ${f.flightNumber}`
-                    : "—"}
-                </div>
-                {f.arrivalTime && (
-                  <div
-                    style={{
-                      color: colors.inkSoft,
-                      fontSize: 12,
-                      letterSpacing: "0.06em",
-                      marginTop: 2,
-                    }}
-                  >
-                    Arr. {formatTime(f.arrivalTime)}
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+    <div style={{ marginTop: 20, borderTop: `1px solid ${colors.mist}` }}>
+      {people.map((p) => (
+        <div
+          key={p.id}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+            padding: "14px 0",
+            borderBottom: `1px solid ${colors.mist}`,
+            gap: 12,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: fonts.display,
+              fontWeight: 500,
+              fontSize: 17,
+              color: colors.ink,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            {p.name.split(" ")[0]}
+          </div>
+          <div
+            style={{
+              fontFamily: fonts.body,
+              fontSize: 11,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: colors.inkSoft,
+            }}
+          >
+            {airport ? `${p.city} → ${airport}` : p.city}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -282,13 +165,6 @@ const h2Style = {
   letterSpacing: "-0.015em",
   lineHeight: 1.08,
 } as const;
-
-function formatTime(t24: string): string {
-  const [h, m] = t24.split(":").map(Number);
-  const period = h >= 12 ? "pm" : "am";
-  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
-  return `${h12}${m ? ":" + String(m).padStart(2, "0") : ""}${period}`;
-}
 
 function Loading() {
   return (

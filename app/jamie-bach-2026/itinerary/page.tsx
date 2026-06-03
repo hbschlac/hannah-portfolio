@@ -12,11 +12,17 @@ import type { ItineraryEvent } from "@/lib/jamie/types";
 
 const dayMeta: Record<
   string,
-  { label: string; subtitle: string; cover: { src: string; alt: string } }
+  {
+    label: string;
+    subtitle: string;
+    theme?: string;
+    cover: { src: string; alt: string };
+  }
 > = {
   fri: {
     label: "Day One — Friday, July 10",
     subtitle: "Settling in, a slow lunch, a long first dinner.",
+    theme: "Theme: Something Blue 💙",
     cover: {
       src: "/jamie/newport/cliff-walk-real.jpg",
       alt: "Aerial view of Newport mansions along the Cliff Walk coast",
@@ -25,6 +31,7 @@ const dayMeta: Record<
   sat: {
     label: "Day Two — Saturday, July 11",
     subtitle: "Pilates, fun around Newport, and sunset cruise.",
+    theme: "Theme: The Last Disco ✨",
     cover: {
       src: "/jamie/newport/sailboats-sunset.jpg",
       alt: "Sailboats silhouetted against a Newport sunset",
@@ -174,6 +181,26 @@ function Body() {
                 >
                   {meta.subtitle}
                 </h2>
+                {meta.theme && (
+                  <div
+                    style={{
+                      marginTop: 14,
+                      display: "inline-block",
+                      fontFamily: fonts.body,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: colors.sky,
+                      background: "#EAF1F8",
+                      border: `1px solid ${colors.mist}`,
+                      borderRadius: 999,
+                      padding: "6px 14px",
+                    }}
+                  >
+                    {meta.theme}
+                  </div>
+                )}
                 <div
                   style={{
                     marginTop: 18,

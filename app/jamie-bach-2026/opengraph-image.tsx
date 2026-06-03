@@ -1,15 +1,15 @@
 import { ImageResponse } from "next/og";
 
 // 1200×630 Open Graph card for jamiesbach.schlacter.me link previews.
-// Renders the bride emoji + title + date on the site's ecru palette so
-// iMessage / Slack / WhatsApp / Twitter unfurls match the actual site.
+// Renders the bride emoji + title + date on the site's soft-white + powder-blue
+// palette so iMessage / Slack / WhatsApp / Twitter unfurls match the actual site.
 export const alt = "Jamie's Bachelorette · Newport · July 10–12, 2026";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const PAPER = "#F7F3E9";
+const PAPER = "#FAFBFC";
 const INK = "#1A1A1A";
-const BRASS = "#9B7B3F";
+const BRASS = "#7BA7CE";
 
 export default function OGImage() {
   return new ImageResponse(
