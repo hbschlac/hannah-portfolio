@@ -83,7 +83,7 @@ const eventCovers: Record<string, { src: string; alt: string }> = {
   },
   "sat-beach": {
     src: "/jamie/venues/easton-beach.jpg",
-    alt: "Easton's Beach, Newport",
+    alt: "A sunny beach day under blue skies",
   },
   "sat-cruise": {
     src: "/jamie/venues/gansett-sunset.jpg",
