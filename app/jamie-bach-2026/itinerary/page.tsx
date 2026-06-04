@@ -184,18 +184,18 @@ function Body() {
                 {meta.theme && (
                   <div
                     style={{
-                      marginTop: 14,
+                      marginTop: 16,
                       display: "inline-block",
                       fontFamily: fonts.body,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      letterSpacing: "0.12em",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      letterSpacing: "0.14em",
                       textTransform: "uppercase",
-                      color: colors.sky,
-                      background: "#EAF1F8",
-                      border: `1px solid ${colors.mist}`,
+                      color: "#FFFFFF",
+                      background: "#2F5D85",
                       borderRadius: 999,
-                      padding: "6px 14px",
+                      padding: "9px 18px",
+                      boxShadow: "0 2px 10px rgba(47, 93, 133, 0.28)",
                     }}
                   >
                     {meta.theme}
