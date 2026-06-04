@@ -303,7 +303,7 @@ export const seedItinerary: Itinerary = [
       mapsUrl: "https://maps.google.com/?q=2+Bowen%27s+Landing+Newport+RI",
     },
     dressCode:
-      "The Last Disco — Jamie wears white, everyone else dresses sparkly + glittery. Soft-soled shoes only — no heels.",
+      "The Last Disco — Jamie wears white, everyone else dresses sparkly + glittery.",
     bring: ["light jacket", "sunset selfie energy"],
     publicNote:
       "leave the inn by 7:00pm — check-in at the boat is 7:15pm sharp, the boat leaves on time. drinks served onboard.",
@@ -574,7 +574,7 @@ export const seedPacklist: Packlist = [
     items: [
       { id: "p1", label: "swimsuit (or 2)" },
       { id: "p2", label: "coverup" },
-      { id: "p3", label: "beach towel — TBD if we need to bring our own (Hannah is confirming with the inn)" },
+      { id: "p3", label: "beach towel — bring your own (the inn doesn't supply them)" },
       { id: "p4", label: "sunscreen" },
       { id: "p5", label: "sunnies" },
     ],
