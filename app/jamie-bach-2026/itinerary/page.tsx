@@ -41,8 +41,8 @@ const dayMeta: Record<
     label: "Day Three — Sunday, July 12",
     subtitle: "One last brunch at CRU — head home whenever.",
     cover: {
-      src: "/jamie/venues/cru-storefront.jpg",
-      alt: "CRU Cafe storefront in Newport — ivy-covered brick with a striped awning",
+      src: "/jamie/venues/downtown-ri.jpg",
+      alt: "Downtown Newport — colorful storefronts and flags along the street",
     },
   },
 };
