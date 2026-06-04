@@ -6,18 +6,6 @@ import SectionHeader from "../_components/SectionHeader";
 import { useGuestState } from "../_components/useGuestState";
 import { colors, fonts } from "@/lib/jamie/brand";
 
-// Hotel splits across all 9 (Jamie pays her share). Cruise + pilates split
-// across the 8 of us so Jamie's share is covered.
-//   Hotel:   $3,955 / 9 = $439.44
-//   Cruise:  $520   / 8 = $65.00
-//   Pilates: $400   / 8 = $50.00
-const FIXED: { label: string; perPerson: number | null }[] = [
-  { label: "Hotel", perPerson: 439.44 },
-  { label: "Sunset cruise", perPerson: 65 },
-  { label: "Pilates class", perPerson: 50 },
-  { label: "Bach misc", perPerson: null },
-];
-
 export default function ExpensesPage() {
   return (
     <PasswordGate
@@ -38,130 +26,92 @@ function Body() {
 
   const splitwiseLive = !!state.expenses.splitwiseUrl;
 
+  const steps = [
+    "Join the group with the button above.",
+    "We log every shared cost as we go — hotel, cruise, activities, food, the works.",
+    "Check what you owe and settle up right in the app. Jamie's share is covered by the rest of us. 💛",
+  ];
+
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
       <SectionHeader
         kicker="The Cost"
-        title="Settling up, the easy way."
-        dek="We log expenses in Splitwise as we go and settle on Sunday."
+        title="It all lives in Splitwise."
+        dek="No spreadsheet to keep up with — join the group to see what you owe and settle up there."
       />
 
-      {/* Total */}
-      <section style={{ padding: "16px 24px 0" }}>
-        <div
-          style={{
-            paddingTop: 28,
-            paddingBottom: 28,
-            borderTop: `1px solid ${colors.mist}`,
-            borderBottom: `1px solid ${colors.mist}`,
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              fontFamily: fonts.body,
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.24em",
-              textTransform: "uppercase",
-              color: colors.brass,
-              marginBottom: 14,
-            }}
-          >
-            Roughly per person
-          </div>
-          <div
-            style={{
-              fontFamily: fonts.display,
-              fontWeight: 500,
-              fontSize: "3.4rem",
-              color: colors.ink,
-              letterSpacing: "-0.02em",
-              lineHeight: 1,
-            }}
-          >
-            ${state.expenses.estimatedPerPerson.toFixed(2)}
-          </div>
-          <p
-            style={{
-              fontFamily: fonts.body,
-              fontSize: 13,
-              color: colors.inkSoft,
-              margin: "14px 0 0",
-              lineHeight: 1.5,
-            }}
-          >
-            Includes everything — Jamie&apos;s share covered by the rest of us.
-          </p>
-        </div>
-      </section>
-
-      {/* Splitwise CTA */}
-      <section style={{ padding: "32px 24px 0" }}>
+      {/* Splitwise hero button */}
+      <section style={{ padding: "24px 24px 0" }}>
         <a
-          href={splitwiseLive ? state.expenses.splitwiseUrl : "#"}
+          href={splitwiseLive ? state.expenses.splitwiseUrl : undefined}
           target={splitwiseLive ? "_blank" : undefined}
           rel="noopener noreferrer"
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "baseline",
-            padding: "20px 0",
-            borderBottom: `1px solid ${colors.mist}`,
+            display: "block",
+            textAlign: "center",
+            padding: "22px 24px",
+            background: splitwiseLive ? colors.sky : colors.mist,
+            color: splitwiseLive ? "#FFFFFF" : colors.inkSoft,
             textDecoration: "none",
-            opacity: splitwiseLive ? 1 : 0.5,
+            fontFamily: fonts.display,
+            fontWeight: 600,
+            fontSize: 18,
+            letterSpacing: "0.005em",
+            borderRadius: 16,
+            pointerEvents: splitwiseLive ? "auto" : "none",
           }}
         >
-          <span
-            style={{
-              fontFamily: fonts.display,
-              fontWeight: 500,
-              fontSize: 20,
-              color: colors.ink,
-              letterSpacing: "-0.005em",
-            }}
-          >
-            Splitwise group
-          </span>
-          <span
-            style={{
-              fontFamily: fonts.body,
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: colors.inkSoft,
-            }}
-          >
-            {splitwiseLive ? "Open" : "Coming soon"}
-          </span>
+          {splitwiseLive
+            ? "Open the Splitwise group →"
+            : "Splitwise group — coming soon"}
         </a>
       </section>
 
-      {/* Fixed costs */}
-      <section style={{ padding: "40px 24px 64px" }}>
-        <Eyebrow text="Fixed" />
-        <div style={{ marginTop: 14 }}>
-          {FIXED.map((b) => (
-            <div
-              key={b.label}
+      {/* How it works */}
+      <section style={{ padding: "36px 24px 64px" }}>
+        <Eyebrow text="How it works" />
+        <ol style={{ margin: "16px 0 0", padding: 0, listStyle: "none" }}>
+          {steps.map((s, i) => (
+            <li
+              key={i}
               style={{
                 display: "flex",
-                justifyContent: "space-between",
-                padding: "14px 0",
+                gap: 14,
+                padding: "16px 0",
                 borderBottom: `1px solid ${colors.mist}`,
-                fontFamily: fonts.body,
-                fontSize: 15,
-                color: colors.ink,
               }}
             >
-              <span>{b.label}</span>
-              <span style={{ color: colors.inkSoft }}>
-                {b.perPerson === null ? "TBD" : `$${b.perPerson.toFixed(2)}`}
+              <span
+                style={{
+                  flexShrink: 0,
+                  width: 26,
+                  height: 26,
+                  borderRadius: 999,
+                  background: colors.sky,
+                  color: "#FFFFFF",
+                  fontFamily: fonts.body,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {i + 1}
               </span>
-            </div>
+              <span
+                style={{
+                  fontFamily: fonts.body,
+                  fontSize: 15,
+                  color: colors.ink,
+                  lineHeight: 1.5,
+                }}
+              >
+                {s}
+              </span>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
     </div>
   );
