@@ -10,7 +10,7 @@ export const metadata = {
   // Pointing at the route-scoped handlers restores the bride favicon + the
   // toddler-Jamie home-screen icon on jamiesbach.schlacter.me.
   icons: {
-    icon: "/jamie-bach-2026/icon",
+    icon: "/jamie/jamie-favicon.png",
     apple: "/jamie-bach-2026/apple-icon.png",
   },
   openGraph: {
