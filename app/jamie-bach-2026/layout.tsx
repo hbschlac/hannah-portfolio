@@ -5,6 +5,14 @@ export const metadata = {
   metadataBase: new URL("https://jamiesbach.schlacter.me"),
   title: "Jamie's Bachelorette · Newport",
   description: "Newport, Rhode Island · July 10–12, 2026",
+  // Declared explicitly: the root layout sets metadata.icons (✨), and an
+  // ancestor's explicit icons suppress this segment's icon/apple-icon FILES.
+  // Pointing at the route-scoped handlers restores the bride favicon + the
+  // toddler-Jamie home-screen icon on jamiesbach.schlacter.me.
+  icons: {
+    icon: "/jamie-bach-2026/icon",
+    apple: "/jamie-bach-2026/apple-icon.png",
+  },
   openGraph: {
     title: "Jamie's Bachelorette · Newport",
     description: "Newport, Rhode Island · July 10–12, 2026",
