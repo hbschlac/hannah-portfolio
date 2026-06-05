@@ -35,12 +35,12 @@ function HomeContent() {
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
       <EditorialHero
-        src="/jamie/newport/hero-harbor.jpg"
-        alt="The Oliver Hazard Perry tall ship docked in Newport Harbor"
+        src="/jamie/newport/hero-summer-harbor.jpg"
+        alt="Sailboats moored in a sunny harbor under a clear blue summer sky"
         eyebrow="A Newport Bachelorette"
-        headline={`For ${trip.bride}`}
+        headline={`For ${trip.bride.split(" ")[0]}`}
         dateline="Newport, Rhode Island · July 10–12, 2026"
-        height={620}
+        height={440}
         priority
       />
 
@@ -62,7 +62,7 @@ function HomeContent() {
             letterSpacing: "-0.005em",
           }}
         >
-          Four days on the Rhode Island coast for {trip.bride.split(" ")[0]} — sail-cloth sunsets,
+          Three days on the Rhode Island coast for {trip.bride.split(" ")[0]} — sail-cloth sunsets,
           long dinners, and the kind of summer light New England saves for July.
           Here&apos;s what we&apos;ve planned.
         </p>
