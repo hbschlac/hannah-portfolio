@@ -17,7 +17,7 @@ export default function PasswordGate({
   guestPassword,
   adminPassword,
   storageKey,
-  title = "Jamie's Bach",
+  title = "Jamie's Bachelorette",
   subtitle = "July 10–12, 2026",
   children,
 }: Props) {
@@ -105,18 +105,6 @@ export default function PasswordGate({
           margin: "0 auto",
         }}
       >
-        <div
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.24em",
-            textTransform: "uppercase",
-            color: colors.brass,
-            marginBottom: 14,
-          }}
-        >
-          A Newport Bachelorette
-        </div>
         <h1
           style={{
             fontFamily: fonts.display,
