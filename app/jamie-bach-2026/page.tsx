@@ -35,8 +35,8 @@ function HomeContent() {
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
       <EditorialHero
-        src="/jamie/newport/hero-summer-harbor.jpg"
-        alt="Sailboats moored in a sunny harbor under a clear blue summer sky"
+        src="/jamie/newport/hero-newport-coast.jpg"
+        alt="Aerial view of Newport's Cliff Walk mansions and blue coastline"
         eyebrow="A Newport Bachelorette"
         headline={`For ${trip.bride.split(" ")[0]}`}
         dateline="Newport, Rhode Island · July 10–12, 2026"
