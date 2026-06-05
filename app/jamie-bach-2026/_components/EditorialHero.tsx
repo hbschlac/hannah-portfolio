@@ -9,6 +9,7 @@ type Props = {
   dateline?: string;
   height?: number;
   priority?: boolean;
+  objectPosition?: string;
 };
 
 export default function EditorialHero({
@@ -19,6 +20,7 @@ export default function EditorialHero({
   dateline,
   height = 560,
   priority,
+  objectPosition = "center",
 }: Props) {
   return (
     <section
@@ -36,7 +38,7 @@ export default function EditorialHero({
         fill
         priority={priority}
         sizes="(max-width: 768px) 100vw, 768px"
-        style={{ objectFit: "cover", objectPosition: "center" }}
+        style={{ objectFit: "cover", objectPosition }}
       />
       <div
         style={{
