@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     icon: "/stuff/icon",
     apple: "/stuff/apple-icon",
   },
+  manifest: "/stuff/manifest.webmanifest",
 };
 
 export default function StuffSegmentLayout({

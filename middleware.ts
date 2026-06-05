@@ -12,6 +12,7 @@ const STUFF_PUBLIC_PREFIXES = [
   "/stuff/login",
   "/stuff/icon",
   "/stuff/apple-icon",
+  "/stuff/manifest",
   "/api/stuff/login",
 ];
 
