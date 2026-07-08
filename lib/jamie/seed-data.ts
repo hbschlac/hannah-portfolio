@@ -252,7 +252,8 @@ export const seedItinerary: Itinerary = [
       mapsUrl: "https://maps.google.com/?q=Thrive+Newport+RI",
     },
     dressCode: "workout fit",
-    publicNote: "reformer class — Hannah will check with the studio on what else to bring.",
+    bring: ["grippy socks (available to buy at the studio)"],
+    publicNote: "reformer class — bring grippy socks (available to buy there) and we'll each sign a waiver.",
     status: "planned",
   },
   {
@@ -306,7 +307,7 @@ export const seedItinerary: Itinerary = [
       "The Last Disco — Jamie wears white, everyone else dresses sparkly + glittery.",
     bring: ["light jacket", "sunset selfie energy"],
     publicNote:
-      "leave the inn by 7:00pm — check-in at the boat is 7:15pm sharp, the boat leaves on time. drinks served onboard.",
+      "be at the boat 20 minutes early — check-in is 7:10pm, the boat leaves at 7:30pm on time. leave the inn by 7:00pm. drinks served onboard.",
     reservationId: "res-cruise",
     status: "confirmed",
   },
@@ -569,31 +570,24 @@ export const seedExpenses: Expenses = {
 
 export const seedPacklist: Packlist = [
   {
-    name: "beach day",
-    emoji: "🏖️",
+    name: "for the bach",
+    emoji: "🎀",
     items: [
-      { id: "p1", label: "swimsuit (or 2)" },
-      { id: "p2", label: "coverup" },
-      { id: "p3", label: "beach towel — bring your own (the inn doesn't supply them)" },
-      { id: "p4", label: "sunscreen" },
-      { id: "p5", label: "sunnies" },
-    ],
-  },
-  {
-    name: "dinners",
-    emoji: "🍝",
-    items: [
-      { id: "p6", label: "fri night fit — Something Blue (a shade of blue; Jamie wears white)" },
-      { id: "p7", label: "sat night fit — The Last Disco (sparkly + glittery; Jamie wears white)" },
-      { id: "p8", label: "comfy shoes for the cruise" },
-      { id: "p17", label: "a sweater or jacket for cool evenings out" },
-    ],
-  },
-  {
-    name: "for the group",
-    emoji: "🍬",
-    items: [
+      { id: "p3", label: "beach towel — the inn doesn't supply them" },
+      { id: "p18", label: "pilates grippy socks (borrow, or buy at the studio if needed)" },
       { id: "p16", label: "candy for the candy salad (any kind — bring a bag)" },
+    ],
+  },
+  {
+    name: "outfits by the itinerary",
+    emoji: "👗",
+    items: [
+      { id: "p6", label: "fri night — Something Blue (a shade of blue; Jamie wears white)" },
+      { id: "p22", label: "sat morning — workout outfit for pilates" },
+      { id: "p19", label: "sat day — swimsuit + coverup for the beach" },
+      { id: "p7", label: "sat night — The Last Disco (colorful and/or sparkly; Jamie wears white)" },
+      { id: "p8", label: "dressier shoes (not just comfy ones) for the cruise + Saturday dinner / night out" },
+      { id: "p17", label: "a sweater or jacket for cool evenings out" },
     ],
   },
   {
@@ -602,7 +596,7 @@ export const seedPacklist: Packlist = [
     items: [
       { id: "p9", label: "casual outfits for brunch + walking" },
       { id: "p10", label: "sneakers / flats" },
-      { id: "p11", label: "bach merch (we'll have it!)" },
+      { id: "p5", label: "sunnies" },
     ],
   },
   {
@@ -612,7 +606,8 @@ export const seedPacklist: Packlist = [
       { id: "p12", label: "phone charger" },
       { id: "p13", label: "ID + cards" },
       { id: "p14", label: "any meds you need" },
-      { id: "p15", label: "venmo + splitwise installed" },
+      { id: "p20", label: "sunblock" },
+      { id: "p21", label: "toiletries" },
     ],
   },
 ];

@@ -39,7 +39,7 @@ function Body() {
       <SectionHeader
         kicker="Squad"
         title="Nine on the trip."
-        dek="Phone numbers below each photo — tap to call. Tap the @handle for Instagram."
+        dek="Phone numbers below each photo — tap to call."
       />
 
       <div
@@ -143,24 +143,6 @@ function SquadPerson({ person }: { person: Attendee }) {
           }}
         >
           {person.phone}
-        </a>
-      )}
-      {person.instagram && (
-        <a
-          href={`https://instagram.com/${person.instagram}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: "block",
-            marginTop: 4,
-            fontFamily: fonts.body,
-            fontSize: 12,
-            color: colors.brass,
-            textDecoration: "none",
-            letterSpacing: "0.02em",
-          }}
-        >
-          @{person.instagram}
         </a>
       )}
     </div>

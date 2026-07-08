@@ -9,22 +9,23 @@ import { colors, fonts } from "@/lib/jamie/brand";
 
 // Source of truth: Hannah's email to Jamie (1/8/26) — 3 rooms reserved, one
 // per floor. The third room isn't listed on burbankrose.com but is booked.
-// Each room sleeps 4 → 12 spots for 9 of us. Fri 7/10 → Sun 7/12 (two nights).
-const SUITES: { name: string; beds: string[]; sleeps: number }[] = [
+// Nine of us split three to a room (First Floor includes Hannah + Jamie).
+// Fri 7/10 → Sun 7/12 (two nights).
+const SUITES: { name: string; beds: string[]; women: number }[] = [
   {
     name: "First Floor",
     beds: ["Full bed", "Queen pullout", "Kitchen + living room"],
-    sleeps: 4,
+    women: 3,
   },
   {
     name: "Middle Floor",
     beds: ["King bed", "Bunk bed"],
-    sleeps: 4,
+    women: 3,
   },
   {
     name: "Top Floor",
     beds: ["Queen bed", "Queen pullout"],
-    sleeps: 4,
+    women: 3,
   },
 ];
 
@@ -146,7 +147,7 @@ function Body() {
                 >
                   {suite.name}
                 </h3>
-                {suite.sleeps > 0 && (
+                {suite.women > 0 && (
                   <span
                     style={{
                       fontFamily: fonts.body,
@@ -157,7 +158,7 @@ function Body() {
                       color: colors.brass,
                     }}
                   >
-                    Sleeps {suite.sleeps}
+                    {suite.women} women
                   </span>
                 )}
               </div>
@@ -194,7 +195,8 @@ function Body() {
             lineHeight: 1.5,
           }}
         >
-          Room assignments TBD — Hannah&apos;s sorting closer to the trip.
+          Room configurations sorted out upon arrival; text Hannah if you have
+          requests or concerns.
         </p>
       </section>
 

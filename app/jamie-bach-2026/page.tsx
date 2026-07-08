@@ -30,7 +30,7 @@ function HomeContent() {
   if (loading) return <Loading />;
   if (error || !state) return <ErrorView error={error} />;
 
-  const { trip, roster, groupChatUrl } = state;
+  const { trip, roster } = state;
 
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
@@ -78,7 +78,7 @@ function HomeContent() {
           }}
         >
           <Countdown targetDate={trip.startDate} />
-          <CurrentWeatherChip />
+          <CurrentWeatherChip startDate={trip.startDate} endDate={trip.endDate} />
         </div>
       </div>
 
@@ -108,7 +108,7 @@ function HomeContent() {
           }}
         >
           <NextImage
-            src="/jamie/jamie-beach.jpg"
+            src="/jamie/jamie-beach-crop2.jpg"
             alt="Toddler Jamie at the beach"
             fill
             sizes="(max-width: 768px) 100vw, 640px"
@@ -181,24 +181,7 @@ function HomeContent() {
         </Link>
       </section>
 
-      {/* CTAs */}
-      <section style={{ padding: "56px 24px 64px" }}>
-        <Eyebrow text="Stay Connected" />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 4,
-            marginTop: 18,
-          }}
-        >
-          <ExternalLink
-            href={groupChatUrl}
-            label="Group chat"
-            hint={groupChatUrl ? "Join the iMessage thread" : "Coming soon"}
-          />
-        </div>
-      </section>
+      <div style={{ height: 64 }} />
     </div>
   );
 }
@@ -311,65 +294,6 @@ const textLinkStyle = {
   paddingBottom: 4,
   textDecoration: "none",
 };
-
-function ExternalLink({
-  href,
-  label,
-  hint,
-}: {
-  href?: string | null;
-  label: string;
-  hint: string;
-}) {
-  const disabled = !href;
-  const content = (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "baseline",
-        padding: "18px 0",
-        borderBottom: `1px solid ${colors.mist}`,
-        opacity: disabled ? 0.5 : 1,
-      }}
-    >
-      <span
-        style={{
-          fontFamily: fonts.display,
-          fontWeight: 500,
-          fontSize: 19,
-          color: colors.ink,
-          letterSpacing: "-0.005em",
-        }}
-      >
-        {label}
-      </span>
-      <span
-        style={{
-          fontFamily: fonts.body,
-          fontSize: 11,
-          fontWeight: 500,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: colors.inkSoft,
-        }}
-      >
-        {hint}
-      </span>
-    </div>
-  );
-  if (disabled) return content;
-  return (
-    <a
-      href={href!}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ textDecoration: "none" }}
-    >
-      {content}
-    </a>
-  );
-}
 
 function Loading() {
   return (

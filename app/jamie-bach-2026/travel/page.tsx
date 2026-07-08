@@ -34,6 +34,7 @@ function Body() {
     .filter((f) => f.mode === "car")
     .map((f) => findPerson(f.attendeeId))
     .filter((p): p is Attendee => Boolean(p));
+  const mahip = carPeople.find((p) => p.name.split(" ")[0] === "Mahip");
   const flyPeople = flights
     .filter((f) => f.mode === "fly")
     .map((f) => findPerson(f.attendeeId))
@@ -64,7 +65,21 @@ function Body() {
           <strong>booked</strong>. The departure time and where we&apos;ll all
           meet in NYC are still <strong>TBD</strong> — details to come.
         </p>
-        <PeopleList people={carPeople} />
+        <PeopleList people={carPeople} asteriskId={mahip?.id} />
+        {mahip && (
+          <p
+            style={{
+              fontFamily: fonts.body,
+              fontSize: 12,
+              color: colors.inkSoft,
+              lineHeight: 1.5,
+              marginTop: 16,
+            }}
+          >
+            * {mahip.name.split(" ")[0]} is only taking the rental car back to
+            NY, not up to Newport.
+          </p>
+        )}
       </section>
 
       <section style={{ padding: "48px 24px 64px" }}>
@@ -92,9 +107,11 @@ function Body() {
 function PeopleList({
   people,
   airport,
+  asteriskId,
 }: {
   people: Attendee[];
   airport?: string;
+  asteriskId?: string;
 }) {
   if (!people.length) return null;
   return (
@@ -121,6 +138,7 @@ function PeopleList({
             }}
           >
             {p.name.split(" ")[0]}
+            {p.id === asteriskId ? " *" : ""}
           </div>
           <div
             style={{

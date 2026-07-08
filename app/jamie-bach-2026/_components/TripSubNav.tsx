@@ -16,6 +16,10 @@ export default function TripSubNav() {
   return (
     <div
       style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 30,
+        background: colors.paper,
         padding: "0 24px",
         display: "flex",
         gap: 22,

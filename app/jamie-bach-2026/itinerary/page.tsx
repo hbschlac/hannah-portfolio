@@ -50,8 +50,8 @@ const dayMeta: Record<
 // Per-event editorial thumbnail — actual venue photos where available
 const eventCovers: Record<string, { src: string; alt: string }> = {
   "fri-lunch": {
-    src: "/jamie/newport/newport-flag.jpg",
-    alt: "Downtown Newport harbor",
+    src: "/jamie/newport/newport-downtown.jpg",
+    alt: "Downtown Newport — cobblestone street lined with shops and cafes",
   },
   "fri-cliff-walk": {
     src: "/jamie/newport/cliff-walk-real.jpg",
@@ -94,8 +94,8 @@ const eventCovers: Record<string, { src: string; alt: string }> = {
     alt: "Midtown Oyster Bar — Newport",
   },
   "sat-out": {
-    src: "/jamie/newport/sunset-harbor.jpg",
-    alt: "Newport at night",
+    src: "/jamie/newport/newport-nightlife.jpg",
+    alt: "Newport nightlife — waterfront bars lit up after dark",
   },
   "sun-brunch": {
     src: "/jamie/venues/cru-interior.jpg",
