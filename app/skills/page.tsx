@@ -288,7 +288,7 @@ export default function SkillsPage() {
         </h1>
         <p className="text-sm mt-3 leading-relaxed" style={{ color: "#8A8A8A" }}>
           A Claude Code &quot;skill&quot; is a reusable instruction set that teaches Claude to do a
-          specific job my way. I&apos;ve written {TOTAL} of my own. Instead of doing the same work
+          specific job my way. I&apos;ve written {TOTAL}{" "}of my own. Instead of doing the same work
           twice, I turn it into software that runs itself — agents that maintain my sites, the
           system I run my whole job search through, a writing engine that holds my voice, and
           personal tools for my home, my wardrobe, and my research. Here&apos;s the full set.
