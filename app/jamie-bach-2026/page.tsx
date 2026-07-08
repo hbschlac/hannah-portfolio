@@ -102,13 +102,13 @@ function HomeContent() {
           style={{
             position: "relative",
             width: "100%",
-            aspectRatio: "4 / 3",
+            aspectRatio: "1 / 1",
             overflow: "hidden",
             background: colors.mist,
           }}
         >
           <NextImage
-            src="/jamie/jamie-beach-crop2.jpg"
+            src="/jamie/jamie-beach-crop3.jpg"
             alt="Toddler Jamie at the beach"
             fill
             sizes="(max-width: 768px) 100vw, 640px"
