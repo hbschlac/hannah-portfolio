@@ -21,7 +21,7 @@ const dayMeta: Record<
 > = {
   fri: {
     label: "Day One — Friday, July 10",
-    subtitle: "Settling in, a slow lunch, a long first dinner.",
+    subtitle: "Settling in, a walk along the water, first night together.",
     theme: "Theme: Something Blue 💙",
     cover: {
       src: "/jamie/newport/cliff-walk-real.jpg",

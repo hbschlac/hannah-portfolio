@@ -73,7 +73,7 @@ export const seedRoster: Roster = [
     role: "guest",
     city: "NYC",
     phone: "917-250-0413",
-    photoUrl: "/jamie/faces/mahip.jpg",
+    photoUrl: "/jamie/faces/mahip-v2.jpg",
     colorToken: "butter",
     dietary: ["Vegetarian (poultry/fish OK)"],
     drinkLevel: "Light",
