@@ -51,21 +51,6 @@ function HomeContent() {
           gap: 18,
         }}
       >
-        <p
-          style={{
-            fontFamily: fonts.display,
-            fontSize: 19,
-            lineHeight: 1.55,
-            color: colors.ink,
-            margin: 0,
-            letterSpacing: "-0.005em",
-          }}
-        >
-          Three days on the Rhode Island coast for {trip.bride.split(" ")[0]} — sail-cloth sunsets,
-          long dinners, and the kind of summer light New England saves for July.
-          Here&apos;s what we&apos;ve planned.
-        </p>
-
         <div
           style={{
             display: "flex",
