@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-13T23:32:43.250641+00:00",
+  "generated_at": "2026-07-13T23:35:16.350224+00:00",
   "window_days": 90,
-  "vibe_score": 44,
+  "vibe_score": 48,
   "verdict": "mid",
   "biggest_lever": "fix_to_feature",
   "focus": {
@@ -47,7 +47,7 @@
         "mttf",
         "cron_health"
       ],
-      "score": 46,
+      "score": 59,
       "weakest_metric": "broken_in_prod",
       "weakest_score": 10
     },
@@ -120,42 +120,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1334ms",
+      "value": "397ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 810
+            "ttfb_ms": 573
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2977
+            "ttfb_ms": 244
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 215
+            "ttfb_ms": 373
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1334
+        "avg_ttfb_ms": 397
       },
-      "score": 37,
+      "score": 89,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
-          "url": "https://www.muse.shopping",
-          "status": 200,
-          "ttfb_ms": 2977
-        },
-        {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 810
+          "ttfb_ms": 573
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 215
+          "ttfb_ms": 373
+        },
+        {
+          "url": "https://www.muse.shopping",
+          "status": 200,
+          "ttfb_ms": 244
         }
       ],
       "examples_label": "Live site response times (slowest first)",
