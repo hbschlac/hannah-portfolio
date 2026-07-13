@@ -1,22 +1,23 @@
 {
-  "generated_at": "2026-05-22T22:27:53.580862+00:00",
+  "generated_at": "2026-07-13T23:28:32.533887+00:00",
   "window_days": 90,
   "vibe_score": 41,
   "verdict": "mid",
-  "biggest_lever": "broken_in_prod",
+  "biggest_lever": "fix_to_feature",
   "focus": {
-    "metric": "broken_in_prod",
-    "headline": "Stop shipping bugs to prod and patching after the fact",
+    "metric": "fix_to_feature",
+    "headline": "Get back to building, not just patching",
     "score": 0,
     "actions": [
-      "Add a pre-merge smoke check to muse-shopping \u2014 that's where last month's hotfixes landed.",
-      "Before merging any auth/payment/data PR, run the actual user flow in preview first."
+      "5 fix commits vs 1 feature commits in the window \u2014 skew it back by labelling new work with 'feat:'.",
+      "Plan one extra line before each change.",
+      "Run preview before merging anything user-visible."
     ]
   },
   "improver_activity": {
-    "total_runs_30d": 2,
-    "opened_30d": 1,
-    "skipped_30d": 1,
+    "total_runs_30d": 0,
+    "opened_30d": 0,
+    "skipped_30d": 0,
     "failed_30d": 0,
     "recent": [
       {
@@ -46,9 +47,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 34,
-      "weakest_metric": "broken_in_prod",
-      "weakest_score": 0
+      "score": 38,
+      "weakest_metric": "uptime",
+      "weakest_score": 5
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -59,8 +60,8 @@
         "reverts",
         "debug_spiral"
       ],
-      "score": 37,
-      "weakest_metric": "debug_spiral",
+      "score": 33,
+      "weakest_metric": "fix_to_feature",
       "weakest_score": 0
     },
     "any_mess": {
@@ -79,100 +80,82 @@
   },
   "metrics": {
     "broken_in_prod": {
-      "value": "9",
+      "value": "3",
       "raw": {
-        "emergencies": 9,
-        "total_fixes": 10
+        "emergencies": 3,
+        "total_fixes": 5
       },
-      "score": 0,
+      "score": 10,
       "caption": "hotfixes within 24h of the commit they broke",
       "examples": [
         {
           "repo": "muse-shopping",
-          "sha": "4318cc4",
-          "msg": "Fix broken CTAs, deploy Next.js frontend, clean up prod for\u2026",
-          "ts": 1774456596,
-          "broke": "Deploy 250+ brand multi-retailer inventory system",
-          "broke_sha": "19bfeb2",
-          "gap_hours": 0.0
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "f0eeb07",
-          "msg": "Fix product page crash, story navigation, hero CTAs, and dyn\u2026",
-          "ts": 1774488349,
-          "broke": "Fix broken CTAs, deploy Next.js frontend, clean up prod for\u2026",
-          "broke_sha": "4318cc4",
-          "gap_hours": 8.8
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "da27d75",
-          "msg": "fix: correct BrandLogo props on brands slug page",
-          "ts": 1774834317,
-          "broke": "Add auto build-log workflow",
-          "broke_sha": "7bae25a",
+          "sha": "3f11f7e",
+          "msg": "fix(auth): trim Google OAuth env vars at read-site",
+          "ts": 1776382814,
+          "broke": "fix(auth): read backend envelope correctly in frontend API c\u2026",
+          "broke_sha": "edf26f5",
           "gap_hours": 0.4
         },
         {
           "repo": "muse-shopping",
-          "sha": "3a83f67",
-          "msg": "fix(auth): handle OAuth-only accounts + set trust proxy for\u2026",
-          "ts": 1776193576,
-          "broke": "Add Claude session status handoff doc",
-          "broke_sha": "f0ebcb5",
-          "gap_hours": 12.4
+          "sha": "68d29d4",
+          "msg": "fix(auth): point Google redirect at www.muse.shopping; remov\u2026",
+          "ts": 1776384781,
+          "broke": "fix(auth): trim Google OAuth env vars at read-site",
+          "broke_sha": "3f11f7e",
+          "gap_hours": 0.5
         },
         {
           "repo": "muse-shopping",
-          "sha": "0c92c13",
-          "msg": "fix(auth): set trust proxy in Vercel serverless entry too",
-          "ts": 1776194522,
-          "broke": "fix(auth): handle OAuth-only accounts + set trust proxy for\u2026",
-          "broke_sha": "3a83f67",
-          "gap_hours": 0.3
+          "sha": "718f37a",
+          "msg": "fix(auth): survive missing privacy_consent column on registe\u2026",
+          "ts": 1776385559,
+          "broke": "debug(auth): include err.message in 500 response body",
+          "broke_sha": "2eda6b2",
+          "gap_hours": 0.1
         }
       ],
       "examples_label": "Hotfixes and the commits they patched",
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1876ms",
+      "value": "1909ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 333
+            "ttfb_ms": 1258
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 4164
+            "ttfb_ms": 2816
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1132
+            "ttfb_ms": 1654
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1876
+        "avg_ttfb_ms": 1909
       },
-      "score": 7,
+      "score": 5,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 4164
+          "ttfb_ms": 2816
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1132
+          "ttfb_ms": 1654
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 333
+          "ttfb_ms": 1258
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -182,7 +165,7 @@
       "value": "0.5h",
       "raw": {
         "median_hours": 0.5,
-        "samples": 10
+        "samples": 4
       },
       "score": 100,
       "caption": "median hours bugs lived before patched",
@@ -196,102 +179,95 @@
         },
         {
           "repo": "muse-shopping",
-          "sha": "3a83f67",
-          "msg": "fix(auth): handle OAuth-only accounts + set trust proxy for\u2026",
-          "ts": 1776193576,
-          "hours": 12.4
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "f0eeb07",
-          "msg": "Fix product page crash, story navigation, hero CTAs, and dyn\u2026",
-          "ts": 1774488349,
-          "hours": 8.8
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "d01750d",
-          "msg": "fix(auth): mount errorHandler middleware in Vercel serverles\u2026",
-          "ts": 1776213542,
-          "hours": 5.3
-        },
-        {
-          "repo": "muse-shopping",
           "sha": "68d29d4",
           "msg": "fix(auth): point Google redirect at www.muse.shopping; remov\u2026",
           "ts": 1776384781,
           "hours": 0.5
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "3f11f7e",
+          "msg": "fix(auth): trim Google OAuth env vars at read-site",
+          "ts": 1776382814,
+          "hours": 0.4
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "718f37a",
+          "msg": "fix(auth): survive missing privacy_consent column on registe\u2026",
+          "ts": 1776385559,
+          "hours": 0.1
         }
       ],
       "examples_label": "Slowest-detected fixes (highest delays)",
       "how_to_improve": "Long delays mean bugs lived in prod unnoticed. Add a smoke-check on the routes you care about. Get failure alerts to your phone for at least one path per site."
     },
     "cron_health": {
-      "value": "8 stale",
+      "value": "7 stale",
       "raw": {
-        "healthy": 3,
-        "stale": 8,
-        "disabled": 1,
-        "no_data": 1,
+        "healthy": 4,
+        "stale": 7,
+        "disabled": 2,
+        "no_data": 0,
         "total_enabled": 11
       },
-      "score": 27,
+      "score": 36,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "job-tracker-morning-digest",
-          "last_run": "2026-05-10",
-          "days_stale": 12.4,
+          "last_run": "2026-07-05",
+          "days_stale": 8.8,
           "expected_period_days": 1.4,
-          "ratio": 8.9
+          "ratio": 6.3
+        },
+        {
+          "task": "vibe-improver",
+          "last_run": "2026-07-05",
+          "days_stale": 8.8,
+          "expected_period_days": 1.0,
+          "ratio": 8.8
         },
         {
           "task": "git-sync-fixer",
-          "last_run": "2026-05-10",
-          "days_stale": 12.4,
+          "last_run": "2026-07-05",
+          "days_stale": 8.7,
           "expected_period_days": 1.0,
-          "ratio": 12.4
+          "ratio": 8.7
         },
         {
-          "task": "claude-code-stats-sync",
-          "last_run": "2026-05-10",
-          "days_stale": 12.2,
+          "task": "vibe-coach-weekly",
+          "last_run": "2026-07-05",
+          "days_stale": 8.7,
           "expected_period_days": 1.0,
-          "ratio": 12.2
+          "ratio": 8.7
         },
         {
           "task": "managed-agents-pulse",
-          "last_run": "2026-05-10",
-          "days_stale": 12.1,
+          "last_run": "2026-07-06",
+          "days_stale": 7.9,
           "expected_period_days": 0.1,
-          "ratio": 145.6
+          "ratio": 95.2
         },
         {
           "task": "code-builder-sync",
-          "last_run": "2026-05-11",
-          "days_stale": 11.9,
+          "last_run": "2026-07-06",
+          "days_stale": 7.9,
           "expected_period_days": 1.0,
-          "ratio": 11.9
-        },
-        {
-          "task": "calmar-bug-fixer",
-          "last_run": "2026-05-20",
-          "days_stale": 2.2,
-          "expected_period_days": 0.5,
-          "ratio": 4.5
+          "ratio": 7.9
         }
       ],
       "examples_label": "Stale scheduled tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
-      "value": "71%",
+      "value": "83%",
       "raw": {
-        "fix": 10,
-        "feat": 4,
-        "total": 22
+        "fix": 5,
+        "feat": 1,
+        "total": 10
       },
-      "score": 11,
+      "score": 0,
       "caption": "of commits start with 'fix'",
       "examples": [
         {
@@ -331,41 +307,41 @@
     "debug_spiral": {
       "value": "6.0h",
       "raw": {
-        "date": "2026-05-10",
-        "total_sessions": 151
+        "date": "2026-06-30",
+        "total_sessions": 124
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
       "examples": [
         {
-          "session": "b97356b6",
+          "session": "97450b3e",
           "project": "Interior-Design",
           "hours": 6.0,
-          "date": "2026-05-10"
+          "date": "2026-06-30"
         },
         {
-          "session": "f671d214",
+          "session": "9418f1ca",
           "project": "Interior-Design",
           "hours": 6.0,
-          "date": "2026-04-30"
+          "date": "2026-06-20"
         },
         {
-          "session": "e1e63e70",
-          "project": "Interior-Design",
+          "session": "7a9dc381",
+          "project": "-Users-hannahschlacter",
           "hours": 6.0,
-          "date": "2026-04-27"
+          "date": "2026-07-13"
         },
         {
-          "session": "ffc1627f",
-          "project": "Interior-Design",
+          "session": "a6f3d26f",
+          "project": "-Users-hannahschlacter",
           "hours": 6.0,
-          "date": "2026-04-23"
+          "date": "2026-07-05"
         },
         {
-          "session": "b0afc1fd",
-          "project": "Interior-Design",
+          "session": "a1d3b96b",
+          "project": "-Users-hannahschlacter",
           "hours": 6.0,
-          "date": "2026-05-04"
+          "date": "2026-07-05"
         }
       ],
       "examples_label": "Longest single sessions, capped at 6h",
@@ -452,7 +428,7 @@
       "value": "0",
       "raw": {
         "reverts": 0,
-        "total": 22
+        "total": 10
       },
       "score": 100,
       "caption": "reverts and 'oops' commits",
