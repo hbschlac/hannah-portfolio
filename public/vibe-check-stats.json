@@ -1,17 +1,16 @@
 {
-  "generated_at": "2026-07-13T23:35:16.350224+00:00",
+  "generated_at": "2026-07-14T20:13:36.503867+00:00",
   "window_days": 90,
-  "vibe_score": 48,
+  "vibe_score": 39,
   "verdict": "mid",
-  "biggest_lever": "fix_to_feature",
+  "biggest_lever": "broken_in_prod",
   "focus": {
-    "metric": "fix_to_feature",
-    "headline": "Get back to building, not just patching",
+    "metric": "broken_in_prod",
+    "headline": "Stop shipping bugs to prod and patching after the fact",
     "score": 0,
     "actions": [
-      "5 fix commits vs 1 feature commits in the window \u2014 skew it back by labelling new work with 'feat:'.",
-      "Plan one extra line before each change.",
-      "Run preview before merging anything user-visible."
+      "Add a pre-merge smoke check to muse-shopping \u2014 that's where last month's hotfixes landed.",
+      "Before merging any auth/payment/data PR, run the actual user flow in preview first."
     ]
   },
   "improver_activity": {
@@ -47,9 +46,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 59,
+      "score": 32,
       "weakest_metric": "broken_in_prod",
-      "weakest_score": 10
+      "weakest_score": 0
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -83,9 +82,9 @@
       "value": "3",
       "raw": {
         "emergencies": 3,
-        "total_fixes": 5
+        "total_fixes": 4
       },
-      "score": 10,
+      "score": 0,
       "caption": "hotfixes within 24h of the commit they broke",
       "examples": [
         {
@@ -120,63 +119,56 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "397ms",
+      "value": "2228ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 573
+            "ttfb_ms": 1752
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 244
+            "ttfb_ms": 3119
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 373
+            "ttfb_ms": 1812
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 397
+        "avg_ttfb_ms": 2228
       },
-      "score": 89,
+      "score": 0,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
-          "url": "https://schlacter.me",
+          "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 573
+          "ttfb_ms": 3119
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 373
+          "ttfb_ms": 1812
         },
         {
-          "url": "https://www.muse.shopping",
+          "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 244
+          "ttfb_ms": 1752
         }
       ],
       "examples_label": "Live site response times (slowest first)",
       "how_to_improve": "Slow TTFB usually means a cold serverless function or a DB call on every request. Cache reads at the edge, lazy-load non-critical data, and keep the homepage payload small."
     },
     "mttf": {
-      "value": "0.5h",
+      "value": "0.4h",
       "raw": {
-        "median_hours": 0.5,
-        "samples": 4
+        "median_hours": 0.4,
+        "samples": 3
       },
       "score": 100,
       "caption": "median hours bugs lived before patched",
       "examples": [
-        {
-          "repo": "muse-shopping",
-          "sha": "edf26f5",
-          "msg": "fix(auth): read backend envelope correctly in frontend API c\u2026",
-          "ts": 1776381410,
-          "hours": 46.6
-        },
         {
           "repo": "muse-shopping",
           "sha": "68d29d4",
@@ -203,69 +195,69 @@
       "how_to_improve": "Long delays mean bugs lived in prod unnoticed. Add a smoke-check on the routes you care about. Get failure alerts to your phone for at least one path per site."
     },
     "cron_health": {
-      "value": "7 stale",
+      "value": "8 stale",
       "raw": {
-        "healthy": 4,
-        "stale": 7,
+        "healthy": 3,
+        "stale": 8,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 11
       },
-      "score": 36,
+      "score": 27,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "job-tracker-morning-digest",
           "last_run": "2026-07-05",
-          "days_stale": 8.8,
+          "days_stale": 9.7,
           "expected_period_days": 1.4,
-          "ratio": 6.3
-        },
-        {
-          "task": "vibe-improver",
-          "last_run": "2026-07-05",
-          "days_stale": 8.8,
-          "expected_period_days": 1.0,
-          "ratio": 8.8
+          "ratio": 6.9
         },
         {
           "task": "git-sync-fixer",
           "last_run": "2026-07-05",
-          "days_stale": 8.7,
+          "days_stale": 9.6,
           "expected_period_days": 1.0,
-          "ratio": 8.7
+          "ratio": 9.6
+        },
+        {
+          "task": "vibe-improver",
+          "last_run": "2026-07-05",
+          "days_stale": 9.6,
+          "expected_period_days": 1.0,
+          "ratio": 9.6
         },
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-07-05",
-          "days_stale": 8.7,
+          "days_stale": 9.6,
           "expected_period_days": 1.0,
-          "ratio": 8.7
+          "ratio": 9.6
         },
         {
           "task": "managed-agents-pulse",
           "last_run": "2026-07-06",
-          "days_stale": 7.9,
+          "days_stale": 8.8,
           "expected_period_days": 0.1,
-          "ratio": 95.2
+          "ratio": 105.6
         },
         {
           "task": "code-builder-sync",
           "last_run": "2026-07-06",
-          "days_stale": 7.9,
+          "days_stale": 8.8,
           "expected_period_days": 1.0,
-          "ratio": 7.9
+          "ratio": 8.8
         }
       ],
       "examples_label": "Stale scheduled tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
-      "value": "83%",
+      "value": "80%",
       "raw": {
-        "fix": 5,
+        "fix": 4,
         "feat": 1,
-        "total": 10
+        "total": 9
       },
       "score": 0,
       "caption": "of commits start with 'fix'",
@@ -293,12 +285,6 @@
           "sha": "edf26f5",
           "msg": "fix(auth): read backend envelope correctly in frontend API c\u2026",
           "ts": 1776381410
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "d01750d",
-          "msg": "fix(auth): mount errorHandler middleware in Vercel serverles\u2026",
-          "ts": 1776213542
         }
       ],
       "examples_label": "Sample fix commits",
@@ -428,7 +414,7 @@
       "value": "0",
       "raw": {
         "reverts": 0,
-        "total": 10
+        "total": 9
       },
       "score": 100,
       "caption": "reverts and 'oops' commits",
