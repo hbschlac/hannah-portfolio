@@ -28,5 +28,15 @@
       "any_mess": 52
     },
     "biggest_lever": "broken_in_prod"
+  },
+  {
+    "generated_at": "2026-07-15T15:01:27.085477+00:00",
+    "vibe_score": 38,
+    "theme_scores": {
+      "does_it_work": 30,
+      "do_i_know": 33,
+      "any_mess": 52
+    },
+    "biggest_lever": "broken_in_prod"
   }
 ]
