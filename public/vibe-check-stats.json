@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-14T20:13:36.503867+00:00",
+  "generated_at": "2026-07-15T15:01:27.085477+00:00",
   "window_days": 90,
-  "vibe_score": 39,
+  "vibe_score": 38,
   "verdict": "mid",
   "biggest_lever": "broken_in_prod",
   "focus": {
@@ -46,7 +46,7 @@
         "mttf",
         "cron_health"
       ],
-      "score": 32,
+      "score": 30,
       "weakest_metric": "broken_in_prod",
       "weakest_score": 0
     },
@@ -119,24 +119,24 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "2228ms",
+      "value": "2016ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1752
+            "ttfb_ms": 1324
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 3119
+            "ttfb_ms": 3033
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1812
+            "ttfb_ms": 1691
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 2228
+        "avg_ttfb_ms": 2016
       },
       "score": 0,
       "caption": "avg time to first byte across live sites",
@@ -144,17 +144,17 @@
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 3119
+          "ttfb_ms": 3033
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1812
+          "ttfb_ms": 1691
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1752
+          "ttfb_ms": 1324
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -195,58 +195,58 @@
       "how_to_improve": "Long delays mean bugs lived in prod unnoticed. Add a smoke-check on the routes you care about. Get failure alerts to your phone for at least one path per site."
     },
     "cron_health": {
-      "value": "8 stale",
+      "value": "9 stale",
       "raw": {
-        "healthy": 3,
-        "stale": 8,
+        "healthy": 2,
+        "stale": 9,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 11
       },
-      "score": 27,
+      "score": 18,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "job-tracker-morning-digest",
           "last_run": "2026-07-05",
-          "days_stale": 9.7,
+          "days_stale": 10.5,
           "expected_period_days": 1.4,
-          "ratio": 6.9
+          "ratio": 7.5
         },
         {
           "task": "git-sync-fixer",
           "last_run": "2026-07-05",
-          "days_stale": 9.6,
+          "days_stale": 10.4,
           "expected_period_days": 1.0,
-          "ratio": 9.6
+          "ratio": 10.4
         },
         {
           "task": "vibe-improver",
           "last_run": "2026-07-05",
-          "days_stale": 9.6,
+          "days_stale": 10.4,
           "expected_period_days": 1.0,
-          "ratio": 9.6
+          "ratio": 10.4
         },
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-07-05",
-          "days_stale": 9.6,
+          "days_stale": 10.4,
           "expected_period_days": 1.0,
-          "ratio": 9.6
+          "ratio": 10.4
         },
         {
           "task": "managed-agents-pulse",
           "last_run": "2026-07-06",
-          "days_stale": 8.8,
+          "days_stale": 9.6,
           "expected_period_days": 0.1,
-          "ratio": 105.6
+          "ratio": 115.0
         },
         {
           "task": "code-builder-sync",
           "last_run": "2026-07-06",
-          "days_stale": 8.8,
+          "days_stale": 9.6,
           "expected_period_days": 1.0,
-          "ratio": 8.8
+          "ratio": 9.6
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -294,7 +294,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-06-30",
-        "total_sessions": 125
+        "total_sessions": 129
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
