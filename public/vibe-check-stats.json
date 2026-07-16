@@ -1,16 +1,17 @@
 {
-  "generated_at": "2026-07-15T15:01:27.085477+00:00",
+  "generated_at": "2026-07-16T15:02:15.825704+00:00",
   "window_days": 90,
-  "vibe_score": 38,
-  "verdict": "mid",
-  "biggest_lever": "broken_in_prod",
+  "vibe_score": 58,
+  "verdict": "decent",
+  "biggest_lever": "uptime",
   "focus": {
-    "metric": "broken_in_prod",
-    "headline": "Stop shipping bugs to prod and patching after the fact",
+    "metric": "uptime",
+    "headline": "Make the live sites respond fast",
     "score": 0,
     "actions": [
-      "Add a pre-merge smoke check to muse-shopping \u2014 that's where last month's hotfixes landed.",
-      "Before merging any auth/payment/data PR, run the actual user flow in preview first."
+      "Cut TTFB on https://www.muse.shopping (currently 3040ms) \u2014 likely a cold serverless function or an un-cached DB call on the homepage.",
+      "Add edge caching to read-heavy routes.",
+      "Move non-critical data fetches client-side so the first byte lands quickly."
     ]
   },
   "improver_activity": {
@@ -46,8 +47,8 @@
         "mttf",
         "cron_health"
       ],
-      "score": 30,
-      "weakest_metric": "broken_in_prod",
+      "score": 54,
+      "weakest_metric": "uptime",
       "weakest_score": 0
     },
     "do_i_know": {
@@ -59,8 +60,8 @@
         "reverts",
         "debug_spiral"
       ],
-      "score": 33,
-      "weakest_metric": "fix_to_feature",
+      "score": 67,
+      "weakest_metric": "debug_spiral",
       "weakest_score": 0
     },
     "any_mess": {
@@ -79,64 +80,36 @@
   },
   "metrics": {
     "broken_in_prod": {
-      "value": "3",
+      "value": "0",
       "raw": {
-        "emergencies": 3,
-        "total_fixes": 4
+        "emergencies": 0,
+        "total_fixes": 0
       },
-      "score": 0,
+      "score": 100,
       "caption": "hotfixes within 24h of the commit they broke",
-      "examples": [
-        {
-          "repo": "muse-shopping",
-          "sha": "3f11f7e",
-          "msg": "fix(auth): trim Google OAuth env vars at read-site",
-          "ts": 1776382814,
-          "broke": "fix(auth): read backend envelope correctly in frontend API c\u2026",
-          "broke_sha": "edf26f5",
-          "gap_hours": 0.4
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "68d29d4",
-          "msg": "fix(auth): point Google redirect at www.muse.shopping; remov\u2026",
-          "ts": 1776384781,
-          "broke": "fix(auth): trim Google OAuth env vars at read-site",
-          "broke_sha": "3f11f7e",
-          "gap_hours": 0.5
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "718f37a",
-          "msg": "fix(auth): survive missing privacy_consent column on registe\u2026",
-          "ts": 1776385559,
-          "broke": "debug(auth): include err.message in 500 response body",
-          "broke_sha": "2eda6b2",
-          "gap_hours": 0.1
-        }
-      ],
+      "examples": [],
       "examples_label": "Hotfixes and the commits they patched",
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "2016ms",
+      "value": "1994ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1324
+            "ttfb_ms": 1326
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 3033
+            "ttfb_ms": 3040
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1691
+            "ttfb_ms": 1617
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 2016
+        "avg_ttfb_ms": 1994
       },
       "score": 0,
       "caption": "avg time to first byte across live sites",
@@ -144,55 +117,32 @@
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 3033
+          "ttfb_ms": 3040
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1691
+          "ttfb_ms": 1617
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1324
+          "ttfb_ms": 1326
         }
       ],
       "examples_label": "Live site response times (slowest first)",
       "how_to_improve": "Slow TTFB usually means a cold serverless function or a DB call on every request. Cache reads at the edge, lazy-load non-critical data, and keep the homepage payload small."
     },
     "mttf": {
-      "value": "0.4h",
+      "value": "n/a",
       "raw": {
-        "median_hours": 0.4,
-        "samples": 3
+        "samples": 0
       },
       "score": 100,
       "caption": "median hours bugs lived before patched",
-      "examples": [
-        {
-          "repo": "muse-shopping",
-          "sha": "68d29d4",
-          "msg": "fix(auth): point Google redirect at www.muse.shopping; remov\u2026",
-          "ts": 1776384781,
-          "hours": 0.5
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "3f11f7e",
-          "msg": "fix(auth): trim Google OAuth env vars at read-site",
-          "ts": 1776382814,
-          "hours": 0.4
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "718f37a",
-          "msg": "fix(auth): survive missing privacy_consent column on registe\u2026",
-          "ts": 1776385559,
-          "hours": 0.1
-        }
-      ],
-      "examples_label": "Slowest-detected fixes (highest delays)",
-      "how_to_improve": "Long delays mean bugs lived in prod unnoticed. Add a smoke-check on the routes you care about. Get failure alerts to your phone for at least one path per site."
+      "examples": [],
+      "examples_label": "Slowest-detected fixes",
+      "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
       "value": "9 stale",
@@ -209,84 +159,59 @@
         {
           "task": "job-tracker-morning-digest",
           "last_run": "2026-07-05",
-          "days_stale": 10.5,
+          "days_stale": 11.5,
           "expected_period_days": 1.4,
-          "ratio": 7.5
+          "ratio": 8.2
         },
         {
           "task": "git-sync-fixer",
           "last_run": "2026-07-05",
-          "days_stale": 10.4,
+          "days_stale": 11.4,
           "expected_period_days": 1.0,
-          "ratio": 10.4
+          "ratio": 11.4
         },
         {
           "task": "vibe-improver",
           "last_run": "2026-07-05",
-          "days_stale": 10.4,
+          "days_stale": 11.4,
           "expected_period_days": 1.0,
-          "ratio": 10.4
+          "ratio": 11.4
         },
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-07-05",
-          "days_stale": 10.4,
+          "days_stale": 11.4,
           "expected_period_days": 1.0,
-          "ratio": 10.4
+          "ratio": 11.4
         },
         {
           "task": "managed-agents-pulse",
           "last_run": "2026-07-06",
-          "days_stale": 9.6,
+          "days_stale": 10.6,
           "expected_period_days": 0.1,
-          "ratio": 115.0
+          "ratio": 127.0
         },
         {
           "task": "code-builder-sync",
           "last_run": "2026-07-06",
-          "days_stale": 9.6,
+          "days_stale": 10.6,
           "expected_period_days": 1.0,
-          "ratio": 9.6
+          "ratio": 10.6
         }
       ],
       "examples_label": "Stale scheduled tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
-      "value": "80%",
+      "value": "0%",
       "raw": {
-        "fix": 4,
-        "feat": 1,
-        "total": 9
+        "fix": 0,
+        "feat": 0,
+        "total": 1
       },
-      "score": 0,
+      "score": 100,
       "caption": "of commits start with 'fix'",
-      "examples": [
-        {
-          "repo": "muse-shopping",
-          "sha": "718f37a",
-          "msg": "fix(auth): survive missing privacy_consent column on registe\u2026",
-          "ts": 1776385559
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "68d29d4",
-          "msg": "fix(auth): point Google redirect at www.muse.shopping; remov\u2026",
-          "ts": 1776384781
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "3f11f7e",
-          "msg": "fix(auth): trim Google OAuth env vars at read-site",
-          "ts": 1776382814
-        },
-        {
-          "repo": "muse-shopping",
-          "sha": "edf26f5",
-          "msg": "fix(auth): read backend envelope correctly in frontend API c\u2026",
-          "ts": 1776381410
-        }
-      ],
+      "examples": [],
       "examples_label": "Sample fix commits",
       "how_to_improve": "Write one more line of plan before each change. Run it locally or in a preview before merging. Pair commit msgs with 'feat:' when you're adding something \u2014 habitual 'fix:' framing skews the number."
     },
@@ -294,7 +219,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-06-30",
-        "total_sessions": 129
+        "total_sessions": 130
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
@@ -414,7 +339,7 @@
       "value": "0",
       "raw": {
         "reverts": 0,
-        "total": 9
+        "total": 1
       },
       "score": 100,
       "caption": "reverts and 'oops' commits",
