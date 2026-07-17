@@ -1,17 +1,16 @@
 {
-  "generated_at": "2026-07-16T15:02:15.825704+00:00",
+  "generated_at": "2026-07-17T15:02:16.827431+00:00",
   "window_days": 90,
   "vibe_score": 58,
   "verdict": "decent",
-  "biggest_lever": "uptime",
+  "biggest_lever": "debug_spiral",
   "focus": {
-    "metric": "uptime",
-    "headline": "Make the live sites respond fast",
+    "metric": "debug_spiral",
+    "headline": "Stop the 6-hour loops",
     "score": 0,
     "actions": [
-      "Cut TTFB on https://www.muse.shopping (currently 3040ms) \u2014 likely a cold serverless function or an un-cached DB call on the homepage.",
-      "Add edge caching to read-heavy routes.",
-      "Move non-critical data fetches client-side so the first byte lands quickly."
+      "Worst loop was 6.0h in Interior-Design \u2014 when 3 hours in and looping, stop. Restart with a written goal.",
+      "Set a personal 2-hour timer on hard debugging sessions before walking away."
     ]
   },
   "improver_activity": {
@@ -49,7 +48,7 @@
       ],
       "score": 54,
       "weakest_metric": "uptime",
-      "weakest_score": 0
+      "weakest_score": 7
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -92,42 +91,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1994ms",
+      "value": "1875ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1326
+            "ttfb_ms": 1020
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 3040
+            "ttfb_ms": 2805
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1617
+            "ttfb_ms": 1801
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1994
+        "avg_ttfb_ms": 1875
       },
-      "score": 0,
+      "score": 7,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 3040
+          "ttfb_ms": 2805
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1617
+          "ttfb_ms": 1801
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1326
+          "ttfb_ms": 1020
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -145,58 +144,58 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "9 stale",
+      "value": "10 stale",
       "raw": {
-        "healthy": 2,
-        "stale": 9,
+        "healthy": 1,
+        "stale": 10,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 11
       },
-      "score": 18,
+      "score": 9,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "job-tracker-morning-digest",
           "last_run": "2026-07-05",
-          "days_stale": 11.5,
+          "days_stale": 12.5,
           "expected_period_days": 1.4,
-          "ratio": 8.2
+          "ratio": 8.9
         },
         {
           "task": "git-sync-fixer",
           "last_run": "2026-07-05",
-          "days_stale": 11.4,
+          "days_stale": 12.4,
           "expected_period_days": 1.0,
-          "ratio": 11.4
+          "ratio": 12.4
         },
         {
           "task": "vibe-improver",
           "last_run": "2026-07-05",
-          "days_stale": 11.4,
+          "days_stale": 12.4,
           "expected_period_days": 1.0,
-          "ratio": 11.4
+          "ratio": 12.4
         },
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-07-05",
-          "days_stale": 11.4,
+          "days_stale": 12.4,
           "expected_period_days": 1.0,
-          "ratio": 11.4
+          "ratio": 12.4
         },
         {
           "task": "managed-agents-pulse",
           "last_run": "2026-07-06",
-          "days_stale": 10.6,
+          "days_stale": 11.6,
           "expected_period_days": 0.1,
-          "ratio": 127.0
+          "ratio": 139.0
         },
         {
           "task": "code-builder-sync",
           "last_run": "2026-07-06",
-          "days_stale": 10.6,
+          "days_stale": 11.6,
           "expected_period_days": 1.0,
-          "ratio": 10.6
+          "ratio": 11.6
         }
       ],
       "examples_label": "Stale scheduled tasks",
