@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-17T15:02:16.827431+00:00",
+  "generated_at": "2026-07-18T15:01:50.785443+00:00",
   "window_days": 90,
-  "vibe_score": 58,
-  "verdict": "decent",
+  "vibe_score": 66,
+  "verdict": "solid",
   "biggest_lever": "debug_spiral",
   "focus": {
     "metric": "debug_spiral",
@@ -46,9 +46,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 54,
+      "score": 79,
       "weakest_metric": "uptime",
-      "weakest_score": 7
+      "weakest_score": 15
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -91,42 +91,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1875ms",
+      "value": "1730ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1020
+            "ttfb_ms": 1378
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2805
+            "ttfb_ms": 2508
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1801
+            "ttfb_ms": 1303
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1875
+        "avg_ttfb_ms": 1730
       },
-      "score": 7,
+      "score": 15,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2805
-        },
-        {
-          "url": "https://kindle.schlacter.me",
-          "status": 200,
-          "ttfb_ms": 1801
+          "ttfb_ms": 2508
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1020
+          "ttfb_ms": 1378
+        },
+        {
+          "url": "https://kindle.schlacter.me",
+          "status": 200,
+          "ttfb_ms": 1303
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -144,61 +144,61 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "10 stale",
+      "value": "all current",
       "raw": {
-        "healthy": 1,
-        "stale": 10,
+        "healthy": 11,
+        "stale": 0,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 11
       },
-      "score": 9,
+      "score": 100,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
+          "task": "calmar-sync",
+          "last_run": "2026-07-18",
+          "days_stale": 0.3,
+          "expected_period_days": 3.5,
+          "ratio": 0.1
+        },
+        {
+          "task": "calmar-bug-fixer",
+          "last_run": "2026-07-18",
+          "days_stale": 0.3,
+          "expected_period_days": 0.5,
+          "ratio": 0.6
+        },
+        {
+          "task": "vercel-deploy-fixer",
+          "last_run": "2026-07-18",
+          "days_stale": 0.3,
+          "expected_period_days": 0.2,
+          "ratio": 1.7
+        },
+        {
+          "task": "claude-reddit-pulse",
+          "last_run": "2026-07-18",
+          "days_stale": 0.3,
+          "expected_period_days": 1.8,
+          "ratio": 0.2
+        },
+        {
+          "task": "reddit-pulse-health-check",
+          "last_run": "2026-07-18",
+          "days_stale": 0.3,
+          "expected_period_days": 1.0,
+          "ratio": 0.3
+        },
+        {
           "task": "job-tracker-morning-digest",
-          "last_run": "2026-07-05",
-          "days_stale": 12.5,
+          "last_run": "2026-07-18",
+          "days_stale": 0.3,
           "expected_period_days": 1.4,
-          "ratio": 8.9
-        },
-        {
-          "task": "git-sync-fixer",
-          "last_run": "2026-07-05",
-          "days_stale": 12.4,
-          "expected_period_days": 1.0,
-          "ratio": 12.4
-        },
-        {
-          "task": "vibe-improver",
-          "last_run": "2026-07-05",
-          "days_stale": 12.4,
-          "expected_period_days": 1.0,
-          "ratio": 12.4
-        },
-        {
-          "task": "vibe-coach-weekly",
-          "last_run": "2026-07-05",
-          "days_stale": 12.4,
-          "expected_period_days": 1.0,
-          "ratio": 12.4
-        },
-        {
-          "task": "managed-agents-pulse",
-          "last_run": "2026-07-06",
-          "days_stale": 11.6,
-          "expected_period_days": 0.1,
-          "ratio": 139.0
-        },
-        {
-          "task": "code-builder-sync",
-          "last_run": "2026-07-06",
-          "days_stale": 11.6,
-          "expected_period_days": 1.0,
-          "ratio": 11.6
+          "ratio": 0.2
         }
       ],
-      "examples_label": "Stale scheduled tasks",
+      "examples_label": "Healthy tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
@@ -217,12 +217,18 @@
     "debug_spiral": {
       "value": "6.0h",
       "raw": {
-        "date": "2026-06-30",
-        "total_sessions": 130
+        "date": "2026-07-18",
+        "total_sessions": 140
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
       "examples": [
+        {
+          "session": "c83448a2",
+          "project": "Interior-Design",
+          "hours": 6.0,
+          "date": "2026-07-18"
+        },
         {
           "session": "97450b3e",
           "project": "Interior-Design",
@@ -243,12 +249,6 @@
         },
         {
           "session": "a6f3d26f",
-          "project": "-Users-hannahschlacter",
-          "hours": 6.0,
-          "date": "2026-07-05"
-        },
-        {
-          "session": "a1d3b96b",
           "project": "-Users-hannahschlacter",
           "hours": 6.0,
           "date": "2026-07-05"
