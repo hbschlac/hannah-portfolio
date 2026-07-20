@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-18T15:01:50.785443+00:00",
+  "generated_at": "2026-07-20T03:50:59.854401+00:00",
   "window_days": 90,
-  "vibe_score": 66,
+  "vibe_score": 67,
   "verdict": "solid",
   "biggest_lever": "debug_spiral",
   "focus": {
@@ -46,9 +46,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 79,
+      "score": 81,
       "weakest_metric": "uptime",
-      "weakest_score": 15
+      "weakest_score": 52
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -91,42 +91,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1730ms",
+      "value": "1062ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1378
+            "ttfb_ms": 1373
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2508
+            "ttfb_ms": 567
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1303
+            "ttfb_ms": 1245
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1730
+        "avg_ttfb_ms": 1062
       },
-      "score": 15,
+      "score": 52,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
-          "url": "https://www.muse.shopping",
-          "status": 200,
-          "ttfb_ms": 2508
-        },
-        {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1378
+          "ttfb_ms": 1373
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1303
+          "ttfb_ms": 1245
+        },
+        {
+          "url": "https://www.muse.shopping",
+          "status": 200,
+          "ttfb_ms": 567
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -144,61 +144,40 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "all current",
+      "value": "3 stale",
       "raw": {
-        "healthy": 11,
-        "stale": 0,
+        "healthy": 8,
+        "stale": 3,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 11
       },
-      "score": 100,
+      "score": 73,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
-          "task": "calmar-sync",
-          "last_run": "2026-07-18",
-          "days_stale": 0.3,
-          "expected_period_days": 3.5,
-          "ratio": 0.1
-        },
-        {
           "task": "calmar-bug-fixer",
           "last_run": "2026-07-18",
-          "days_stale": 0.3,
+          "days_stale": 1.8,
           "expected_period_days": 0.5,
-          "ratio": 0.6
+          "ratio": 3.6
         },
         {
           "task": "vercel-deploy-fixer",
           "last_run": "2026-07-18",
-          "days_stale": 0.3,
+          "days_stale": 1.8,
           "expected_period_days": 0.2,
-          "ratio": 1.7
+          "ratio": 10.9
         },
         {
-          "task": "claude-reddit-pulse",
+          "task": "managed-agents-pulse",
           "last_run": "2026-07-18",
-          "days_stale": 0.3,
-          "expected_period_days": 1.8,
-          "ratio": 0.2
-        },
-        {
-          "task": "reddit-pulse-health-check",
-          "last_run": "2026-07-18",
-          "days_stale": 0.3,
-          "expected_period_days": 1.0,
-          "ratio": 0.3
-        },
-        {
-          "task": "job-tracker-morning-digest",
-          "last_run": "2026-07-18",
-          "days_stale": 0.3,
-          "expected_period_days": 1.4,
-          "ratio": 0.2
+          "days_stale": 1.7,
+          "expected_period_days": 0.1,
+          "ratio": 20.4
         }
       ],
-      "examples_label": "Healthy tasks",
+      "examples_label": "Stale scheduled tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
