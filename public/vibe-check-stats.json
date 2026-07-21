@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-20T15:00:48.246491+00:00",
+  "generated_at": "2026-07-21T17:00:19.862916+00:00",
   "window_days": 90,
-  "vibe_score": 60,
+  "vibe_score": 63,
   "verdict": "decent",
   "biggest_lever": "debug_spiral",
   "focus": {
@@ -46,9 +46,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 60,
+      "score": 71,
       "weakest_metric": "uptime",
-      "weakest_score": 14
+      "weakest_score": 11
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -91,42 +91,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1752ms",
+      "value": "1798ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1141
+            "ttfb_ms": 1046
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2606
+            "ttfb_ms": 2903
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1508
+            "ttfb_ms": 1445
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1752
+        "avg_ttfb_ms": 1798
       },
-      "score": 14,
+      "score": 11,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2606
+          "ttfb_ms": 2903
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1508
+          "ttfb_ms": 1445
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1141
+          "ttfb_ms": 1046
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -144,58 +144,37 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "8 stale",
+      "value": "3 stale",
       "raw": {
-        "healthy": 3,
-        "stale": 8,
+        "healthy": 8,
+        "stale": 3,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 11
       },
-      "score": 27,
+      "score": 73,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
-          "task": "calmar-bug-fixer",
+          "task": "vibe-coach-weekly",
           "last_run": "2026-07-18",
-          "days_stale": 2.3,
-          "expected_period_days": 0.5,
-          "ratio": 4.6
+          "days_stale": 3.3,
+          "expected_period_days": 1.0,
+          "ratio": 3.3
         },
         {
           "task": "vercel-deploy-fixer",
-          "last_run": "2026-07-18",
-          "days_stale": 2.3,
+          "last_run": "2026-07-21",
+          "days_stale": 0.6,
           "expected_period_days": 0.2,
-          "ratio": 13.7
-        },
-        {
-          "task": "reddit-pulse-health-check",
-          "last_run": "2026-07-18",
-          "days_stale": 2.3,
-          "expected_period_days": 1.0,
-          "ratio": 2.3
-        },
-        {
-          "task": "code-builder-sync",
-          "last_run": "2026-07-18",
-          "days_stale": 2.3,
-          "expected_period_days": 1.0,
-          "ratio": 2.3
-        },
-        {
-          "task": "git-sync-fixer",
-          "last_run": "2026-07-18",
-          "days_stale": 2.3,
-          "expected_period_days": 1.0,
-          "ratio": 2.3
+          "ratio": 3.8
         },
         {
           "task": "managed-agents-pulse",
-          "last_run": "2026-07-18",
-          "days_stale": 2.2,
+          "last_run": "2026-07-21",
+          "days_stale": 0.6,
           "expected_period_days": 0.1,
-          "ratio": 26.0
+          "ratio": 7.7
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -218,7 +197,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-07-18",
-        "total_sessions": 140
+        "total_sessions": 155
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
