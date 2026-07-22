@@ -88,5 +88,15 @@
       "any_mess": 52
     },
     "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-07-22T17:00:17.572954+00:00",
+    "vibe_score": 66,
+    "theme_scores": {
+      "does_it_work": 78,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
   }
 ]
