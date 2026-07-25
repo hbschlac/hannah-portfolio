@@ -118,5 +118,15 @@
       "any_mess": 52
     },
     "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-07-25T17:15:47.393472+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 66,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
   }
 ]
