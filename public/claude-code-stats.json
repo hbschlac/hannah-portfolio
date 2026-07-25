@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-23T17:00:06+00:00",
+  "generated_at": "2026-07-25T17:04:02+00:00",
   "total": {
-    "hours": 652.1,
-    "sessions": 337,
-    "commits": 122,
-    "days_active": 52,
+    "hours": 679.8,
+    "sessions": 346,
+    "commits": 124,
+    "days_active": 54,
     "first_month": "2026-02",
     "latest_month": "2026-07"
   },
@@ -146,23 +146,23 @@
     },
     {
       "month": "2026-07",
-      "sessions": 81,
-      "hours": 143.4,
-      "avg_per_week_hours": 43.6,
+      "sessions": 90,
+      "hours": 171.1,
+      "avg_per_week_hours": 47.9,
       "max_session_hours": 6.0,
-      "days_active": 12,
-      "avg_length_min": 106,
-      "commits": 12,
+      "days_active": 14,
+      "avg_length_min": 114,
+      "commits": 14,
       "top_projects": [
         {
           "label": "personal portfolio & tools",
-          "hours": 136.6,
-          "share": 95.3
+          "hours": 164.3,
+          "share": 96.0
         },
         {
           "label": "home design tool",
           "hours": 6.8,
-          "share": 4.7
+          "share": 4.0
         }
       ],
       "partial": true

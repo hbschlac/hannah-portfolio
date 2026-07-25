@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-24T17:00:17.285092+00:00",
+  "generated_at": "2026-07-25T17:15:47.393472+00:00",
   "window_days": 90,
-  "vibe_score": 65,
-  "verdict": "solid",
+  "vibe_score": 62,
+  "verdict": "decent",
   "biggest_lever": "debug_spiral",
   "focus": {
     "metric": "debug_spiral",
@@ -53,9 +53,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 76,
-      "weakest_metric": "cron_health",
-      "weakest_score": 45
+      "score": 66,
+      "weakest_metric": "uptime",
+      "weakest_score": 19
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -98,42 +98,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "904ms",
+      "value": "1660ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1239
+            "ttfb_ms": 866
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 342
+            "ttfb_ms": 2742
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1132
+            "ttfb_ms": 1371
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 904
+        "avg_ttfb_ms": 1660
       },
-      "score": 61,
+      "score": 19,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
-          "url": "https://schlacter.me",
+          "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 1239
+          "ttfb_ms": 2742
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1132
+          "ttfb_ms": 1371
         },
         {
-          "url": "https://www.muse.shopping",
+          "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 342
+          "ttfb_ms": 866
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -165,44 +165,44 @@
         {
           "task": "code-builder-sync",
           "last_run": "2026-07-20",
-          "days_stale": 3.9,
+          "days_stale": 4.9,
           "expected_period_days": 1.0,
-          "ratio": 3.9
+          "ratio": 4.9
         },
         {
           "task": "git-sync-fixer",
           "last_run": "2026-07-21",
-          "days_stale": 3.6,
+          "days_stale": 4.6,
           "expected_period_days": 1.0,
-          "ratio": 3.6
+          "ratio": 4.6
         },
         {
           "task": "vibe-improver",
           "last_run": "2026-07-21",
-          "days_stale": 3.6,
+          "days_stale": 4.6,
           "expected_period_days": 1.0,
-          "ratio": 3.6
+          "ratio": 4.6
         },
         {
-          "task": "calmar-bug-fixer",
+          "task": "vibe-coach-weekly",
           "last_run": "2026-07-23",
-          "days_stale": 1.0,
-          "expected_period_days": 0.5,
-          "ratio": 2.1
+          "days_stale": 2.0,
+          "expected_period_days": 1.0,
+          "ratio": 2.0
         },
         {
           "task": "vercel-deploy-fixer",
-          "last_run": "2026-07-23",
-          "days_stale": 1.0,
+          "last_run": "2026-07-25",
+          "days_stale": 0.6,
           "expected_period_days": 0.2,
-          "ratio": 6.1
+          "ratio": 3.4
         },
         {
           "task": "managed-agents-pulse",
-          "last_run": "2026-07-23",
-          "days_stale": 1.0,
+          "last_run": "2026-07-25",
+          "days_stale": 0.5,
           "expected_period_days": 0.1,
-          "ratio": 12.1
+          "ratio": 6.3
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -225,7 +225,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-07-18",
-        "total_sessions": 163
+        "total_sessions": 172
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
