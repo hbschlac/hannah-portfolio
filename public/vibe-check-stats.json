@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-25T17:15:47.393472+00:00",
+  "generated_at": "2026-07-26T17:06:13.569755+00:00",
   "window_days": 90,
-  "vibe_score": 62,
+  "vibe_score": 60,
   "verdict": "decent",
   "biggest_lever": "debug_spiral",
   "focus": {
@@ -53,9 +53,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 66,
+      "score": 61,
       "weakest_metric": "uptime",
-      "weakest_score": 19
+      "weakest_score": 8
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -98,42 +98,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1660ms",
+      "value": "1852ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 866
+            "ttfb_ms": 1524
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2742
+            "ttfb_ms": 2792
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1371
+            "ttfb_ms": 1240
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1660
+        "avg_ttfb_ms": 1852
       },
-      "score": 19,
+      "score": 8,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2742
-        },
-        {
-          "url": "https://kindle.schlacter.me",
-          "status": 200,
-          "ttfb_ms": 1371
+          "ttfb_ms": 2792
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 866
+          "ttfb_ms": 1524
+        },
+        {
+          "url": "https://kindle.schlacter.me",
+          "status": 200,
+          "ttfb_ms": 1240
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -151,58 +151,58 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "6 stale",
+      "value": "7 stale",
       "raw": {
-        "healthy": 5,
-        "stale": 6,
+        "healthy": 4,
+        "stale": 7,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 11
       },
-      "score": 45,
+      "score": 36,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "code-builder-sync",
           "last_run": "2026-07-20",
-          "days_stale": 4.9,
+          "days_stale": 5.9,
           "expected_period_days": 1.0,
-          "ratio": 4.9
+          "ratio": 5.9
         },
         {
           "task": "git-sync-fixer",
           "last_run": "2026-07-21",
-          "days_stale": 4.6,
+          "days_stale": 5.6,
           "expected_period_days": 1.0,
-          "ratio": 4.6
+          "ratio": 5.6
         },
         {
           "task": "vibe-improver",
           "last_run": "2026-07-21",
-          "days_stale": 4.6,
+          "days_stale": 5.6,
           "expected_period_days": 1.0,
-          "ratio": 4.6
+          "ratio": 5.6
         },
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-07-23",
-          "days_stale": 2.0,
+          "days_stale": 3.0,
           "expected_period_days": 1.0,
-          "ratio": 2.0
+          "ratio": 3.0
+        },
+        {
+          "task": "calmar-bug-fixer",
+          "last_run": "2026-07-25",
+          "days_stale": 1.6,
+          "expected_period_days": 0.5,
+          "ratio": 3.1
         },
         {
           "task": "vercel-deploy-fixer",
           "last_run": "2026-07-25",
-          "days_stale": 0.6,
+          "days_stale": 1.6,
           "expected_period_days": 0.2,
-          "ratio": 3.4
-        },
-        {
-          "task": "managed-agents-pulse",
-          "last_run": "2026-07-25",
-          "days_stale": 0.5,
-          "expected_period_days": 0.1,
-          "ratio": 6.3
+          "ratio": 9.4
         }
       ],
       "examples_label": "Stale scheduled tasks",
