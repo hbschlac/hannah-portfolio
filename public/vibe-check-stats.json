@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-27T17:01:42.856414+00:00",
+  "generated_at": "2026-07-28T17:01:05.433719+00:00",
   "window_days": 90,
-  "vibe_score": 59,
+  "vibe_score": 58,
   "verdict": "decent",
   "biggest_lever": "debug_spiral",
   "focus": {
@@ -53,9 +53,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 57,
-      "weakest_metric": "uptime",
-      "weakest_score": 1
+      "score": 55,
+      "weakest_metric": "cron_health",
+      "weakest_score": 9
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -98,42 +98,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1989ms",
+      "value": "1792ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1445
+            "ttfb_ms": 1138
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2994
+            "ttfb_ms": 2838
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1527
+            "ttfb_ms": 1401
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1989
+        "avg_ttfb_ms": 1792
       },
-      "score": 1,
+      "score": 12,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2994
+          "ttfb_ms": 2838
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1527
+          "ttfb_ms": 1401
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1445
+          "ttfb_ms": 1138
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -151,58 +151,58 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "8 stale",
+      "value": "10 stale",
       "raw": {
-        "healthy": 3,
-        "stale": 8,
+        "healthy": 1,
+        "stale": 10,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 11
       },
-      "score": 27,
+      "score": 9,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "code-builder-sync",
           "last_run": "2026-07-20",
-          "days_stale": 6.9,
+          "days_stale": 7.9,
           "expected_period_days": 1.0,
-          "ratio": 6.9
+          "ratio": 7.9
         },
         {
           "task": "git-sync-fixer",
           "last_run": "2026-07-21",
-          "days_stale": 6.6,
+          "days_stale": 7.6,
           "expected_period_days": 1.0,
-          "ratio": 6.6
+          "ratio": 7.6
         },
         {
           "task": "vibe-improver",
           "last_run": "2026-07-21",
-          "days_stale": 6.6,
+          "days_stale": 7.6,
           "expected_period_days": 1.0,
-          "ratio": 6.6
+          "ratio": 7.6
         },
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-07-23",
-          "days_stale": 4.0,
+          "days_stale": 5.0,
           "expected_period_days": 1.0,
-          "ratio": 4.0
+          "ratio": 5.0
         },
         {
           "task": "calmar-bug-fixer",
           "last_run": "2026-07-25",
-          "days_stale": 2.6,
+          "days_stale": 3.6,
           "expected_period_days": 0.5,
-          "ratio": 5.1
+          "ratio": 7.1
         },
         {
           "task": "vercel-deploy-fixer",
           "last_run": "2026-07-25",
-          "days_stale": 2.6,
+          "days_stale": 3.6,
           "expected_period_days": 0.2,
-          "ratio": 15.4
+          "ratio": 21.4
         }
       ],
       "examples_label": "Stale scheduled tasks",
