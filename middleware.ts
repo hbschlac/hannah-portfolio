@@ -64,18 +64,24 @@ export function middleware(req: NextRequest) {
   }
 
   // ── Babymoon subdomain (babymoon.giddins.family) ─────────────────────
+  const isBmHost = host === BM_HOST;
+  // Vercel preview/alias hosts (…vercel.app) may serve /babymoon/* for review
+  // before DNS is wired — still passcode-gated. schlacter.me stays 404.
+  const isVercelPreview = host.endsWith(".vercel.app");
   const isBmPath =
     pathname === BM_PREFIX || pathname.startsWith(`${BM_PREFIX}/`);
+
   // Keep the babymoon off every other host (e.g. schlacter.me/babymoon).
-  if (isBmPath && host !== BM_HOST) {
+  if (isBmPath && !isBmHost && !isVercelPreview) {
     return new NextResponse("Not found", { status: 404 });
   }
-  if (host === BM_HOST) {
+
+  // Passcode gate: the subdomain root, or any /babymoon path on a preview host.
+  if (isBmHost || (isVercelPreview && isBmPath)) {
     const isAsset =
       pathname.startsWith("/_next") ||
       pathname.startsWith("/api") ||
       pathname.startsWith("/favicon");
-    // Passcode gate — everything except the login page, assets, and PWA icons.
     if (!isAsset && !isBmPublic(pathname)) {
       const cookie = req.cookies.get(BM_COOKIE)?.value;
       if (!checkPasscode(cookie)) {
@@ -85,13 +91,20 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(url);
       }
     }
-    // Serve internal /babymoon paths + assets directly …
+  }
+
+  // On the real subdomain, map the root + friendly paths onto /babymoon/*.
+  if (isBmHost) {
+    const isAsset =
+      pathname.startsWith("/_next") ||
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/favicon");
     if (isBmPath || isAsset) return NextResponse.next();
-    // … and map the subdomain root + friendly paths onto /babymoon/*.
     const url = req.nextUrl.clone();
     url.pathname = pathname === "/" ? BM_PREFIX : `${BM_PREFIX}${pathname}`;
     return NextResponse.rewrite(url);
   }
+  // On a preview host, /babymoon/* falls through and is served directly.
 
   // ── Jamie subdomain host rewrite ─────────────────────────────────────
   if (host !== BACH_HOST) return NextResponse.next();
