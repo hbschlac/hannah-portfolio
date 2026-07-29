@@ -1,16 +1,17 @@
 {
-  "generated_at": "2026-07-28T17:01:05.433719+00:00",
+  "generated_at": "2026-07-29T17:00:22.023713+00:00",
   "window_days": 90,
-  "vibe_score": 58,
+  "vibe_score": 57,
   "verdict": "decent",
-  "biggest_lever": "debug_spiral",
+  "biggest_lever": "uptime",
   "focus": {
-    "metric": "debug_spiral",
-    "headline": "Stop the 6-hour loops",
+    "metric": "uptime",
+    "headline": "Make the live sites respond fast",
     "score": 0,
     "actions": [
-      "Worst loop was 6.0h in Interior-Design \u2014 when 3 hours in and looping, stop. Restart with a written goal.",
-      "Set a personal 2-hour timer on hard debugging sessions before walking away."
+      "Cut TTFB on https://www.muse.shopping (currently 3489ms) \u2014 likely a cold serverless function or an un-cached DB call on the homepage.",
+      "Add edge caching to read-heavy routes.",
+      "Move non-critical data fetches client-side so the first byte lands quickly."
     ]
   },
   "improver_activity": {
@@ -53,9 +54,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 55,
-      "weakest_metric": "cron_health",
-      "weakest_score": 9
+      "score": 52,
+      "weakest_metric": "uptime",
+      "weakest_score": 0
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -98,42 +99,42 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1792ms",
+      "value": "1997ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1138
+            "ttfb_ms": 910
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2838
+            "ttfb_ms": 3489
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1401
+            "ttfb_ms": 1592
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1792
+        "avg_ttfb_ms": 1997
       },
-      "score": 12,
+      "score": 0,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2838
+          "ttfb_ms": 3489
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1401
+          "ttfb_ms": 1592
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1138
+          "ttfb_ms": 910
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -165,44 +166,44 @@
         {
           "task": "code-builder-sync",
           "last_run": "2026-07-20",
-          "days_stale": 7.9,
+          "days_stale": 8.9,
           "expected_period_days": 1.0,
-          "ratio": 7.9
+          "ratio": 8.9
         },
         {
           "task": "git-sync-fixer",
           "last_run": "2026-07-21",
-          "days_stale": 7.6,
+          "days_stale": 8.6,
           "expected_period_days": 1.0,
-          "ratio": 7.6
+          "ratio": 8.6
         },
         {
           "task": "vibe-improver",
           "last_run": "2026-07-21",
-          "days_stale": 7.6,
+          "days_stale": 8.6,
           "expected_period_days": 1.0,
-          "ratio": 7.6
+          "ratio": 8.6
         },
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-07-23",
-          "days_stale": 5.0,
+          "days_stale": 6.0,
           "expected_period_days": 1.0,
-          "ratio": 5.0
+          "ratio": 6.0
         },
         {
           "task": "calmar-bug-fixer",
           "last_run": "2026-07-25",
-          "days_stale": 3.6,
+          "days_stale": 4.6,
           "expected_period_days": 0.5,
-          "ratio": 7.1
+          "ratio": 9.1
         },
         {
           "task": "vercel-deploy-fixer",
           "last_run": "2026-07-25",
-          "days_stale": 3.6,
+          "days_stale": 4.6,
           "expected_period_days": 0.2,
-          "ratio": 21.4
+          "ratio": 27.4
         }
       ],
       "examples_label": "Stale scheduled tasks",
