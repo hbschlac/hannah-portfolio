@@ -158,5 +158,15 @@
       "any_mess": 52
     },
     "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-07-29T17:00:22.023713+00:00",
+    "vibe_score": 57,
+    "theme_scores": {
+      "does_it_work": 52,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "uptime"
   }
 ]
