@@ -136,17 +136,6 @@ export const reservations: Reservation[] = [
     kind: "dining",
     mapQuery: "Flora Farms, San José del Cabo",
     note: "Farm-to-table in San José del Cabo. Uber from the resort.",
-    conflict:
-      "Overlaps the Cabo taco tasting (12:30 PM) the same day — confirm which one to keep.",
-  },
-  {
-    name: "Cabo San Lucas Downtown Food & Tacos Tasting",
-    date: "2026-08-12",
-    time: "12:30 PM",
-    kind: "activity",
-    note: "Walking food tour in downtown Cabo San Lucas.",
-    conflict:
-      "Overlaps Flora Farms (11:30 AM) the same day — confirm which one to keep.",
   },
   {
     name: "SAGE (Sage Baja)",

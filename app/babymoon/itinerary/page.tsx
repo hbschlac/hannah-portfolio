@@ -11,7 +11,7 @@ export default function Itinerary() {
       {days.map((d, i) => (
         <DayCard key={d.date} date={d.date} title={d.title} index={i} />
       ))}
-      <p className="footer-note">Times pulled from your booking confirmations. Tap ⚠️ items to reconcile.</p>
+      <p className="footer-note">Times pulled from your booking confirmations.</p>
     </main>
   );
 }
