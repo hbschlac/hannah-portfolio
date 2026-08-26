@@ -57,6 +57,15 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Short link for sharing the general CV (e.g. in outreach and group chats).
+      // Temporary (307) on purpose: points at the live Google Doc for now, so it
+      // can be repointed to a PDF later without browsers having cached a 308.
+      {
+        source: "/resume",
+        destination:
+          "https://docs.google.com/document/d/1aM1xF-MEGK24j3lxLToqixFXC98B_FCeY74EXefkZig/preview",
+        permanent: false,
+      },
       // Old canonical URL → new subdomain. Anyone with a saved link to
       // schlacter.me/jamie-bach-2026/* gets bounced to jamiesbach.schlacter.me/*.
       // Restricted to the apex/www host so the rewrite-served pages on the
