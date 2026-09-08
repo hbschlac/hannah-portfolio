@@ -17,7 +17,7 @@
 ## 1. Storage — Upstash Redis
 
 Reuse the existing Upstash connection (`KV_REST_API_URL` / `KV_REST_API_TOKEN`) and mirror
-the helper style in [`lib/jamie/kv.ts`](../../lib/jamie/kv.ts). New file: `lib/stuff/kv.ts`,
+the existing get/set helper style. New file: `lib/stuff/kv.ts`,
 prefix `stuff:`.
 
 Keys (JSON values; personal scale = hundreds of items, so plain arrays are fine):
@@ -38,7 +38,7 @@ Note      = { id, title, body, updatedAt, linkedItemIds: string[] }
 
 ## 2. API routes (`app/api/stuff/…`)
 
-Follow existing conventions (see `app/api/jamie/state/route.ts`). All routes are
+Follow existing API route conventions. All routes are
 single-user; see Auth (§6).
 
 | Route                          | Method | Purpose                                            |
@@ -111,8 +111,7 @@ talk to the provider. This is why the mockup was built provider-first.
 ## 6. Auth
 
 Single-user. Two layers:
-- **UI:** localStorage password gate (the [`PasswordGate.tsx`](../jamie-bach-2026/_components/PasswordGate.tsx)
-  pattern) wrapping `/stuff`. Personal reading history shouldn't be public.
+- **UI:** a localStorage password gate wrapping `/stuff`. Personal reading history shouldn't be public.
 - **Ingestion endpoints:** `/api/stuff/add` (and any future email webhook) require a long
   random `INGEST_TOKEN` bearer, since the Shortcut calls them unauthenticated-by-cookie.
 - Read/mutate routes (`items`, `notes`) gated by the same session check as the UI.

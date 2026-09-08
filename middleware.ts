@@ -1,11 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { COOKIE_NAME, checkPassword } from "@/lib/stuff/auth";
 
-// jamiesbach.schlacter.me — internally serve everything under /jamie-bach-2026
-// so guests land directly on the Bach site.
-const BACH_HOST = "jamiesbach.schlacter.me";
-const BACH_PREFIX = "/jamie-bach-2026";
-
 // /stuff paths that must remain reachable without auth — matched by prefix so
 // the content-hashed icon URLs (e.g. /stuff/icon-13gqup) pass through too.
 const STUFF_PUBLIC_PREFIXES = [
@@ -21,7 +16,6 @@ function isStuffPublic(pathname: string): boolean {
 }
 
 export function middleware(req: NextRequest) {
-  const host = (req.headers.get("host") || "").toLowerCase();
   const { pathname } = req.nextUrl;
 
   // ── Stuff auth gate ──────────────────────────────────────────────────
@@ -48,31 +42,13 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // ── Jamie subdomain host rewrite ─────────────────────────────────────
-  if (host !== BACH_HOST) return NextResponse.next();
-
-  if (pathname === BACH_PREFIX || pathname.startsWith(`${BACH_PREFIX}/`)) {
-    return NextResponse.next();
-  }
-
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.startsWith("/jamie/") ||
-    pathname.startsWith("/favicon")
-  ) {
-    return NextResponse.next();
-  }
-
-  const url = req.nextUrl.clone();
-  url.pathname = pathname === "/" ? BACH_PREFIX : `${BACH_PREFIX}${pathname}`;
-  return NextResponse.rewrite(url);
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    // All non-API pages, minus Next internals + the jamie asset dir.
-    "/((?!_next/|api/|jamie/|favicon\\.ico).*)",
+    // All non-API pages, minus Next internals.
+    "/((?!_next/|api/|favicon\\.ico).*)",
     // Plus the Stuff API so it can be auth-gated.
     "/api/stuff/:path*",
   ],

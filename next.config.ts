@@ -4,19 +4,6 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   async rewrites() {
     return [
-      // jamiesbach.schlacter.me — Jamie's Bach is served from a subdomain.
-      // Map every request on that host to the existing /jamie-bach-2026 routes.
-      {
-        source: "/",
-        has: [{ type: "host", value: "jamiesbach.schlacter.me" }],
-        destination: "/jamie-bach-2026",
-      },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "jamiesbach.schlacter.me" }],
-        destination: "/jamie-bach-2026/:path*",
-      },
-      // Existing rewrites
       {
         source: "/aiprojects",
         destination: "/projects",
@@ -72,34 +59,6 @@ const nextConfig: NextConfig = {
         destination:
           "https://docs.google.com/document/d/1ru4oa-2gGhxLi9xcOs-o1XVc7DdBUWSLk5eMRS3sz1E/preview",
         permanent: false,
-      },
-      // Old canonical URL → new subdomain. Anyone with a saved link to
-      // schlacter.me/jamie-bach-2026/* gets bounced to jamiesbach.schlacter.me/*.
-      // Restricted to the apex/www host so the rewrite-served pages on the
-      // subdomain don't loop.
-      {
-        source: "/jamie-bach-2026",
-        has: [{ type: "host", value: "schlacter.me" }],
-        destination: "https://jamiesbach.schlacter.me",
-        permanent: true,
-      },
-      {
-        source: "/jamie-bach-2026/:path*",
-        has: [{ type: "host", value: "schlacter.me" }],
-        destination: "https://jamiesbach.schlacter.me/:path*",
-        permanent: true,
-      },
-      {
-        source: "/jamie-bach-2026",
-        has: [{ type: "host", value: "www.schlacter.me" }],
-        destination: "https://jamiesbach.schlacter.me",
-        permanent: true,
-      },
-      {
-        source: "/jamie-bach-2026/:path*",
-        has: [{ type: "host", value: "www.schlacter.me" }],
-        destination: "https://jamiesbach.schlacter.me/:path*",
-        permanent: true,
       },
     ];
   },
