@@ -66,6 +66,13 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/1aM1xF-MEGK24j3lxLToqixFXC98B_FCeY74EXefkZig/preview",
         permanent: false,
       },
+      // Crucibl-tailored CV. Same 307 reasoning as /resume above.
+      {
+        source: "/resume-crucibl",
+        destination:
+          "https://docs.google.com/document/d/1ru4oa-2gGhxLi9xcOs-o1XVc7DdBUWSLk5eMRS3sz1E/preview",
+        permanent: false,
+      },
       // Old canonical URL → new subdomain. Anyone with a saved link to
       // schlacter.me/jamie-bach-2026/* gets bounced to jamiesbach.schlacter.me/*.
       // Restricted to the apex/www host so the rewrite-served pages on the
