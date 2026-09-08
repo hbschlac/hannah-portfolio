@@ -204,15 +204,8 @@ export default function MethodologyPage() {
               </p>
               <p className="text-[14px] leading-relaxed">
                 Replace the manual curation with a scheduled job that pulls, dedupes, and
-                re-tags on a weekly cadence. Pattern already running on two of my other research
+                re-tags on a weekly cadence. Pattern already running on another of my research
                 projects (
-                <a
-                  href="/tinker-flywheel"
-                  className="underline underline-offset-2 hover:text-neutral-900"
-                >
-                  tinker-flywheel
-                </a>
-                ,{" "}
                 <a
                   href="/managed-agents-pulse"
                   className="underline underline-offset-2 hover:text-neutral-900"

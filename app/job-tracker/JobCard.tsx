@@ -13,7 +13,6 @@ export const PROJECT_SLUGS: { slug: string; title: string; url?: string }[] = [
   { slug: "claude-wishlist", title: "Claude Wishlist" },
   { slug: "vantara-agent-studio", title: "Vantara Agent Studio" },
   { slug: "ldor", title: "LDOR" },
-  { slug: "tinker-flywheel", title: "Tinker Flywheel", url: "/tinker-flywheel" },
 ];
 
 export const COMPANY_TYPE_LABELS: Record<CompanyType, string> = {
