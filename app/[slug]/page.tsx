@@ -19,6 +19,9 @@ export default function ResumePage({ params }: PageProps<"/[slug]">) {
 
 async function ResumeContent({ slug }: { slug: string }) {
   const entry = await getResume(slug);
+  // Unknown slug -> render the branded not-found page. cacheComponents streams
+  // the shell before this resolves, so the status may already be sent; the
+  // point here is that the visitor gets a real page instead of a blank one.
   if (!entry) notFound();
 
   const button = entry.docId ? <DownloadPDFButton slug={slug} /> : null;
