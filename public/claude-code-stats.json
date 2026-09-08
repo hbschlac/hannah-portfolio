@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-25T17:04:02+00:00",
+  "generated_at": "2026-09-08T17:02:09+00:00",
   "total": {
-    "hours": 679.8,
-    "sessions": 346,
+    "hours": 862.4,
+    "sessions": 447,
     "commits": 124,
-    "days_active": 54,
+    "days_active": 74,
     "first_month": "2026-02",
-    "latest_month": "2026-07"
+    "latest_month": "2026-09"
   },
   "months": [
     {
@@ -146,23 +146,64 @@
     },
     {
       "month": "2026-07",
-      "sessions": 90,
-      "hours": 171.1,
-      "avg_per_week_hours": 47.9,
+      "sessions": 94,
+      "hours": 211.1,
+      "avg_per_week_hours": 47.7,
       "max_session_hours": 6.0,
-      "days_active": 14,
-      "avg_length_min": 114,
+      "days_active": 15,
+      "avg_length_min": 135,
       "commits": 14,
       "top_projects": [
         {
           "label": "personal portfolio & tools",
-          "hours": 164.3,
-          "share": 96.0
+          "hours": 192.3,
+          "share": 91.1
         },
         {
           "label": "home design tool",
-          "hours": 6.8,
-          "share": 4.0
+          "hours": 18.8,
+          "share": 8.9
+        }
+      ],
+      "partial": false
+    },
+    {
+      "month": "2026-08",
+      "sessions": 78,
+      "hours": 141.7,
+      "avg_per_week_hours": 32.0,
+      "max_session_hours": 6.0,
+      "days_active": 15,
+      "avg_length_min": 109,
+      "commits": 0,
+      "top_projects": [
+        {
+          "label": "personal portfolio & tools",
+          "hours": 123.7,
+          "share": 87.3
+        },
+        {
+          "label": "home design tool",
+          "hours": 18.0,
+          "share": 12.7
+        }
+      ],
+      "partial": false
+    },
+    {
+      "month": "2026-09",
+      "sessions": 19,
+      "hours": 0.9,
+      "avg_per_week_hours": 0.8,
+      "max_session_hours": 0.26,
+      "days_active": 4,
+      "avg_length_min": 3,
+      "commits": 0,
+      "top_projects": [
+        {
+          "label": "personal portfolio & tools",
+          "hours": 0.9,
+          "share": 100.0
         }
       ],
       "partial": true

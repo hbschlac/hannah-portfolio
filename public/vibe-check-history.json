@@ -1,25 +1,5 @@
 [
   {
-    "generated_at": "2026-05-22T22:27:53.580862+00:00",
-    "vibe_score": 41,
-    "theme_scores": {
-      "does_it_work": 34,
-      "do_i_know": 37,
-      "any_mess": 52
-    },
-    "biggest_lever": "broken_in_prod"
-  },
-  {
-    "generated_at": "2026-07-13T23:35:16.350224+00:00",
-    "vibe_score": 48,
-    "theme_scores": {
-      "does_it_work": 59,
-      "do_i_know": 33,
-      "any_mess": 52
-    },
-    "biggest_lever": "fix_to_feature"
-  },
-  {
     "generated_at": "2026-07-14T20:13:36.503867+00:00",
     "vibe_score": 39,
     "theme_scores": {
@@ -168,5 +148,375 @@
       "any_mess": 52
     },
     "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-07-30T17:00:21.493406+00:00",
+    "vibe_score": 58,
+    "theme_scores": {
+      "does_it_work": 56,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-07-31T17:00:20.060924+00:00",
+    "vibe_score": 58,
+    "theme_scores": {
+      "does_it_work": 56,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-01T17:00:33.613879+00:00",
+    "vibe_score": 60,
+    "theme_scores": {
+      "does_it_work": 60,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-02T17:02:55.243159+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 67,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-03T17:06:18.839537+00:00",
+    "vibe_score": 58,
+    "theme_scores": {
+      "does_it_work": 55,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-04T17:06:08.235641+00:00",
+    "vibe_score": 53,
+    "theme_scores": {
+      "does_it_work": 60,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-05T17:00:17.101976+00:00",
+    "vibe_score": 60,
+    "theme_scores": {
+      "does_it_work": 62,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-06T17:01:11.251666+00:00",
+    "vibe_score": 58,
+    "theme_scores": {
+      "does_it_work": 54,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-07T17:02:08.973590+00:00",
+    "vibe_score": 61,
+    "theme_scores": {
+      "does_it_work": 63,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-08T17:00:24.051607+00:00",
+    "vibe_score": 61,
+    "theme_scores": {
+      "does_it_work": 65,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-09T17:25:40.819713+00:00",
+    "vibe_score": 56,
+    "theme_scores": {
+      "does_it_work": 69,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-10T17:03:59.392982+00:00",
+    "vibe_score": 54,
+    "theme_scores": {
+      "does_it_work": 62,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-11T17:03:52.629602+00:00",
+    "vibe_score": 52,
+    "theme_scores": {
+      "does_it_work": 56,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-12T17:05:48.950992+00:00",
+    "vibe_score": 51,
+    "theme_scores": {
+      "does_it_work": 53,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-13T17:08:15.761201+00:00",
+    "vibe_score": 51,
+    "theme_scores": {
+      "does_it_work": 53,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-14T17:26:49.620305+00:00",
+    "vibe_score": 51,
+    "theme_scores": {
+      "does_it_work": 53,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-15T17:24:35.927932+00:00",
+    "vibe_score": 51,
+    "theme_scores": {
+      "does_it_work": 53,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-16T17:20:57.112886+00:00",
+    "vibe_score": 66,
+    "theme_scores": {
+      "does_it_work": 79,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-17T19:09:43.175120+00:00",
+    "vibe_score": 66,
+    "theme_scores": {
+      "does_it_work": 79,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-18T17:00:32.534390+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 68,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-19T17:00:20.745510+00:00",
+    "vibe_score": 63,
+    "theme_scores": {
+      "does_it_work": 70,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-20T17:04:56.225745+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 68,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-21T17:01:23.627628+00:00",
+    "vibe_score": 60,
+    "theme_scores": {
+      "does_it_work": 62,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-22T17:05:29.938263+00:00",
+    "vibe_score": 66,
+    "theme_scores": {
+      "does_it_work": 79,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-23T17:30:15.176852+00:00",
+    "vibe_score": 63,
+    "theme_scores": {
+      "does_it_work": 71,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-24T17:04:59.554142+00:00",
+    "vibe_score": 57,
+    "theme_scores": {
+      "does_it_work": 53,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "cron_health"
+  },
+  {
+    "generated_at": "2026-08-25T17:04:52.936763+00:00",
+    "vibe_score": 57,
+    "theme_scores": {
+      "does_it_work": 51,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "cron_health"
+  },
+  {
+    "generated_at": "2026-08-26T17:08:48.677744+00:00",
+    "vibe_score": 63,
+    "theme_scores": {
+      "does_it_work": 70,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-27T17:01:14.204260+00:00",
+    "vibe_score": 60,
+    "theme_scores": {
+      "does_it_work": 60,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-28T17:06:13.535833+00:00",
+    "vibe_score": 56,
+    "theme_scores": {
+      "does_it_work": 50,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-08-29T17:06:06.627988+00:00",
+    "vibe_score": 61,
+    "theme_scores": {
+      "does_it_work": 63,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-30T17:04:20.004527+00:00",
+    "vibe_score": 60,
+    "theme_scores": {
+      "does_it_work": 62,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-08-31T17:06:05.275998+00:00",
+    "vibe_score": 57,
+    "theme_scores": {
+      "does_it_work": 51,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "cron_health"
+  },
+  {
+    "generated_at": "2026-09-01T17:02:10.159863+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 68,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-02T17:05:34.538475+00:00",
+    "vibe_score": 63,
+    "theme_scores": {
+      "does_it_work": 89,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-03T17:02:26.198644+00:00",
+    "vibe_score": 60,
+    "theme_scores": {
+      "does_it_work": 61,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-08T17:02:34.396699+00:00",
+    "vibe_score": 68,
+    "theme_scores": {
+      "does_it_work": 84,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
   }
 ]
