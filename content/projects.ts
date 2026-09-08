@@ -112,7 +112,7 @@ export const projects: Project[] = [
         "/projects/kindle-agent/history.png",
       ],
       screenshotCaptions: [
-        "The front door: a private, invite-only library for family and friends, with a magic link instead of a password.",
+        "The front door: a private, invite-only library for family and friends. A book can go to a Kindle or download straight to the device you are holding.",
         "One search fans out across every source, each result tagged with where it came from and, for torrents, its seeder count.",
         "Your library: every book you've got, with cover art, sort controls, and a reading-status tracker.",
         "Search history: every query, how many results it returned, and when.",
