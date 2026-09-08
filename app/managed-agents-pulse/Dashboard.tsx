@@ -595,6 +595,10 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
               Live feed of developer conversation about the Managed Agents API.
               Categorized every 2 hours since launch day. Sources: Hacker News and Reddit.
             </p>
+            <p className="mt-3 inline-block text-xs text-amber-200/90 bg-amber-500/10 border border-amber-500/20 rounded-md px-3 py-1.5 max-w-2xl leading-relaxed">
+              Concept build: the API launch and the developer feed are simulated. This dashboard
+              demonstrates the listening system rather than tracking a real shipped product.
+            </p>
           </div>
           <a
             href="https://raw.githubusercontent.com/hbschlac/build-log/main/managed-agents-pulse/all-posts.json"
