@@ -1,16 +1,17 @@
 {
-  "generated_at": "2026-09-12T17:03:38.271037+00:00",
+  "generated_at": "2026-09-13T17:00:35.683956+00:00",
   "window_days": 90,
-  "vibe_score": 66,
-  "verdict": "solid",
-  "biggest_lever": "debug_spiral",
+  "vibe_score": 62,
+  "verdict": "decent",
+  "biggest_lever": "uptime",
   "focus": {
-    "metric": "debug_spiral",
-    "headline": "Stop the 6-hour loops",
+    "metric": "uptime",
+    "headline": "Make the live sites respond fast",
     "score": 0,
     "actions": [
-      "Worst loop was 6.0h in Interior-Design \u2014 when 3 hours in and looping, stop. Restart with a written goal.",
-      "Set a personal 2-hour timer on hard debugging sessions before walking away."
+      "Cut TTFB on https://schlacter.me (currently 15035ms) \u2014 likely a cold serverless function or an un-cached DB call on the homepage.",
+      "Add edge caching to read-heavy routes.",
+      "Move non-critical data fetches client-side so the first byte lands quickly."
     ]
   },
   "improver_activity": {
@@ -60,9 +61,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 80,
+      "score": 67,
       "weakest_metric": "uptime",
-      "weakest_score": 18
+      "weakest_score": 0
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -105,44 +106,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1669ms",
+      "value": "6265ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1030
+            "ttfb_ms": 15035
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2774
+            "ttfb_ms": 2713
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1203
+            "ttfb_ms": 1047
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1669,
+        "avg_ttfb_ms": 6265,
         "unreachable": []
       },
-      "score": 18,
+      "score": 0,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
+          "url": "https://schlacter.me",
+          "status": 200,
+          "ttfb_ms": 15035
+        },
+        {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2774
+          "ttfb_ms": 2713
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1203
-        },
-        {
-          "url": "https://schlacter.me",
-          "status": 200,
-          "ttfb_ms": 1030
+          "ttfb_ms": 1047
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -160,40 +161,26 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "all current",
+      "value": "1 stale",
       "raw": {
-        "healthy": 3,
-        "stale": 0,
+        "healthy": 2,
+        "stale": 1,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 3
       },
-      "score": 100,
+      "score": 67,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
-          "task": "vercel-deploy-fixer",
-          "last_run": "2026-09-12",
-          "days_stale": 0.1,
-          "expected_period_days": 0.2,
-          "ratio": 0.7
-        },
-        {
           "task": "git-sync-fixer",
           "last_run": "2026-09-11",
-          "days_stale": 1.5,
+          "days_stale": 2.5,
           "expected_period_days": 1.0,
-          "ratio": 1.5
-        },
-        {
-          "task": "vibe-coach-weekly",
-          "last_run": "2026-09-12",
-          "days_stale": 0.1,
-          "expected_period_days": 1.0,
-          "ratio": 0.1
+          "ratio": 2.5
         }
       ],
-      "examples_label": "Healthy tasks",
+      "examples_label": "Stale scheduled tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
@@ -213,7 +200,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-07-18",
-        "total_sessions": 245
+        "total_sessions": 251
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
