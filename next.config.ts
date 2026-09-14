@@ -67,6 +67,16 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/13rjsdK48xh23ESC-6i9qHtfEWQlHtqqr7PUgXBwRIRc/preview",
         permanent: false,
       },
+      // Character-budget alias for the Google Consumer Shopping CV above, for
+      // places with a hard character cap (a LinkedIn connection note is 300).
+      // "schlacter.me/g" is 14 chars vs 44 for the descriptive slug. Same doc,
+      // same 307 — if the slug above is ever repointed, repoint this one too.
+      {
+        source: "/g",
+        destination:
+          "https://docs.google.com/document/d/13rjsdK48xh23ESC-6i9qHtfEWQlHtqqr7PUgXBwRIRc/preview",
+        permanent: false,
+      },
     ];
   },
 };
