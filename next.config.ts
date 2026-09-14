@@ -60,6 +60,13 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/1ru4oa-2gGhxLi9xcOs-o1XVc7DdBUWSLk5eMRS3sz1E/preview",
         permanent: false,
       },
+      // Google Consumer Shopping-tailored CV. Same 307 reasoning as /resume above.
+      {
+        source: "/resume-google-consumer-shopping",
+        destination:
+          "https://docs.google.com/document/d/13rjsdK48xh23ESC-6i9qHtfEWQlHtqqr7PUgXBwRIRc/preview",
+        permanent: false,
+      },
     ];
   },
 };
