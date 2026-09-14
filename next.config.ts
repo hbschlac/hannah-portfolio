@@ -67,6 +67,17 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/13rjsdK48xh23ESC-6i9qHtfEWQlHtqqr7PUgXBwRIRc/preview",
         permanent: false,
       },
+      // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
+      // reasoning as the CV links above: the bench is a private Artifact, and if it
+      // is ever republished to a new artifact this slug has to stay repointable.
+      // NOTE: the redirect is public but the destination is not — signed into Claude
+      // it opens the bench, anyone else hits an auth wall. If the bench is ever
+      // switched to "anyone with link", remove this redirect first.
+      {
+        source: "/resumebuilder",
+        destination: "https://claude.ai/artifact/RWLv53mteWtb4dmZ1qJSnf",
+        permanent: false,
+      },
       // Character-budget alias for the Google Consumer Shopping CV above, for
       // places with a hard character cap (a LinkedIn connection note is 300).
       // "schlacter.me/g" is 14 chars vs 44 for the descriptive slug. Same doc,
