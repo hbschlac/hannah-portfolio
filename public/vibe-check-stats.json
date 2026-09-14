@@ -1,23 +1,22 @@
 {
-  "generated_at": "2026-09-13T17:00:35.683956+00:00",
+  "generated_at": "2026-09-14T17:02:19.866008+00:00",
   "window_days": 90,
-  "vibe_score": 62,
+  "vibe_score": 60,
   "verdict": "decent",
-  "biggest_lever": "uptime",
+  "biggest_lever": "debug_spiral",
   "focus": {
-    "metric": "uptime",
-    "headline": "Make the live sites respond fast",
+    "metric": "debug_spiral",
+    "headline": "Stop the 6-hour loops",
     "score": 0,
     "actions": [
-      "Cut TTFB on https://schlacter.me (currently 15035ms) \u2014 likely a cold serverless function or an un-cached DB call on the homepage.",
-      "Add edge caching to read-heavy routes.",
-      "Move non-critical data fetches client-side so the first byte lands quickly."
+      "Worst loop was 6.0h in Interior-Design \u2014 when 3 hours in and looping, stop. Restart with a written goal.",
+      "Set a personal 2-hour timer on hard debugging sessions before walking away."
     ]
   },
   "improver_activity": {
-    "total_runs_30d": 1,
+    "total_runs_30d": 0,
     "opened_30d": 0,
-    "skipped_30d": 1,
+    "skipped_30d": 0,
     "failed_30d": 0,
     "recent": [
       {
@@ -61,9 +60,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 67,
+      "score": 62,
       "weakest_metric": "uptime",
-      "weakest_score": 0
+      "weakest_score": 16
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -106,44 +105,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "6265ms",
+      "value": "1708ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 15035
+            "ttfb_ms": 1323
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2713
+            "ttfb_ms": 2708
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1047
+            "ttfb_ms": 1094
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 6265,
+        "avg_ttfb_ms": 1708,
         "unreachable": []
       },
-      "score": 0,
+      "score": 16,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
-          "url": "https://schlacter.me",
-          "status": 200,
-          "ttfb_ms": 15035
-        },
-        {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2713
+          "ttfb_ms": 2708
+        },
+        {
+          "url": "https://schlacter.me",
+          "status": 200,
+          "ttfb_ms": 1323
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1047
+          "ttfb_ms": 1094
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -161,23 +160,30 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "1 stale",
+      "value": "2 stale",
       "raw": {
-        "healthy": 2,
-        "stale": 1,
+        "healthy": 1,
+        "stale": 2,
         "disabled": 2,
         "no_data": 0,
         "total_enabled": 3
       },
-      "score": 67,
+      "score": 33,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "git-sync-fixer",
           "last_run": "2026-09-11",
-          "days_stale": 2.5,
+          "days_stale": 3.5,
           "expected_period_days": 1.0,
-          "ratio": 2.5
+          "ratio": 3.5
+        },
+        {
+          "task": "vibe-coach-weekly",
+          "last_run": "2026-09-12",
+          "days_stale": 2.1,
+          "expected_period_days": 1.0,
+          "ratio": 2.1
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -200,7 +206,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-07-18",
-        "total_sessions": 251
+        "total_sessions": 256
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
