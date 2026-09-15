@@ -67,6 +67,13 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/13rjsdK48xh23ESC-6i9qHtfEWQlHtqqr7PUgXBwRIRc/preview",
         permanent: false,
       },
+      // Rare Earth Rescue-tailored CV. Same 307 reasoning as /resume above.
+      {
+        source: "/resume-rare-earth-rescue",
+        destination:
+          "https://docs.google.com/document/d/1uU3DiZfeYK4ggszuKN1BXzh-0xTKJH44wSm2Q7TPxaE/preview",
+        permanent: false,
+      },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
       // reasoning as the CV links above: the bench is a private Artifact, and if it
       // is ever republished to a new artifact this slug has to stay repointable.
