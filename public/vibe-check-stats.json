@@ -1,16 +1,17 @@
 {
-  "generated_at": "2026-09-14T17:02:19.866008+00:00",
+  "generated_at": "2026-09-28T17:00:21.754640+00:00",
   "window_days": 90,
-  "vibe_score": 60,
+  "vibe_score": 59,
   "verdict": "decent",
-  "biggest_lever": "debug_spiral",
+  "biggest_lever": "uptime",
   "focus": {
-    "metric": "debug_spiral",
-    "headline": "Stop the 6-hour loops",
+    "metric": "uptime",
+    "headline": "Make the live sites respond fast",
     "score": 0,
     "actions": [
-      "Worst loop was 6.0h in Interior-Design \u2014 when 3 hours in and looping, stop. Restart with a written goal.",
-      "Set a personal 2-hour timer on hard debugging sessions before walking away."
+      "Cut TTFB on https://www.muse.shopping (currently 3335ms) \u2014 likely a cold serverless function or an un-cached DB call on the homepage.",
+      "Add edge caching to read-heavy routes.",
+      "Move non-critical data fetches client-side so the first byte lands quickly."
     ]
   },
   "improver_activity": {
@@ -60,9 +61,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 62,
+      "score": 58,
       "weakest_metric": "uptime",
-      "weakest_score": 16
+      "weakest_score": 0
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -105,44 +106,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1708ms",
+      "value": "1997ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1323
+            "ttfb_ms": 1184
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2708
+            "ttfb_ms": 3335
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1094
+            "ttfb_ms": 1472
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1708,
+        "avg_ttfb_ms": 1997,
         "unreachable": []
       },
-      "score": 16,
+      "score": 0,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2708
-        },
-        {
-          "url": "https://schlacter.me",
-          "status": 200,
-          "ttfb_ms": 1323
+          "ttfb_ms": 3335
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1094
+          "ttfb_ms": 1472
+        },
+        {
+          "url": "https://schlacter.me",
+          "status": 200,
+          "ttfb_ms": 1184
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -173,14 +174,14 @@
       "examples": [
         {
           "task": "git-sync-fixer",
-          "last_run": "2026-09-11",
-          "days_stale": 3.5,
+          "last_run": "2026-09-23",
+          "days_stale": 5.7,
           "expected_period_days": 1.0,
-          "ratio": 3.5
+          "ratio": 5.7
         },
         {
           "task": "vibe-coach-weekly",
-          "last_run": "2026-09-12",
+          "last_run": "2026-09-26",
           "days_stale": 2.1,
           "expected_period_days": 1.0,
           "ratio": 2.1
@@ -206,7 +207,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-07-18",
-        "total_sessions": 256
+        "total_sessions": 326
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
@@ -255,7 +256,7 @@
       "caption": "repos with any test file at all",
       "examples": [
         {
-          "repo": "claude-code-insights-dashboard",
+          "repo": "twitch-community-research",
           "tests": false
         },
         {
@@ -263,7 +264,7 @@
           "tests": false
         },
         {
-          "repo": "twitch-community-research",
+          "repo": "claude-code-insights-dashboard",
           "tests": false
         }
       ],
@@ -279,6 +280,12 @@
       "caption": "TODOs, FIXMEs, HACKs across the codebase",
       "examples": [
         {
+          "repo": "claude-code-insights-dashboard",
+          "file": "insight-detector.py",
+          "line": 22,
+          "snippet": "data[\"suggestions\"] = []  # TODO v2: actual pattern detection"
+        },
+        {
           "repo": "muse-shopping",
           "file": "frontend/app/onboarding/start/page.tsx",
           "line": 76,
@@ -289,12 +296,6 @@
           "file": "frontend/scripts/auto-resolver.js",
           "line": 93,
           "snippet": "// TODO: Integrate with notification system (email, Slack, PagerDuty, etc.)"
-        },
-        {
-          "repo": "claude-code-insights-dashboard",
-          "file": "insight-detector.py",
-          "line": 22,
-          "snippet": "data[\"suggestions\"] = []  # TODO v2: actual pattern detection"
         }
       ],
       "examples_label": "Sample TODOs left in code",
@@ -311,12 +312,12 @@
       "caption": "secret-y patterns gitignored before they leaked",
       "examples": [
         {
-          "repo": "claude-code-insights-dashboard",
-          "reason": "no secret patterns in .gitignore"
-        },
-        {
           "repo": "twitch-community-research",
           "reason": "no .gitignore"
+        },
+        {
+          "repo": "claude-code-insights-dashboard",
+          "reason": "no secret patterns in .gitignore"
         }
       ],
       "examples_label": "Repos missing secret protection",

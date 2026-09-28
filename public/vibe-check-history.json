@@ -1,145 +1,5 @@
 [
   {
-    "generated_at": "2026-07-21T17:00:19.862916+00:00",
-    "vibe_score": 63,
-    "theme_scores": {
-      "does_it_work": 71,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-07-22T17:00:17.572954+00:00",
-    "vibe_score": 66,
-    "theme_scores": {
-      "does_it_work": 78,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-07-23T17:00:26.184950+00:00",
-    "vibe_score": 62,
-    "theme_scores": {
-      "does_it_work": 68,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "uptime"
-  },
-  {
-    "generated_at": "2026-07-24T17:00:17.285092+00:00",
-    "vibe_score": 65,
-    "theme_scores": {
-      "does_it_work": 76,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-07-25T17:15:47.393472+00:00",
-    "vibe_score": 62,
-    "theme_scores": {
-      "does_it_work": 66,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-07-26T17:06:13.569755+00:00",
-    "vibe_score": 60,
-    "theme_scores": {
-      "does_it_work": 61,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-07-27T17:01:42.856414+00:00",
-    "vibe_score": 59,
-    "theme_scores": {
-      "does_it_work": 57,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-07-28T17:01:05.433719+00:00",
-    "vibe_score": 58,
-    "theme_scores": {
-      "does_it_work": 55,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-07-29T17:00:22.023713+00:00",
-    "vibe_score": 57,
-    "theme_scores": {
-      "does_it_work": 52,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "uptime"
-  },
-  {
-    "generated_at": "2026-07-30T17:00:21.493406+00:00",
-    "vibe_score": 58,
-    "theme_scores": {
-      "does_it_work": 56,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-07-31T17:00:20.060924+00:00",
-    "vibe_score": 58,
-    "theme_scores": {
-      "does_it_work": 56,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-08-01T17:00:33.613879+00:00",
-    "vibe_score": 60,
-    "theme_scores": {
-      "does_it_work": 60,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-08-02T17:02:55.243159+00:00",
-    "vibe_score": 62,
-    "theme_scores": {
-      "does_it_work": 67,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
-    "generated_at": "2026-08-03T17:06:18.839537+00:00",
-    "vibe_score": 58,
-    "theme_scores": {
-      "does_it_work": 55,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
     "generated_at": "2026-08-04T17:06:08.235641+00:00",
     "vibe_score": 53,
     "theme_scores": {
@@ -518,5 +378,145 @@
       "any_mess": 52
     },
     "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-15T17:02:13.270284+00:00",
+    "vibe_score": 63,
+    "theme_scores": {
+      "does_it_work": 89,
+      "do_i_know": 67,
+      "any_mess": 33
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-16T17:03:07.921540+00:00",
+    "vibe_score": 64,
+    "theme_scores": {
+      "does_it_work": 73,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-17T17:00:33.878024+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 68,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-18T17:04:45.555631+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 67,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "uptime"
+  },
+  {
+    "generated_at": "2026-09-19T17:05:07.706391+00:00",
+    "vibe_score": 70,
+    "theme_scores": {
+      "does_it_work": 92,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-20T17:02:38.845542+00:00",
+    "vibe_score": 67,
+    "theme_scores": {
+      "does_it_work": 82,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-21T17:31:02.982157+00:00",
+    "vibe_score": 60,
+    "theme_scores": {
+      "does_it_work": 62,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-22T17:24:09.520794+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 66,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-23T17:00:27.953056+00:00",
+    "vibe_score": 62,
+    "theme_scores": {
+      "does_it_work": 68,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-24T17:20:46.162429+00:00",
+    "vibe_score": 63,
+    "theme_scores": {
+      "does_it_work": 70,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-25T17:06:40.824469+00:00",
+    "vibe_score": 65,
+    "theme_scores": {
+      "does_it_work": 77,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-26T17:00:22.535363+00:00",
+    "vibe_score": 64,
+    "theme_scores": {
+      "does_it_work": 74,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-27T17:00:19.543812+00:00",
+    "vibe_score": 63,
+    "theme_scores": {
+      "does_it_work": 69,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-09-28T17:00:21.754640+00:00",
+    "vibe_score": 59,
+    "theme_scores": {
+      "does_it_work": 58,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "uptime"
   }
 ]
