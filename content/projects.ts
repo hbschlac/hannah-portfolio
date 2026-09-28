@@ -573,7 +573,7 @@ export const projects: Project[] = [
   {
     slug: "claude-code-insights",
     title: "Claude Code Insights",
-    oneLiner: "A live stats page tracking how much I actually ship with Claude Code — hours, sessions, commits, and top projects, updated weekly from local JSONL transcripts.",
+    oneLiner: "A live stats page tracking how much I actually ship with Claude Code — hours, sessions, commits, and top projects, updated daily from local JSONL transcripts.",
     tileInsight: "If you're going to claim you're a power user, the number should be on the page.",
     tags: ["AI", "Automation", "Utility"],
     thumbnailColor: "#1A1A1A",
@@ -591,7 +591,7 @@ export const projects: Project[] = [
         "/projects/claude-code/bottom.png",
       ],
       screenshotCaptions: [
-        "Stats page hero: hours, sessions, commits, days active — updated weekly.",
+        "Stats page hero: hours, sessions, commits, days active — updated daily.",
         "Month-by-month breakdown with top projects per month.",
         "The copy-pasteable prompt that regenerates the whole thing.",
       ],

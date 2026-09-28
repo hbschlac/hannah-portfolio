@@ -81,7 +81,7 @@ export default function ClaudeCodePage() {
           Power user since {fmtMonth(total.first_month)}
         </h1>
         <p className="text-sm mt-2" style={{ color: "#8A8A8A" }}>
-          Everything I ship runs through Claude Code. Numbers update weekly.
+          Everything I ship runs through Claude Code. Numbers update daily.
         </p>
 
         <div
