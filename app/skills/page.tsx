@@ -76,10 +76,24 @@ const GROUPS: Group[] = [
         tags: ["Research"],
       },
       {
-        name: "job-tracker",
-        oneLiner: "My application pipeline, always current.",
-        how: "Tracks every company, resume status, outreach sent, and application submitted, so I always know what's outstanding — and so parallel Claude sessions don't collide on the same data.",
-        trigger: "job tracker",
+        name: "resume-builder",
+        oneLiner: "Picks the bullets instead of writing new ones.",
+        how: "Indexes 1,184 unique bullets mined from 300-plus of my real resumes, scores them against a specific posting, and assembles the strongest set. The hard part of a resume is selection, not authorship. Every step runs as a Composio call on my account, so it works from my phone with my laptop shut.",
+        trigger: "bullet bench",
+        tags: ["Pipeline"],
+      },
+      {
+        name: "recruiter-filter",
+        oneLiner: "Runs my CV through the screen before a recruiter does.",
+        how: "Scores a CV against a posting out of 100, names the knockouts that would drop it before scoring even starts, shows what the filter and a six-second human skim actually see, and ranks fixes by the points each one wins back. Then it reads Gmail for what really happened to the applications I sent and feeds those outcomes back into the rubric.",
+        trigger: "will this pass the ATS",
+        tags: ["Career"],
+      },
+      {
+        name: "job-fetch",
+        oneLiner: "Reads a job posting the sandbox refuses to open.",
+        how: "Ashby, Greenhouse, Lever and Workday all sit behind an egress proxy that returns 403. This routes the fetch out through Composio and the ATS public APIs instead, parses the role, and pulls it into context off a single pasted link.",
+        trigger: "read this job",
         tags: ["Utility"],
       },
       {
@@ -198,6 +212,13 @@ const GROUPS: Group[] = [
         trigger: "add a project to my site",
         tags: [],
       },
+        {
+          name: "cad",
+          oneLiner: "Designs a physical product end to end, ready to drop-ship.",
+          how: "Five specialist sub-skills hand work to each other through files — product designer, mechanical engineer, materials engineer, draftsperson, manufacturer liaison. Out comes parametric CAD source, STEP/STL/3MF/DXF exports, dimensioned drawings, ranked material-and-process cost estimates, and a handoff zip a manufacturer can quote from. No 3D printer at any point.",
+          trigger: "CAD a",
+          tags: [],
+        },
     ],
   },
   {
