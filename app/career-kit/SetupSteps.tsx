@@ -2,6 +2,8 @@
 
 import { useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { CopyText } from "./CopyText";
+import { KitLink } from "./KitLink";
+import { track } from "./visitor";
 
 type Status = "todo" | "done" | "skipped";
 
@@ -73,7 +75,9 @@ const STEPS: Step[] = [
         <Steps>
           <li>
             Open the kit on GitHub:{" "}
-            <Ext href="https://github.com/hbschlac/career-kit">github.com/hbschlac/career-kit</Ext>
+            <KitLink className="underline underline-offset-2 hover:opacity-70 break-words">
+              github.com/hbschlac/career-kit ↗
+            </KitLink>
           </li>
           <li>
             Above the list of files, click <UI>Use this template</UI>, then{" "}
@@ -100,7 +104,7 @@ const STEPS: Step[] = [
   },
   {
     title: "Connect Google Drive and Gmail",
-    sub: "So Claude can edit your resume doc and spot replies.",
+    sub: "So Claude can read your resumes, edit a copy, and learn how you write.",
     doneLabel: "Done, they're connected",
     body: (
       <>
@@ -112,14 +116,15 @@ const STEPS: Step[] = [
           </li>
           <li>
             Find <UI>Google Drive</UI> and click <UI>Connect</UI>. Sign in with the Google account
-            that has your resume, and allow access.
+            that has your resumes, and allow access.
           </li>
           <li>
             If you see <UI>Google Docs</UI> in the list too, connect it the same way.
           </li>
           <li>
-            Connect <UI>Gmail</UI> the same way. The kit only reads it, to spot replies about your
-            applications. It never sends, labels or deletes anything.
+            Connect <UI>Gmail</UI> the same way. The kit only reads it: to learn how you write from
+            emails you sent, to catch up on a thread before a follow-up, and to spot replies about
+            your applications. It never sends, labels or deletes anything.
           </li>
         </Steps>
         <Note>On a work plan (Team or Enterprise)? An admin may need to turn these on for you first.</Note>
@@ -198,8 +203,10 @@ const STEPS: Step[] = [
           </li>
           <li>
             Claude checks what&apos;s connected and tells you if anything&apos;s missing. Then it
-            asks for your resume, a few questions about what you want, and 3–5 things you wrote
-            yourself. Short answers are fine. It saves everything to your private copy.
+            offers to read every resume in your Google Drive (or just a date range you pick) and
+            any work samples you point it to. It asks a few questions about what you want, and
+            learns your voice from things you wrote or emails you sent. Short answers are fine. It
+            saves everything to your private copy.
           </li>
         </Steps>
         <details className="mt-4 rounded-lg bg-background px-4 py-3 text-xs leading-relaxed text-muted">
@@ -297,8 +304,11 @@ export function SetupSteps() {
 
   const setStatus = (i: number, status: Status) => {
     const next = [...statuses];
+    const was = next[i];
     next[i] = status;
     writeProgress(next);
+    if (status === "done" && was !== "done") track("step", { step: i + 1 });
+    if (was === "todo" && next.every((st) => st !== "todo")) track("setup_done");
     if (status === "todo") return;
     const after = firstTodo(next, i + 1) ?? firstTodo(next);
     setOpenOverride(after);

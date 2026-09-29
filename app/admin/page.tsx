@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import LoginForm from "./LoginForm";
 import AdminTabs from "./AdminTabs";
 import { listResumes } from "@/lib/kv";
+import { getKitStats, type KitStats } from "@/lib/career-kit-stats";
+import { ADMIN_COOKIE, isAdminSession } from "@/lib/admin-session";
 
 export default function AdminPage() {
   return (
@@ -16,10 +18,17 @@ export default function AdminPage() {
 
 async function AdminContent() {
   const cookieStore = await cookies();
-  const isAuthed = cookieStore.get("admin_session")?.value === "1";
+  const isAuthed = isAdminSession(cookieStore.get(ADMIN_COOKIE)?.value);
 
   if (!isAuthed) return <LoginForm />;
 
   const resumes = await listResumes();
-  return <AdminTabs resumes={resumes} />;
+  let kitStats: KitStats | null = null;
+  let kitError = "";
+  try {
+    kitStats = await getKitStats();
+  } catch (err) {
+    kitError = err instanceof Error ? err.message : "unknown error";
+  }
+  return <AdminTabs resumes={resumes} kitStats={kitStats} kitError={kitError} />;
 }

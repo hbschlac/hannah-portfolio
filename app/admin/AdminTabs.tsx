@@ -2,14 +2,24 @@
 
 import { useState } from "react";
 import type { ResumeEntry } from "@/lib/kv";
+import type { KitStats } from "@/lib/career-kit-stats";
 import ResumeDashboard from "./ResumeDashboard";
 import CreateResumeForm from "./CreateResumeForm";
+import CareerKitStats from "./CareerKitStats";
 import { logoutAdmin } from "@/app/actions";
 
-const tabs = ["Dashboard", "New Resume"] as const;
+const tabs = ["Dashboard", "New Resume", "Career Kit"] as const;
 type Tab = (typeof tabs)[number];
 
-export default function AdminTabs({ resumes }: { resumes: ResumeEntry[] }) {
+export default function AdminTabs({
+  resumes,
+  kitStats,
+  kitError,
+}: {
+  resumes: ResumeEntry[];
+  kitStats: KitStats | null;
+  kitError?: string;
+}) {
   const [active, setActive] = useState<Tab>("Dashboard");
 
   return (
@@ -50,8 +60,10 @@ export default function AdminTabs({ resumes }: { resumes: ResumeEntry[] }) {
       <div className="bg-white rounded-2xl shadow-sm border border-stone-200 p-8">
         {active === "Dashboard" ? (
           <ResumeDashboard resumes={resumes} />
-        ) : (
+        ) : active === "New Resume" ? (
           <CreateResumeForm />
+        ) : (
+          <CareerKitStats stats={kitStats} error={kitError} />
         )}
       </div>
     </div>

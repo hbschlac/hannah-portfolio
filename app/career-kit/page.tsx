@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Connectors } from "./Connectors";
-import { CopyText } from "./CopyText";
+import { KitLink } from "./KitLink";
+import { PageTracker } from "./PageTracker";
 import { SetupSteps } from "./SetupSteps";
+import { ShareButton } from "./ShareButton";
 import { UseCases } from "./UseCases";
 
-const KIT_URL = "https://github.com/hbschlac/career-kit";
 const PAGE_URL = "https://schlacter.me/career-kit";
 
 const DESCRIPTION =
@@ -39,8 +40,8 @@ const BENEFITS = [
     body: "Every claim comes from your own facts file. When a job asks for something it can't find, it asks you: once, with every gap in one list. No guessed numbers.",
   },
   {
-    title: "It learns from your edits.",
-    body: "Correct a draft, then say “learn from this.” Your fix becomes a rule, so you never give the same note twice.",
+    title: "It gets better as you use it.",
+    body: "Correct a draft and say “learn from this”: the fix becomes a rule. Every tailored resume is saved, so a similar job starts from it. A weekly check tunes whatever costs the most.",
   },
 ];
 
@@ -63,10 +64,6 @@ const FAQS: { q: string; a: ReactNode }[] = [
         saves anything.
       </>
     ),
-  },
-  {
-    q: "Is it only for product managers?",
-    a: "No. I built it during my own PM search. Setup asks what roles you want, and every skill works from your answers: engineering, design, marketing, operations, sales.",
   },
   {
     q: "What if Claude gets something wrong?",
@@ -161,17 +158,19 @@ export default function CareerKitPage() {
         <Section id="use-cases" eyebrow="Use cases" title="What you can ask for">
           <p className="text-sm leading-relaxed text-muted mb-5">
             Most of a job search is the same chores on repeat: tailor the resume, write the note,
-            check who wrote back. The kit does the chores. You do the interviews. Pick one to see
-            how it works.
+            check who wrote back. The kit does the chores. You do the interviews. Here&apos;s
+            everything its 12 skills do. Pick one to see how it works.
           </p>
           <UseCases />
         </Section>
 
         {/* Connectors */}
-        <Section id="tools" eyebrow="Connections" title="What to connect, and what each one adds">
+        <Section id="tools" eyebrow="Connections" title="What Claude can use for you">
           <p className="text-sm leading-relaxed text-muted mb-5">
-            With nothing connected, Claude can still draft everything in the chat. Each connection
-            adds more. Switch them on and off to see what you&apos;d be able to do.
+            A <em>connection</em> gives Claude permission to use one of your accounts, like Google
+            Drive or Gmail, while it works for you. You approve each one, and you can remove it any
+            time on claude.ai. With none, Claude still writes everything in the chat for you to
+            copy. Each one you add lets it do more of the work itself.
           </p>
           <Connectors />
         </Section>
@@ -187,7 +186,10 @@ export default function CareerKitPage() {
               include Claude Code.
             </Need>
             <Need>
-              <strong>Your resume.</strong> A Google Doc works best. A PDF or Word file works too.
+              <strong>Your resumes.</strong>{" "}
+              If they&apos;re in Google Drive, Claude can read every
+              version you&apos;ve made, from any year or a range you pick, and keep the best facts
+              from each. A PDF, a Word file or pasted text works too.
             </Need>
             <Need>
               <strong>An email address</strong> for a free GitHub account (step 1).
@@ -226,20 +228,23 @@ export default function CareerKitPage() {
             Know someone who&apos;s job hunting? Send them this page.
           </p>
           <div className="mt-3">
-            <CopyText text={PAGE_URL} />
+            <ShareButton />
           </div>
           <p className="text-xs mt-4 leading-relaxed text-muted">
             Prefer to read it on GitHub? The kit&apos;s README has the same steps:{" "}
-            <a href={KIT_URL} target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70">
-              github.com/hbschlac/career-kit
-            </a>
+            <KitLink className="underline hover:opacity-70">github.com/hbschlac/career-kit</KitLink>
           </p>
         </section>
       </main>
 
       <footer className="max-w-3xl mx-auto w-full px-6 py-8 border-t border-border">
         <p className="text-xs text-muted">vibed with love | oakland, ca</p>
+        <p className="text-xs text-muted mt-2">
+          This page counts visits and button clicks so I can see if it&apos;s useful. No names or
+          emails; a random ID in your browser tells repeat visits apart.
+        </p>
       </footer>
+      <PageTracker />
     </div>
   );
 }
