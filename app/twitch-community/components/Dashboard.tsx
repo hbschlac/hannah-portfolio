@@ -618,7 +618,7 @@ export function Dashboard({ snapshot }: { snapshot: AnalysisSnapshot }) {
           <a href="https://claude.ai/claude-code" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: TWITCH_PURPLE }}>Claude Code</a>
         </p>
         <p className="text-[10px] mt-1" style={{ color: "#CCC" }}>
-          {snapshot.totalFeedback.toLocaleString()} data points from public sources &middot; All quotes link to original source
+          {snapshot.totalFeedback.toLocaleString()}{" "}data points from public sources &middot; All quotes link to original source
         </p>
       </footer>
 

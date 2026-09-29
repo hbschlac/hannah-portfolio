@@ -678,7 +678,7 @@ function renderExample(metricKey: string, ex: Example, i: number) {
         <span style={{ color: "#1A1A1A" }}>{String(ex.msg)}</span>
         <div className="mt-0.5" style={{ color: "#8A8A8A" }}>
           patched{" "}
-          <span className="font-mono">{String(ex.broke_sha)}</span> &quot;
+          <span className="font-mono">{String(ex.broke_sha)}</span>{" "}&quot;
           {String(ex.broke)}&quot; after {String(ex.gap_hours)}h
           {ex.repo ? ` · ${ex.repo}` : ""}
           {dateStr ? ` · ${dateStr}` : ""}
