@@ -1,9 +1,18 @@
 import type { NextConfig } from "next";
 
+// Static snapshots of Hannah's old Wix sites, stored as public/<site>/**/index.html.
+// Array-form rewrites run after public files, so /<site>/_assets/* is served
+// directly, and before dynamic routes, so the /[slug] resume route never sees these.
+const WIX_ARCHIVES = ["biggerthanrun", "reva", "ruach2016"];
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   async rewrites() {
     return [
+      ...WIX_ARCHIVES.flatMap((site) => [
+        { source: `/${site}`, destination: `/${site}/index.html` },
+        { source: `/${site}/:path+`, destination: `/${site}/:path+/index.html` },
+      ]),
       {
         source: "/aiprojects",
         destination: "/projects",
