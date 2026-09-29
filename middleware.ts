@@ -42,8 +42,26 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // ── Wix archives: phones get the mobile-layout snapshot ────────────
+  // Wix picked desktop vs mobile layout by user agent; the archives keep both
+  // (public/<site>/... and public/<site>/_m/...). Desktop is served by the
+  // rewrites in next.config.ts.
+  const archive = pathname.match(WIX_ARCHIVE_PATH);
+  if (
+    archive &&
+    !archive[2]?.startsWith("/_") &&
+    MOBILE_UA.test(req.headers.get("user-agent") ?? "")
+  ) {
+    const url = req.nextUrl.clone();
+    url.pathname = `/${archive[1]}/_m${archive[2] ?? ""}/index.html`;
+    return NextResponse.rewrite(url);
+  }
+
   return NextResponse.next();
 }
+
+const WIX_ARCHIVE_PATH = /^\/(biggerthanrun|reva|ruach2016)(\/.*)?$/;
+const MOBILE_UA = /Mobi|Android|iPhone|iPod/i;
 
 export const config = {
   matcher: [
