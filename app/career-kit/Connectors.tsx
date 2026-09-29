@@ -41,7 +41,7 @@ const CONNECTORS: Connector[] = [
     id: "composio",
     name: "Composio",
     label: "Optional · free",
-    what: "A free add-on service that lets Claude keep your job tracker in a Google Sheet. It also gives Claude a second way into your Docs.",
+    what: "A free add-on service that lets Claude keep your job tracker in a Google Sheet, check your resume still fits one page without sharing it, and save a PDF to your Drive when you're on your phone. It also gives Claude a second way into your Docs.",
     where: "One link, added on the same connectors page (step 4).",
   },
   {
@@ -49,7 +49,7 @@ const CONNECTORS: Connector[] = [
     name: "LinkedIn jobs",
     label: "Already included",
     locked: "Comes with the kit",
-    what: "Claude searches LinkedIn job posts and reads full job descriptions, using LinkedIn's public job pages. No LinkedIn login.",
+    what: "Claude searches LinkedIn job posts, filters them by your years of experience, industry, pay and remote, and reads full job descriptions, using LinkedIn's public job pages. No LinkedIn login.",
     where: "Nothing to connect.",
   },
 ];
@@ -65,7 +65,8 @@ type Ability = {
 const ABILITIES: Ability[] = [
   { text: "Write resume changes, cover letters and messages in your voice, right in the chat", requires: [[]] },
   { text: "Score your resume against any job and rank the fixes", requires: [[]] },
-  { text: "Search LinkedIn jobs and read full job posts", requires: [[]] },
+  { text: "Search LinkedIn jobs by your years of experience, industry, pay and remote, and read full job posts", requires: [[]] },
+  { text: "Prep you for interviews: a company brief, your best stories for each question, mock rounds", requires: [[]] },
   {
     text: "Read every resume you've saved in Google Drive, from any year, plus your work samples, for facts and numbers",
     requires: [["drive"], ["composio"]],
@@ -77,6 +78,18 @@ const ABILITIES: Ability[] = [
     requires: [["drive"], ["composio"]],
     needs: "Google Drive",
     without: "Without it, you get the changes in the chat and paste them into your doc.",
+  },
+  {
+    text: "On your phone, turn a job link into a tailored resume PDF saved in your Google Drive",
+    requires: [["composio"]],
+    needs: "Composio",
+    without: "Without it, you get the tailored doc and save the PDF from the Google Docs app.",
+  },
+  {
+    text: "Read the comments people left on your resume doc and apply them",
+    requires: [["composio"]],
+    needs: "Composio",
+    without: "Without it, you paste the feedback into the chat.",
   },
   {
     text: "Learn your voice from emails you've sent, and read the earlier thread before a follow-up",

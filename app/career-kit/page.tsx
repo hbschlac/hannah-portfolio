@@ -11,7 +11,7 @@ import { UseCases } from "./UseCases";
 const PAGE_URL = "https://schlacter.me/career-kit";
 
 const DESCRIPTION =
-  "12 Claude skills that run your job search in your voice, from your facts: tailored resumes, outreach, fit scores and a job tracker. About 20 minutes to set up. No coding.";
+  "13 Claude skills that run your job search in your voice, from your facts: tailored resumes, outreach, fit scores, interview prep and a job tracker. About 20 minutes to set up. No coding.";
 
 export const metadata: Metadata = {
   title: "Career Kit — schlacter.me",
@@ -71,7 +71,7 @@ const FAQS: { q: string; a: ReactNode }[] = [
   },
   {
     q: "Can I use it on my phone?",
-    a: "Yes, once it's set up: the Code tab in the Claude app opens the same sessions. Do the setup on a computer, though. It's easier.",
+    a: "Yes, once it's set up. In the Claude app, open the Code tab and start a session on your copy. Paste a job link and say “make me a resume”: it asks at most one question, and with Composio connected the tailored PDF lands in your Google Drive, ready to attach. Do the setup on a computer, though. It's easier.",
   },
   {
     q: "I already use Claude Code in a terminal. Can I skip the browser?",
@@ -99,8 +99,8 @@ export default function CareerKitPage() {
           My job-search system, packaged for yours
         </h1>
         <p className="text-sm sm:text-base mt-4 leading-relaxed text-muted">
-          I built these 12 Claude skills to run my own job search: tailoring resumes, writing
-          outreach, and scoring applications before a recruiter does. This copy has none of my data
+          I built these 13 Claude skills to run my own job search: tailoring resumes, writing
+          outreach, scoring applications before a recruiter does, and prepping for interviews. This copy has none of my data
           in it. You fill it with yours once, in about 20 minutes. Then you paste a job link and ask
           for what you need.
         </p>
@@ -138,7 +138,7 @@ export default function CareerKitPage() {
           <p className="text-sm leading-relaxed">
             Claude is an AI assistant made by Anthropic. A <em>skill</em> is a saved set of
             instructions that teaches Claude to do one job the same careful way every time. This kit
-            is 12 of them for a job search, plus one private folder of facts about you.
+            is 13 of them for a job search, plus one private folder of facts about you.
           </p>
           <p className="text-sm mt-3 leading-relaxed">
             Think: a resume writer, a recruiter and a career coach who all work from the same notes
@@ -158,8 +158,8 @@ export default function CareerKitPage() {
         <Section id="use-cases" eyebrow="Use cases" title="What you can ask for">
           <p className="text-sm leading-relaxed text-muted mb-5">
             Most of a job search is the same chores on repeat: tailor the resume, write the note,
-            check who wrote back. The kit does the chores. You do the interviews. Here&apos;s
-            everything its 12 skills do. Pick one to see how it works.
+            check who wrote back. The kit does the chores and gets you ready for interviews. You do the
+            talking. Here&apos;s everything its 13 skills do. Pick one to see how it works.
           </p>
           <UseCases />
         </Section>
