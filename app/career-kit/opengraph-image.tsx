@@ -92,7 +92,7 @@ export default function Image() {
           }}
         >
           <span>schlacter.me/career-kit</span>
-          <span>12 skills · about 20 minutes to set up · no coding</span>
+          <span>13 skills · about 20 minutes to set up · no coding</span>
         </div>
       </div>
     ),
