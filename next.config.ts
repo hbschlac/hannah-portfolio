@@ -40,6 +40,16 @@ const nextConfig: NextConfig = {
         source: "/twitch-community-intelligence",
         destination: "/twitch-community",
       },
+      // Aliases for the Career Kit share page, for people who type the name they
+      // heard ("career skills") instead of the kit's name.
+      {
+        source: "/career-skill",
+        destination: "/career-kit",
+      },
+      {
+        source: "/career-skills",
+        destination: "/career-kit",
+      },
     ];
   },
   async redirects() {
