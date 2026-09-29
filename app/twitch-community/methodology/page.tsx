@@ -100,7 +100,7 @@ export default function MethodologyPage() {
             <h2 className="text-lg font-semibold mb-2" style={{ color: "#222" }}>Perspective Tagging</h2>
             <p>
               Each data point is tagged as <span style={{ color: "#9146FF" }}>Creator</span>,{" "}
-              <span style={{ color: "#00897B" }}>Viewer</span>, or <span style={{ color: "#999" }}>Both</span> using
+              <span style={{ color: "#00897B" }}>Viewer</span>, or <span style={{ color: "#999" }}>Both</span>{" "}using
               keyword matching. Creator signals include phrases like &quot;my stream,&quot; &quot;my viewers,&quot; &quot;as a streamer.&quot;{" "}
               Viewer signals include &quot;I watch,&quot; &quot;my favorite streamer,&quot; &quot;I missed.&quot; Items matching both or neither
               default to &quot;Both.&quot;

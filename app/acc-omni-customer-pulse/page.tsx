@@ -74,7 +74,7 @@ export default function AccOmniCustomerPulsePage() {
           <Section label="How we validated">
             <p>
               Every friction theme called out below shows up in at least{" "}
-              <strong>two independent Reddit comments</strong> (different threads, different
+              <strong>two independent Reddit comments</strong>{" "}(different threads, different
               users) for the same brand and stage — one thread alone wouldn&apos;t make it in. No
               LLMs in the classification pipeline: I read each comment, confirmed the brand and
               journey stage, and kept the ones specific enough to teach something. Every quote

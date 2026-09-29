@@ -123,7 +123,7 @@ voice: ["sounds like ai", "doesn't sound like me", "generic",
 
         <Section title="5. The AI Overview prototype">
           <p className="text-sm text-gray-600 leading-relaxed">
-            The prototype is <strong>not AI-generated</strong> — it&apos;s a PM&apos;s product vision, hardcoded by design.
+            The prototype is <strong>not AI-generated</strong>{" "}— it&apos;s a PM&apos;s product vision, hardcoded by design.
             The goal is to show what a Gemini-powered Gmail search experience <em>should</em> look like based on the
             evidence, not to ask an AI to generate it on the fly.
           </p>

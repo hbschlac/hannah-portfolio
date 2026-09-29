@@ -45,7 +45,7 @@ export function JourneyView({
     <>
       <div className="bg-white border border-neutral-200 rounded-lg p-5">
         <p className="text-[13px] text-neutral-700 leading-relaxed mb-4">
-          Of <strong className="text-neutral-900">{totalFriction}</strong> Walmart / Sam&apos;s
+          Of <strong className="text-neutral-900">{totalFriction}</strong>{" "}Walmart / Sam&apos;s
           friction comments in the Reddit corpus, here&apos;s how they land by journey stage.
           Each bar shows how many comments mention friction at that step. Click any stage for
           the verbatim voices + the Costco / Discount Tire benchmark.

@@ -89,7 +89,7 @@ export default function MethodologyPage() {
               </tbody>
             </table>
             <p className="mt-4 text-[13px] text-neutral-600">
-              Split: {walmartN} Walmart/Sam&apos;s quotes, {benchmarkN} Costco/Discount Tire
+              Split: {walmartN} Walmart/Sam&apos;s quotes, {benchmarkN}{" "}Costco/Discount Tire
               benchmark quotes. v1 is Reddit-only because that&apos;s what I could collect
               verbatim and date-stamped in the time I gave myself. v2 would fold in
               ConsumerAffairs, Google/Yelp store reviews, Walmart + Sam&apos;s app store reviews,
@@ -101,7 +101,7 @@ export default function MethodologyPage() {
           <Section title="Inclusion rule">
             <p>
               A friction theme only surfaces in the top-level memo if it appears in{" "}
-              <strong>≥ 2 independent Reddit comments</strong> — different threads, different
+              <strong>≥ 2 independent Reddit comments</strong>{" "}— different threads, different
               users — for the same brand and the same journey stage. One viral thread
               doesn&apos;t make a theme. v2&apos;s corroboration rule tightens to &ldquo;≥ 2
               independent <em>platforms</em>&rdquo; once non-Reddit sources are added.

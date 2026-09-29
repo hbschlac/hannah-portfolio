@@ -64,7 +64,7 @@ export default function TML101Page() {
             yourself. Expensive, complicated, takes months to set up.
           </p>
           <p className="text-[15px] text-neutral-700 leading-relaxed mt-4">
-            <strong className="text-neutral-900">Option B (Tinker):</strong> Send
+            <strong className="text-neutral-900">Option B (Tinker):</strong>{" "}Send
             your dog to a specialized training facility. You tell them &ldquo;here&apos;s
             my dog, here&apos;s my truffles, here&apos;s my method.&rdquo; They have the
             forest, the equipment, and the handlers already. They run your exact

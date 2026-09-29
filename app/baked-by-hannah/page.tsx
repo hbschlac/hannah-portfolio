@@ -84,7 +84,7 @@ export default function BakedByHannahPage() {
           </p>
           <p>
             i&apos;m looking for{" "}
-            <strong>applied AI and native AI product roles</strong> — and
+            <strong>applied AI and native AI product roles</strong>{" "}— and
             i&apos;d love to know who i should be talking to.
           </p>
           <p>
