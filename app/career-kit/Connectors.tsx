@@ -7,73 +7,84 @@ type ConnectorId = "github" | "drive" | "gmail" | "composio" | "linkedin";
 type Connector = {
   id: ConnectorId;
   name: string;
-  status: string;
-  locked?: boolean;
+  label: string; // plain words, not jargon
+  locked?: string; // why it can't be unticked
   what: string;
   where: string;
 };
 
-// Mirrors the "Connect your tools" table in the kit's README.
+// Mirrors README → "Connect your tools" in github.com/hbschlac/career-kit.
 const CONNECTORS: Connector[] = [
   {
     id: "github",
     name: "GitHub",
-    status: "Required",
-    locked: true,
-    what: "Lets Claude open your private copy of the kit.",
+    label: "Needed",
+    locked: "Needed for everything",
+    what: "Where your private copy of the kit lives. Claude opens it at the start of every session.",
     where: "You connect it the first time you open claude.ai/code (step 5).",
   },
   {
     id: "drive",
     name: "Google Drive + Docs",
-    status: "Recommended",
-    what: "Claude edits a copy of your resume right in Google Docs, then saves the PDF.",
-    where: "claude.ai/customize/connectors → Google Drive, plus Google Docs if it's listed (step 3).",
+    label: "Recommended",
+    what: "Claude reads every resume you've saved, from any year, plus your work samples and projects, for facts and numbers. Then it edits a copy of your resume right in Google Docs and saves the PDF.",
+    where: "Connect on claude.ai's connectors page (step 3).",
   },
   {
     id: "gmail",
     name: "Gmail",
-    status: "Recommended",
-    what: "Spots interview invites and rejections for the jobs you applied to. Read-only.",
-    where: "Same page → Gmail (step 3).",
+    label: "Recommended",
+    what: "Claude learns how you write from emails you've sent, reads the earlier thread before a follow-up, and spots interview invites and rejections. Read-only: it never sends, deletes or labels anything.",
+    where: "Same page (step 3).",
   },
   {
     id: "composio",
     name: "Composio",
-    status: "Optional · free tier",
-    what: "Keeps your job tracker in a Google Sheet, and gives Claude a second way to edit your Docs.",
-    where: "One link, added on the same connectors page. It makes your free account (step 4).",
+    label: "Optional · free",
+    what: "A free add-on service that lets Claude keep your job tracker in a Google Sheet. It also gives Claude a second way into your Docs.",
+    where: "One link, added on the same connectors page (step 4).",
   },
   {
     id: "linkedin",
     name: "LinkedIn jobs",
-    status: "Built in",
-    locked: true,
-    what: "Searches LinkedIn job posts and pulls full job descriptions. No login.",
-    where: "Nothing to do. It comes with the kit.",
+    label: "Already included",
+    locked: "Comes with the kit",
+    what: "Claude searches LinkedIn job posts and reads full job descriptions, using LinkedIn's public job pages. No LinkedIn login.",
+    where: "Nothing to connect.",
   },
 ];
 
 type Ability = {
   text: string;
-  // Met when every connector in any one of these groups is on.
+  // Met when every connection in any one of these groups is ticked.
   requires: ConnectorId[][];
   needs?: string;
   without?: string;
 };
 
 const ABILITIES: Ability[] = [
-  { text: "Draft resume changes, cover letters and outreach in your voice", requires: [[]] },
-  { text: "Score your resume against any job, with fixes ranked", requires: [[]] },
-  { text: "Search LinkedIn jobs and pull full job descriptions", requires: [[]] },
+  { text: "Write resume changes, cover letters and messages in your voice, right in the chat", requires: [[]] },
+  { text: "Score your resume against any job and rank the fixes", requires: [[]] },
+  { text: "Search LinkedIn jobs and read full job posts", requires: [[]] },
   {
-    text: "Edit a copy of your resume right in Google Docs, formatting intact",
+    text: "Read every resume you've saved in Google Drive, from any year, plus your work samples, for facts and numbers",
     requires: [["drive"], ["composio"]],
-    needs: "Google Drive or Composio",
-    without: "For now, Claude writes the changes in the chat and you paste them in.",
+    needs: "Google Drive",
+    without: "Without it, you paste in your resume and anything else you want it to use.",
   },
   {
-    text: "Find out what happened to your applications: invites, rejections, silence",
+    text: "Edit a copy of your resume in Google Docs, formatting intact, and save the PDF",
+    requires: [["drive"], ["composio"]],
+    needs: "Google Drive",
+    without: "Without it, you get the changes in the chat and paste them into your doc.",
+  },
+  {
+    text: "Learn your voice from emails you've sent, and read the earlier thread before a follow-up",
+    requires: [["gmail"]],
+    needs: "Gmail",
+  },
+  {
+    text: "Find out what happened to your applications: interviews, rejections, silence",
     requires: [["gmail"]],
     needs: "Gmail",
   },
@@ -81,12 +92,12 @@ const ABILITIES: Ability[] = [
     text: "Keep your job tracker in a Google Sheet",
     requires: [["composio"]],
     needs: "Composio",
-    without: "For now, your tracker is a simple table inside your copy of the kit.",
+    without: "Without it, your tracker is a simple table inside your copy of the kit.",
   },
   {
-    text: "Weekly review: new replies logged to your tracker for you",
+    text: "Weekly review: log new replies in your tracker for you",
     requires: [["gmail", "composio"]],
-    needs: "Gmail + Composio",
+    needs: "Gmail and Composio",
   },
 ];
 
@@ -108,6 +119,14 @@ export function Connectors() {
 
   return (
     <div>
+      <p className="text-sm leading-relaxed text-foreground mb-4">
+        Tick the ones you plan to connect to see what Claude can do for you.{" "}
+        <span className="text-muted">
+          Ticking a box here doesn&apos;t connect anything. You&apos;ll do that in the setup steps
+          below.
+        </span>
+      </p>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {CONNECTORS.map((c) => {
           const checked = on.has(c.id);
@@ -117,45 +136,45 @@ export function Connectors() {
               className="rounded-xl border bg-white p-4 flex flex-col transition-colors"
               style={{ borderColor: checked ? "#1A1A1A" : "#E5E1D8" }}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="text-sm font-medium text-foreground">{c.name}</h3>
-                  <span
-                    className="inline-block text-xs px-2 py-0.5 rounded-full mt-1"
-                    style={{ background: "#F5E0E6", color: "rgba(26,26,26,0.7)" }}
-                  >
-                    {c.status}
-                  </span>
-                </div>
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="text-sm font-medium text-foreground">{c.name}</h3>
+                <span className="text-xs text-muted whitespace-nowrap">{c.label}</span>
+              </div>
+              <p className="text-sm mt-2 leading-relaxed text-foreground">{c.what}</p>
+              <p className="text-xs mt-2 leading-relaxed text-muted">{c.where}</p>
+              <div className="mt-auto pt-3">
                 {c.locked ? (
-                  <span className="text-xs text-muted whitespace-nowrap pt-0.5">Always on</span>
-                ) : (
-                  <button
-                    type="button"
-                    role="switch"
-                    aria-checked={checked}
-                    aria-label={`I'll connect ${c.name}`}
-                    onClick={() => toggle(c.id)}
-                    className="relative shrink-0 w-10 h-6 rounded-full transition-colors"
-                    style={{ background: checked ? "#1A1A1A" : "#E5E1D8" }}
-                  >
+                  <p className="flex items-center gap-2 text-xs text-muted">
                     <span
-                      className="absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform"
-                      style={{ transform: checked ? "translateX(16px)" : "translateX(0)" }}
+                      className="w-4 h-4 rounded flex items-center justify-center text-[10px]"
+                      style={{ background: "#1A1A1A", color: "#FFF" }}
+                      aria-hidden="true"
+                    >
+                      ✓
+                    </span>
+                    {c.locked}
+                  </p>
+                ) : (
+                  <label className="flex items-center gap-2 text-xs text-foreground cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => toggle(c.id)}
+                      className="w-4 h-4 accent-[#1A1A1A]"
                     />
-                  </button>
+                    I&apos;ll connect this
+                  </label>
                 )}
               </div>
-              <p className="text-sm mt-3 leading-relaxed text-foreground">{c.what}</p>
-              <p className="text-xs mt-2 leading-relaxed text-muted">{c.where}</p>
             </div>
           );
         })}
       </div>
 
       <div className="mt-4 rounded-xl border border-border bg-white p-5">
-        <p className="text-xs tracking-widest uppercase text-muted" aria-live="polite">
-          With these connected, you can do {count} of {ABILITIES.length} things
+        <p className="text-sm font-medium text-foreground">In a Claude session, Claude can:</p>
+        <p className="text-xs text-muted mt-0.5" aria-live="polite">
+          {count} of {ABILITIES.length} things, with what you ticked
         </p>
         <ul className="mt-3 flex flex-col gap-2.5">
           {ABILITIES.map((a) => {
@@ -176,9 +195,7 @@ export function Connectors() {
                 <span style={{ color: ok ? "#1A1A1A" : "#8A8A8A" }}>
                   <span className="sr-only">{ok ? "Yes: " : "Not yet: "}</span>
                   {a.text}
-                  {!ok && a.needs && (
-                    <span className="text-xs ml-1.5 whitespace-nowrap">(needs {a.needs})</span>
-                  )}
+                  {!ok && a.needs && <span className="block text-xs mt-0.5">Needs {a.needs}.</span>}
                   {!ok && a.without && <span className="block text-xs mt-0.5">{a.without}</span>}
                 </span>
               </li>

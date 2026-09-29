@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
 import { saveResume } from "@/lib/kv";
+import { ADMIN_COOKIE, adminSessionToken, isAdminSession } from "@/lib/admin-session";
 
 function extractDocId(url: string): string | null {
   // Matches: https://docs.google.com/document/d/DOCID/...
@@ -39,7 +40,7 @@ export async function loginAdmin(
   }
 
   const cookieStore = await cookies();
-  cookieStore.set("admin_session", "1", {
+  cookieStore.set(ADMIN_COOKIE, adminSessionToken() ?? "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -56,7 +57,7 @@ export async function createResume(
   formData: FormData
 ): Promise<ActionState> {
   const cookieStore = await cookies();
-  if (cookieStore.get("admin_session")?.value !== "1") {
+  if (!isAdminSession(cookieStore.get(ADMIN_COOKIE)?.value)) {
     return { error: "Not authenticated." };
   }
 
@@ -92,6 +93,6 @@ export async function createResume(
 
 export async function logoutAdmin(): Promise<void> {
   const cookieStore = await cookies();
-  cookieStore.delete("admin_session");
+  cookieStore.delete(ADMIN_COOKIE);
   redirect("/admin");
 }

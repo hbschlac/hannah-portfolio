@@ -2,7 +2,7 @@ import { Redis } from "@upstash/redis";
 import { cacheLife, cacheTag } from "next/cache";
 import type { DocBlock } from "@/lib/google";
 
-function getRedis() {
+export function getRedis() {
   const url = process.env.KV_REST_API_URL;
   const token = process.env.KV_REST_API_TOKEN;
   if (!url || !token) {
