@@ -64,9 +64,10 @@ const GROUPS: Group[] = [
       {
         name: "product-networking",
         oneLiner: "The engine behind every professional message I send.",
-        how: "Drafts cold emails, LinkedIn DMs, intro requests, and referral blurbs in my voice, and tailors my resume to a specific role — one system for networking, outreach, and applications.",
+        how: "Drafts cold emails, LinkedIn DMs, intro requests, and referral blurbs in my voice, and tailors my resume to a specific role — one system for networking, outreach, and applications. I packaged a clean copy of the career set, with none of my data in it, for anyone to use.",
         trigger: "reach out to",
         tags: ["System"],
+        link: { label: "schlacter.me/career-kit", href: "/career-kit" },
       },
       {
         name: "job-search",
