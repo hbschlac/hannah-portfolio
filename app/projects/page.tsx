@@ -57,7 +57,7 @@ export default function ProjectsPage() {
         </p>
         <p className="text-xs text-muted/70 mb-6">Things I built because I wanted them to exist.</p>
         <div className="flex flex-col gap-3">
-          {projects.map((project) => (
+          {projects.filter((p) => !p.unlisted).map((project) => (
             <ProjectTile key={project.slug} project={project} />
           ))}
         </div>
