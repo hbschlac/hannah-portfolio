@@ -12,6 +12,10 @@ export type Project = {
   tags: string[];
   thumbnailColor: string;
   thumbnailImage?: string;
+  // The live product, shown on the tile and at the top of the case study.
+  productLink?: { label: string; href: string };
+  // Off the /projects list, but its case-study URL keeps working (noindex) for links already sent.
+  unlisted?: boolean;
   problem: string;
   hypothesis: string;
   built: string;
@@ -29,6 +33,71 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "career-kit",
+    title: "Career Kit",
+    oneLiner: "A specialized agent I built to run my own job search, then turned into a product anyone can install: 13 Claude skills that tailor resumes, write outreach and prep interviews, all from your own facts.",
+    tileInsight: "It became shareable the day I split who you are from how the work gets done.",
+    tags: ["Specialized Agent", "AI", "Automation"],
+    thumbnailColor: "#F5E0E6",
+    productLink: { label: "Get the Career Kit", href: "/career-kit" },
+    problem: "A job search is the same chores on repeat: tailor the resume, write the note, check who wrote back. I was doing them with Claude, and the output was only as good as the facts it had. One resume took over three hours and 127 doc edits for nine bullets, because about 14 of my 46 messages were facts Claude didn't have, each one arriving after a bullet was already written and scored.\n\nThen I wanted to hand the whole thing to a friend who was job hunting, and everything I'd built was tangled up with my resume, my voice and my tracker.",
+    hypothesis: "If every fact about a person lives in one private folder, and each chore is a skill with hard rules about what it may and may not do, Claude can do the chores in that person's voice without making anything up. Pull the personal data out of the skills, and the same agent works for anyone.",
+    built: "13 Claude Code skills in a public GitHub template: setup, resume, networking, recruiter-filter, job-search, linkedin-jobs, job-fetch, voice, aislop, project, resume-learn, career-review and interview. You make a private copy, open it in Claude Code, and say \"set me up.\" Setup reads the resumes you've saved in Google Drive and a few things you wrote yourself, then fills one profile folder: your facts, your voice, your targets, your rules. Nothing it writes about you comes from anywhere else.\n\nFrom there you paste a job link and ask. It tailors a copy of your Google Doc resume and scores it the way a screening tool would. It drafts the LinkedIn note or referral ask in your voice, writes three sentences on why you fit, searches LinkedIn by years of experience, industry and pay, runs a mock interview, and logs it all to a tracker sheet. From the Claude app on a phone, a job link plus \"make me a resume\" puts a tailored PDF in your Drive.\n\nIt gets better with use. Say \"learn from this\" and a correction becomes a rule. Every tailored resume is logged, so a similar job starts from the closest version. Every session records what it cost per skill, and a weekly review proposes a fix for the most expensive one as a pull request you approve.\n\nschlacter.me/career-kit is the front door, written for someone who has never used GitHub: what it does, what each connection unlocks, and five setup steps that remember where you left off.",
+    broke: "The 127-edit resume taught me that an agent guessing at facts is worse than one that asks. Now every fact is searched for in an evidence file first, and whatever's missing comes back as one batched question before a word is written.\n\nChecking that a resume still fit on one page meant exporting the PDF into the conversation. 27 exports in one session blew through the context window. The check now runs outside the chat and returns two lines. Its first version only worked if the resume was shared publicly by link, so I moved it into a sandbox that reads Drive as the user. Nothing asks you to share a resume anymore.\n\nThe quietest bug: LinkedIn's public job search ignores its own experience, remote, industry and pay filters. Same jobs either way, so those filters had never done anything. The search now reads each posting, applies them itself, and says what it dropped and why.",
+    learned: "A specialized agent gets good through its limits, not its prompt. The rules that matter are the ones that stop it: no fact that isn't in your folder, no rewrite of a whole Google Doc (a hook refuses the call), no email sent on your behalf.\n\nSplitting who you are (one private folder) from how the work gets done (the skills) is also what made it a product. A user can pull my updates without touching their data, and a leak check keeps my data out of the template. The last piece was the page: most people who'd use this have never opened GitHub, so every step is written for them.",
+    nextSteps: "Answers for application form questions, LinkedIn profile edits and offer negotiation are the gaps I'd fill next. I'd also like the phone flow to start from the share sheet: see a job, tap Share, get a resume.",
+    keyLearning: "The agent got good when I stopped adding instructions and started adding limits: one folder of facts it can't go past, a hook that refuses the edits that wreck a resume, and a meter that shows which skill costs the most.",
+    services: [
+      {
+        layer: "13 skills",
+        note: "One per job-search chore",
+        items: ["Resume tailoring and fit scores", "Outreach and why-me, in your voice", "LinkedIn search and full job posts", "Interview prep and mock rounds", "Tracker and weekly review"],
+      },
+      {
+        layer: "Your profile",
+        note: "One private folder, the only source of facts",
+        items: ["Facts, each with its source", "Voice rules from your own writing", "Targets and dealbreakers", "Which story leads for which role", "Rules learned from your corrections"],
+      },
+      {
+        layer: "Guardrails",
+        note: "Refuse the moves that do damage",
+        items: ["Hook blocks whole-doc rewrites", "Exact-match edits, on a copy only", "Gmail read-only, never sends", "Leak check keeps data out of the template"],
+      },
+      {
+        layer: "Connections",
+        note: "Each one lets it do more itself",
+        items: ["Google Drive and Docs", "Gmail", "Composio for the tracker sheet", "Bundled LinkedIn jobs server"],
+      },
+      {
+        layer: "Gets better",
+        note: "Learns from every session",
+        items: ["\"Learn from this\" saves corrections", "Reuses past tailored resumes", "Token meter per skill", "Weekly review proposes a fix"],
+      },
+      {
+        layer: "The front door",
+        note: "schlacter.me/career-kit",
+        items: ["Plain-language setup, 5 steps", "Progress saved in the browser", "Share link with private counts"],
+      },
+    ],
+    artifacts: {
+      screenshots: [
+        "/projects/career-kit/hero.png",
+        "/projects/career-kit/use-cases.png",
+        "/projects/career-kit/interview.png",
+        "/projects/career-kit/connections.png",
+        "/projects/career-kit/setup.png",
+      ],
+      screenshotCaptions: [
+        "The front door at schlacter.me/career-kit: what it is and what it's for, before anyone sees GitHub.",
+        "Every use case shows what you type, what Claude does and what you get. This one runs from the Claude app on a phone.",
+        "Interview prep: mock rounds one question at a time, scored against a rubric it states up front.",
+        "Tick a connection to see what it unlocks. With none, Claude still drafts everything in the chat.",
+        "Five setup steps written for someone who has never used GitHub. Progress saves in the browser.",
+      ],
+      liveUrl: "https://schlacter.me/career-kit",
+    },
+  },
   {
     slug: "muse",
     title: "Muse Shopping",
@@ -419,6 +488,7 @@ export const projects: Project[] = [
   },
   {
     slug: "vantara-agent-studio",
+    unlisted: true,
     title: "Vantara Agent Studio",
     oneLiner: "A working enterprise agent-builder, built in a day for my Vercel PM application — demo mode included, no API setup required.",
     tileInsight: "Building a prototype for a hiring manager is the same job as building one for a user: show them what's possible, make it real enough to believe.",
@@ -465,6 +535,7 @@ export const projects: Project[] = [
   },
   {
     slug: "workspace-ai-gaps",
+    unlisted: true,
     title: "Gemini Workspace AI Opportunity Map",
     oneLiner: "A PM opportunity map for Google Workspace's AI surface — public user feedback across Reddit, HN, Stack Overflow, App Store, and YouTube, analyzed for theme and competitor mentions.",
     tileInsight: "People don't compare Gemini to Gemini. They compare it to ChatGPT, Copilot, and Notion — and say so publicly.",
@@ -493,6 +564,7 @@ export const projects: Project[] = [
   },
   {
     slug: "gmail-search-ai",
+    unlisted: true,
     title: "Gmail Search AI Research",
     oneLiner: "A PM research artifact on Gmail's AI features — three product hypotheses (Accuracy, Action Gap, Voice) tested against public Reddit feedback.",
     tileInsight: "Pick your product hypotheses first, then let the data tell you which one is real.",
@@ -521,6 +593,7 @@ export const projects: Project[] = [
   },
   {
     slug: "acc-omni-customer-pulse",
+    unlisted: true,
     title: "ACC Omni Customer Pulse",
     oneLiner: "A research memo for Walmart's Auto Care Centers PM role — the end-to-end customer journey read from public Reddit voices, with friction mapped to every stage.",
     tileInsight: "Costco doesn't win on price or speed. It wins on a single predictable promise kept every time — reproducibly.",
@@ -549,6 +622,7 @@ export const projects: Project[] = [
   },
   {
     slug: "managed-agents-pulse",
+    unlisted: true,
     title: "Managed Agents Pulse",
     oneLiner: "A concept build of a day-one listening tool for a major AI lab's Managed Agents API — scrape, categorize, rank, render. The listening system is real; the launch and the developer feed it watches are simulated.",
     tileInsight: "A new API's early public signal is a PM's best free research — if you're there from day one.",
@@ -605,6 +679,7 @@ export const projects: Project[] = [
   },
   {
     slug: "linkedin-feed",
+    unlisted: true,
     title: "LinkedIn Newsfeed Agent",
     oneLiner: "A product concept and interactive case study for LinkedIn's Senior PM (Feed) role — a Newsfeed Agent that activates on Save and turns passive engagement into completed professional actions.",
     tileInsight: "Any platform can build a bookmark. Only LinkedIn can build one that acts.",

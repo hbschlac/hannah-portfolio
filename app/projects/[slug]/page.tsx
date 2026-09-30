@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: `${project.title} — Hannah Schlacter`,
     description: project.oneLiner,
+    ...(project.unlisted ? { robots: { index: false, follow: false } } : {}),
   };
 }
 
@@ -63,6 +64,15 @@ export default async function ProjectPage({ params }: Props) {
           {project.title}
         </h1>
         <p className="text-sm text-muted leading-relaxed">{project.oneLiner}</p>
+        {project.productLink && (
+          <Link
+            href={project.productLink.href}
+            className="inline-flex items-center gap-1.5 mt-5 text-sm px-5 py-2.5 rounded-lg transition-opacity hover:opacity-80"
+            style={{ background: "#1A1A1A", color: "#FFF" }}
+          >
+            {project.productLink.label} →
+          </Link>
+        )}
       </div>
 
       {/* Key learning callout */}
