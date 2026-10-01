@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-30T17:06:14.827844+00:00",
+  "generated_at": "2026-10-01T17:03:41.881872+00:00",
   "window_days": 90,
-  "vibe_score": 64,
-  "verdict": "decent",
+  "vibe_score": 67,
+  "verdict": "solid",
   "biggest_lever": "debug_spiral",
   "focus": {
     "metric": "debug_spiral",
@@ -60,9 +60,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 74,
+      "score": 81,
       "weakest_metric": "uptime",
-      "weakest_score": 30
+      "weakest_score": 56
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -105,44 +105,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1465ms",
+      "value": "983ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 244
+            "ttfb_ms": 1008
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2995
+            "ttfb_ms": 538
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1155
+            "ttfb_ms": 1404
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1465,
+        "avg_ttfb_ms": 983,
         "unreachable": []
       },
-      "score": 30,
+      "score": 56,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
-          "url": "https://www.muse.shopping",
-          "status": 200,
-          "ttfb_ms": 2995
-        },
-        {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1155
+          "ttfb_ms": 1404
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 244
+          "ttfb_ms": 1008
+        },
+        {
+          "url": "https://www.muse.shopping",
+          "status": 200,
+          "ttfb_ms": 538
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -174,9 +174,9 @@
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-09-26",
-          "days_stale": 4.1,
+          "days_stale": 5.1,
           "expected_period_days": 1.0,
-          "ratio": 4.1
+          "ratio": 5.1
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -199,7 +199,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-07-18",
-        "total_sessions": 335
+        "total_sessions": 342
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
