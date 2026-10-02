@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-01T17:03:26+00:00",
+  "generated_at": "2026-10-02T17:08:43+00:00",
   "total": {
-    "hours": 927.0,
-    "sessions": 592,
+    "hours": 927.4,
+    "sessions": 598,
     "commits": 145,
-    "days_active": 97,
+    "days_active": 98,
     "first_month": "2026-02",
     "latest_month": "2026-10"
   },
@@ -210,17 +210,17 @@
     },
     {
       "month": "2026-10",
-      "sessions": 4,
-      "hours": 0.8,
-      "avg_per_week_hours": 5.7,
+      "sessions": 10,
+      "hours": 1.2,
+      "avg_per_week_hours": 4.0,
       "max_session_hours": 0.4,
-      "days_active": 1,
-      "avg_length_min": 12,
+      "days_active": 2,
+      "avg_length_min": 7,
       "commits": 0,
       "top_projects": [
         {
           "label": "personal portfolio & tools",
-          "hours": 0.8,
+          "hours": 1.2,
           "share": 100.0
         }
       ],

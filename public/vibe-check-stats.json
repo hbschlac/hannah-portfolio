@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-01T17:03:41.881872+00:00",
+  "generated_at": "2026-10-02T17:24:07.265840+00:00",
   "window_days": 90,
-  "vibe_score": 67,
+  "vibe_score": 68,
   "verdict": "solid",
   "biggest_lever": "debug_spiral",
   "focus": {
@@ -60,9 +60,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 81,
-      "weakest_metric": "uptime",
-      "weakest_score": 56
+      "score": 84,
+      "weakest_metric": "cron_health",
+      "weakest_score": 67
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -105,44 +105,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "983ms",
+      "value": "755ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1008
+            "ttfb_ms": 1367
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 538
+            "ttfb_ms": 478
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1404
+            "ttfb_ms": 419
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 983,
+        "avg_ttfb_ms": 755,
         "unreachable": []
       },
-      "score": 56,
+      "score": 69,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
-          "url": "https://kindle.schlacter.me",
-          "status": 200,
-          "ttfb_ms": 1404
-        },
-        {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1008
+          "ttfb_ms": 1367
         },
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 538
+          "ttfb_ms": 478
+        },
+        {
+          "url": "https://kindle.schlacter.me",
+          "status": 200,
+          "ttfb_ms": 419
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -174,9 +174,9 @@
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-09-26",
-          "days_stale": 5.1,
+          "days_stale": 6.1,
           "expected_period_days": 1.0,
-          "ratio": 5.1
+          "ratio": 6.1
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -199,7 +199,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-07-18",
-        "total_sessions": 342
+        "total_sessions": 348
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
