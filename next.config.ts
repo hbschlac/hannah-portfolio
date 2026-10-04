@@ -108,6 +108,13 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/1yLxaN2Pfo3LHqDdenWTPtziqfddAYchgSodXbTpzsu4/preview",
         permanent: false,
       },
+      // HappyRobot Deployment Strategist-tailored CV. Same 307 reasoning as /resume above.
+      {
+        source: "/resume-happyrobot-deployment-strategist",
+        destination:
+          "https://docs.google.com/document/d/1IObjkvblynybYvMQVhYKobbe4H3s2rPN42Uz5-SQgQY/preview",
+        permanent: false,
+      },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
       // reasoning as the CV links above: the bench is a private Artifact, and if it
       // is ever republished to a new artifact this slug has to stay repointable.
