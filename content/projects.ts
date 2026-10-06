@@ -737,3 +737,33 @@ export const projects: Project[] = [
     },
   },
 ];
+
+// Older sites, rebuilt from Wix as static archives under public/<slug>/ (served by
+// the rewrites in next.config.ts). Listed under the main projects, without case studies.
+export type EarlierProject = {
+  title: string;
+  year: string;
+  oneLiner: string;
+  href: string;
+};
+
+export const earlierProjects: EarlierProject[] = [
+  {
+    title: "Bigger Than Run",
+    year: "2020",
+    oneLiner: "A decentralized San Francisco marathon for my 25th birthday. 112 people joined, and we gave $16,812 to 9 organizations.",
+    href: "/biggerthanrun",
+  },
+  {
+    title: "Reva",
+    year: "2018",
+    oneLiner: "An AI chatbot coach for women in their 20s, user-tested on Facebook Messenger.",
+    href: "/reva",
+  },
+  {
+    title: "Ruach 2016",
+    year: "2016",
+    oneLiner: "My study abroad blog from a semester in Madrid. 19 posts on the Jewish communities I found across Europe and Israel.",
+    href: "/ruach2016",
+  },
+];
