@@ -1,4 +1,4 @@
-import { projects } from "@/content/projects";
+import { projects, earlierProjects } from "@/content/projects";
 import ProjectTile from "@/components/ProjectTile";
 import Manifesto from "@/components/Manifesto";
 import GitHubActivity from "@/components/GitHubActivity";
@@ -61,6 +61,23 @@ export default function ProjectsPage() {
             <ProjectTile key={project.slug} project={project} />
           ))}
         </div>
+
+        <p className="text-xs tracking-widest uppercase text-muted mt-14 mb-1">
+          Earlier projects
+        </p>
+        <p className="text-xs text-muted/70 mb-5">Older sites, archived from Wix.</p>
+        <ul className="flex flex-col gap-4">
+          {earlierProjects.map((p) => (
+            <li key={p.href}>
+              {/* Plain <a>: these are static HTML archives, not Next routes. */}
+              <a href={p.href} className="text-sm text-foreground hover:underline underline-offset-2">
+                {p.title}
+              </a>
+              <span className="text-xs text-muted ml-2">{p.year}</span>
+              <p className="text-xs text-muted mt-0.5">{p.oneLiner}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* GitHub Activity */}
