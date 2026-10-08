@@ -115,14 +115,6 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/1IObjkvblynybYvMQVhYKobbe4H3s2rPN42Uz5-SQgQY/preview",
         permanent: false,
       },
-      // The Bot Company CV (open "Something Else" req, via a Maven Ventures intro).
-      // Same 307 reasoning as /resume above.
-      {
-        source: "/resume-botco",
-        destination:
-          "https://docs.google.com/document/d/1EdNjR56qGliE8IPRZpNg_BpCT7eBoWA6yRj2udbjOA4/preview",
-        permanent: false,
-      },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
       // reasoning as the CV links above: the bench is a private Artifact, and if it
       // is ever republished to a new artifact this slug has to stay repointable.
