@@ -5,6 +5,13 @@ import type { NextConfig } from "next";
 // directly, and before dynamic routes, so the /[slug] resume route never sees these.
 const WIX_ARCHIVES = ["biggerthanrun", "reva", "ruach2016"];
 
+// /dutch-solutions is a separate, password-gated Next.js app (private repo
+// hbschlac/dutchinterviewprep, built with basePath "/dutch-solutions"). Its own
+// proxy does the auth and sets a cookie scoped to /dutch-solutions, so these
+// rewrites only forward the path. The app redirects with relative Location
+// headers, so visitors stay on schlacter.me.
+const DUTCH_SOLUTIONS_ORIGIN = "https://dutch-solutions.vercel.app";
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   async rewrites() {
@@ -13,6 +20,8 @@ const nextConfig: NextConfig = {
         { source: `/${site}`, destination: `/${site}/index.html` },
         { source: `/${site}/:path+`, destination: `/${site}/:path+/index.html` },
       ]),
+      { source: "/dutch-solutions", destination: `${DUTCH_SOLUTIONS_ORIGIN}/dutch-solutions` },
+      { source: "/dutch-solutions/:path*", destination: `${DUTCH_SOLUTIONS_ORIGIN}/dutch-solutions/:path*` },
       {
         source: "/aiprojects",
         destination: "/projects",
