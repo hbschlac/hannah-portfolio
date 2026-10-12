@@ -99,6 +99,60 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "rx-compare",
+    title: "Rx Compare",
+    oneLiner: "Every cash price a patient can use for a prescription, cheapest first, next to what the pharmacy paid for it. An MCP server and a 55-drug price grid.",
+    tileInsight: "Pharmacies pay about $1.22 for a common generic. The cheapest price a patient can find is about $11.",
+    tags: ["AI", "Research", "Consumer"],
+    thumbnailColor: "#DCE5D3",
+    problem: "In 2026 GoodRx put some of its lowest prices behind a $14.99 a month subscription. That made me ask who actually sets what we pay at the pharmacy counter.\n\nA discount card isn't a search of every price. GoodRx shows prices from the pharmacy benefit managers (PBMs) it works with. It earns a share of the fee those PBMs charge the pharmacy on every fill. A cheaper price on a network GoodRx doesn't work with never shows up.",
+    hypothesis: "If one tool ranked every cash price a patient can use only by what the patient pays, the cheapest option would be obvious. Put each price next to what the pharmacy paid, and the markup would be obvious too.",
+    built: "An MCP server with five tools, so Claude can answer \"what's the cheapest way to fill this near me?\" One tool, compare_prices, returns every price it can read near a ZIP code, cheapest first. check_quote takes the price GoodRx showed you and says whether anything beats it. fair_price shows what pharmacies paid, from NADAC, the federal government's weekly survey.\n\nA price grid of 55 drugs across three ZIP codes: urban Oakland, suburban Ohio and rural Mississippi. It covers GoodRx's and SingleCare's top 20 lists, 15 expensive generics and 13 brands' cash prices.\n\nIt reads only sources whose terms allow it: Cost Plus Drugs' pricing API, NADAC, and drugmakers' cash prices on TrumpRx.gov. Cost Plus covers mail order and its discount card at pharmacies near a ZIP. A routine re-prices everything every Monday and keeps the history. It stores nothing about who searched.",
+    broke: "The comparison patients need is gated by permission. Of 15 cash-price programs I checked, only Cost Plus offers an open way to read its prices. The rest block automated reads or forbid them in their terms. GoodRx's API terms bar showing its prices next to anyone else's. So I asked seven of them for access.\n\nTrumpRx looked like a clean public source until I read the fine print. About half of its brand deals are coupons that run on GoodRx's claims network, and its generic-drug pages show GoodRx's own prices. The tool reads only its brand pages and labels every coupon that runs on GoodRx.\n\nSmaller bugs taught the same lesson. Cost Plus left the shipping charge off some listings, so tamsulosin came out cheaper than it really was. The fix derives shipping from Cost Plus's own totals, with a test to keep it fixed.",
+    learned: "For a common generic, the drug is the cheap part. Pharmacies pay about $1.22 for a typical fill of the 27 most-filled generics. The cheapest price I could find was about $11, and fees and shipping were 93% of the typical mail-order price.\n\nExpensive generics flip that. For 11 of 15, the cheapest price was below what pharmacies pay on average. The leukemia drug dasatinib is $263 a month at Cost Plus. Pharmacies pay about $794.\n\nDrugmakers now sell many brands for cash. The 13 brands I priced have cash prices at a median 36% of list: Wegovy for $349 a month, insulin for $35.",
+    nextSteps: "Each yes to a permission request becomes a new source. Costco's matters most: its prices change by ZIP and cover about 19,000 pharmacies. I'd host the server so it works from the Claude app on a phone, and turn the weekly history into a chart of what moved. Insurance comes after that: a federal rule published in October 2026 requires health plans to publish their negotiated drug prices.",
+    keyLearning: "The hard part of a price comparison isn't the code. It's getting permission to compare.",
+    services: [
+      {
+        layer: "Sources",
+        note: "Read only where the terms allow it",
+        items: ["Cost Plus Drugs: mail order + card by ZIP", "NADAC: what pharmacies pay", "TrumpRx.gov brand deals, read weekly"],
+      },
+      {
+        layer: "MCP tools",
+        note: "Claude answers \"cheapest near me?\"",
+        items: ["compare_prices: every price, cheapest first", "check_quote: does anything beat my GoodRx price?", "fair_price: what the pharmacy paid", "list_sources: what it reads and why"],
+      },
+      {
+        layer: "Price grid",
+        note: "55 drugs × 3 ZIP codes",
+        items: ["GoodRx and SingleCare top 20s", "15 expensive generics", "13 brands' cash prices"],
+      },
+      {
+        layer: "Rules in the code",
+        note: "The patient comes first",
+        items: ["Ranked only by what you pay", "The benchmark is never shown as a price", "Stores nothing about who searched"],
+      },
+      {
+        layer: "Every Monday",
+        note: "A price history",
+        items: ["Re-prices all 55 drugs", "Adds the week to the history", "Flags any price that moves 10%+"],
+      },
+    ],
+    artifacts: {
+      screenshots: [
+        "/projects/rx-compare/hero.png",
+        "/projects/rx-compare/brand.png",
+        "/projects/rx-compare/expensive.png",
+      ],
+      screenshotCaptions: [
+        "GoodRx's top 20 in Oakland: pharmacies pay about $1.08 for a typical fill, and the cheapest price is $10.93.",
+        "Brand cash prices from TrumpRx.gov next to list price. Coupon rows say they run on GoodRx's network.",
+        "Expensive generics: for 11 of 15, the cheapest price is below what pharmacies pay on average.",
+      ],
+    },
+  },
+  {
     slug: "muse",
     title: "Muse Shopping",
     oneLiner: "A personalized shopping feed across 200+ brands — follow them like Instagram, built solo without a CS degree.",
