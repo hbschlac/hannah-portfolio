@@ -10,7 +10,7 @@ const WIX_ARCHIVES = ["biggerthanrun", "reva", "ruach2016"];
 // proxy does the auth and sets a cookie scoped to /dutch-solutions, so these
 // rewrites only forward the path. The app redirects with relative Location
 // headers, so visitors stay on schlacter.me.
-const DUTCH_SOLUTIONS_ORIGIN = "https://dutch-solutions.vercel.app";
+const DUTCH_SOLUTIONS_ORIGIN = "https://dutchinterviewprep.vercel.app";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
