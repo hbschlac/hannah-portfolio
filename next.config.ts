@@ -124,6 +124,13 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/1IObjkvblynybYvMQVhYKobbe4H3s2rPN42Uz5-SQgQY/preview",
         permanent: false,
       },
+      // Instinct-tailored CV (founder outreach, no posting). Same 307 reasoning as /resume above.
+      {
+        source: "/resume-instinct",
+        destination:
+          "https://docs.google.com/document/d/1nWcrsqY_wne2gQoUcLufm3D7K9Qd308-xlPKghdmIIM/preview",
+        permanent: false,
+      },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
       // reasoning as the CV links above: the bench is a private Artifact, and if it
       // is ever republished to a new artifact this slug has to stay repointable.
