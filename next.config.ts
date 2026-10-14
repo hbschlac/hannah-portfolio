@@ -138,11 +138,13 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/1kDVfCdm87rR97hq5frkfLkOec1ALdmk-WbxbI6VA9NM/preview",
         permanent: false,
       },
-      // Serve AI-tailored CV (founding member, no posting). Same 307 reasoning as /resume above.
+      // Serve AI-tailored CV (founding member, no posting). Points at a PDF export in Drive,
+      // not the Doc: on an iPhone, Google sends a Doc's /preview to /mobilebasic, which drops
+      // the CV's formatting. Re-export the PDF after any edit to the Doc. 307 as for /resume.
       {
         source: "/resume-serveai",
         destination:
-          "https://docs.google.com/document/d/1vTXqpaa6ZvYYD8i9W3W8b2aFOuTXdZq4iPrdK28_nr0/preview",
+          "https://drive.google.com/file/d/15X8VLLkdqQjKkrlW_-6XtbXhfDNknkAs/view",
         permanent: false,
       },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
