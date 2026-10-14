@@ -138,6 +138,13 @@ const nextConfig: NextConfig = {
           "https://docs.google.com/document/d/1kDVfCdm87rR97hq5frkfLkOec1ALdmk-WbxbI6VA9NM/preview",
         permanent: false,
       },
+      // Serve AI-tailored CV (founding member, no posting). Same 307 reasoning as /resume above.
+      {
+        source: "/resume-serveai",
+        destination:
+          "https://docs.google.com/document/d/1vTXqpaa6ZvYYD8i9W3W8b2aFOuTXdZq4iPrdK28_nr0/preview",
+        permanent: false,
+      },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
       // reasoning as the CV links above: the bench is a private Artifact, and if it
       // is ever republished to a new artifact this slug has to stay repointable.
