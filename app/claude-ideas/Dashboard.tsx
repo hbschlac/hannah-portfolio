@@ -151,7 +151,7 @@ function StatCard({ label, value, sub, onClick }: {
   );
 }
 
-// ─── module 1: this week's fresh findings ────────────────────────────────────
+// ─── module 1: the latest run's findings ────────────────────────────────────
 function FreshFindings({
   latestRun,
   openDrawer,
@@ -176,7 +176,7 @@ function FreshFindings({
   if (!latestRun) {
     return (
       <section className="bg-white/5 border border-white/8 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-white mb-2">This Week&apos;s Findings</h2>
+        <h2 className="text-lg font-semibold text-white mb-2">Latest Findings</h2>
         <p className="text-stone-500 text-sm">No data yet — first agent run pending.</p>
       </section>
     );
@@ -187,7 +187,7 @@ function FreshFindings({
       <div className="flex items-start justify-between mb-5 flex-wrap gap-3">
         <div>
           <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Module 1</p>
-          <h2 className="text-xl font-bold text-white">This Week&apos;s Fresh Findings</h2>
+          <h2 className="text-xl font-bold text-white">Latest Run&apos;s Findings</h2>
           <p className="text-sm text-stone-400 mt-1">
             {latestRun.day} · {latestRun.run_date} · {latestRun.total_new_posts} new posts
           </p>
@@ -215,7 +215,7 @@ function FreshFindings({
                 const q = cat === "all"
                   ? buildPostsUrl({ run_date: latestRun.run_date })
                   : buildPostsUrl({ run_date: latestRun.run_date, category: cat });
-                const label = cat === "all" ? "All posts this week" : `${CAT_LABEL[cat]} posts this week`;
+                const label = cat === "all" ? "All posts · latest run" : `${CAT_LABEL[cat]} posts · latest run`;
                 openDrawer(label, q);
               }}
               className="text-xs px-3 py-1 rounded-full border transition-all"
@@ -311,7 +311,7 @@ function CumulativeTrends({
     <section className="bg-white/5 border border-white/8 rounded-2xl p-6 space-y-8">
       <div>
         <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Module 2</p>
-        <h2 className="text-xl font-bold text-white">Cumulative Trends & Week-over-Week</h2>
+        <h2 className="text-xl font-bold text-white">Cumulative Trends & Run-over-Run</h2>
       </div>
 
       {/* WoW deltas */}
@@ -370,13 +370,13 @@ function CumulativeTrends({
       {/* pie + tag bars */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <p className="text-xs text-stone-400 mb-3">This week&apos;s split — click a slice</p>
+          <p className="text-xs text-stone-400 mb-3">Latest run&apos;s split — click a slice</p>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
                 data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={90} paddingAngle={3} dataKey="value"
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onClick={(e: any) => openDrawer(`${e.name} · this week`, buildPostsUrl({ run_date: latestRun!.run_date, category: e.cat }))}
+                onClick={(e: any) => openDrawer(`${e.name} · latest run`, buildPostsUrl({ run_date: latestRun!.run_date, category: e.cat }))}
                 style={{ cursor: "pointer" }}
               >
                 {pieData.map((entry) => <Cell key={entry.name} fill={entry.color} />)}
@@ -387,7 +387,7 @@ function CumulativeTrends({
           </ResponsiveContainer>
         </div>
         <div>
-          <p className="text-xs text-stone-400 mb-3">Top tags: this week vs last — click a bar</p>
+          <p className="text-xs text-stone-400 mb-3">Top tags: latest run vs the one before — click a bar</p>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={tagData} layout="vertical">
               <XAxis type="number" tick={{ fill: "#78716c", fontSize: 10 }} />
@@ -395,9 +395,9 @@ function CumulativeTrends({
               <Tooltip contentStyle={{ background: "#18181f", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8 }} itemStyle={{ color: "#a8a29e" }} />
               <Legend wrapperStyle={{ fontSize: 11, color: "#a8a29e" }} />
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <Bar dataKey="thisWeek" name="This week" fill="#8b5cf6" radius={[0, 3, 3, 0]} onClick={(d: any) => openDrawer(`Posts tagged "${d.tag}" · this week`, buildPostsUrl({ run_date: latestRun!.run_date, tag: d.tag }))} style={{ cursor: "pointer" }} />
+              <Bar dataKey="thisWeek" name="Latest run" fill="#8b5cf6" radius={[0, 3, 3, 0]} onClick={(d: any) => openDrawer(`Posts tagged "${d.tag}" · latest run`, buildPostsUrl({ run_date: latestRun!.run_date, tag: d.tag }))} style={{ cursor: "pointer" }} />
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <Bar dataKey="lastWeek" name="Last week" fill="#4c1d95" radius={[0, 3, 3, 0]} onClick={(d: any) => { const prev = runs[runs.length - 2]; if (prev) openDrawer(`Posts tagged "${d.tag}" · last week`, buildPostsUrl({ run_date: prev.run_date, tag: d.tag })); }} style={{ cursor: "pointer" }} />
+              <Bar dataKey="lastWeek" name="Previous run" fill="#4c1d95" radius={[0, 3, 3, 0]} onClick={(d: any) => { const prev = runs[runs.length - 2]; if (prev) openDrawer(`Posts tagged "${d.tag}" · previous run`, buildPostsUrl({ run_date: prev.run_date, tag: d.tag })); }} style={{ cursor: "pointer" }} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -482,7 +482,7 @@ function PmToday({
         <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">Module 3</p>
         <h2 className="text-xl font-bold text-white">PM Today for Anthropic</h2>
         <p className="text-sm text-stone-400 mt-1">
-          AI-generated prioritization from this week&apos;s Reddit data. Click any metric or ROI to see the raw posts behind the claim.
+          AI-generated prioritization from the latest run&apos;s Reddit data. Click any metric or ROI to see the raw posts behind the claim.
         </p>
         {/* sample bias caveat */}
         <p className="text-xs text-stone-600 mt-2 border border-white/5 rounded-lg px-3 py-2 bg-white/3">
@@ -523,8 +523,12 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
           <div>
             <p className="text-xs tracking-widest uppercase text-stone-500 mb-1">schlacter.me</p>
             <h1 className="text-3xl font-bold text-white">Claude Wish List</h1>
-            <p className="text-stone-400 mt-1 text-sm">Reddit intelligence · collected Mon, Wed, Fri, Sun · r/ClaudeAI</p>
-            {latestRun && <p className="text-xs text-stone-600 mt-1">Last updated {latestRun.run_date}</p>}
+            <p className="text-stone-400 mt-1 text-sm">Reddit intelligence · r/ClaudeAI</p>
+            {latestRun && (
+              <p className="text-xs text-stone-600 mt-1">
+                Last run {latestRun.run_date} · {runs.length} {runs.length === 1 ? "run" : "runs"} so far
+              </p>
+            )}
           </div>
           <a
             href="https://raw.githubusercontent.com/hbschlac/build-log/main/reddit-pulse/all-posts.json"
@@ -547,14 +551,14 @@ export default function Dashboard({ runs }: { runs: RunSummary[] }) {
           <StatCard
             label="Pain points"
             value={latestRun?.categories.pain_point ?? 0}
-            sub="this week"
-            onClick={() => latestRun && openDrawer("Pain points · this week", buildPostsUrl({ run_date: latestRun.run_date, category: "pain_point" }))}
+            sub="latest run"
+            onClick={() => latestRun && openDrawer("Pain points · latest run", buildPostsUrl({ run_date: latestRun.run_date, category: "pain_point" }))}
           />
           <StatCard
             label="Feature requests"
             value={latestRun?.categories.feature_request ?? 0}
-            sub="this week"
-            onClick={() => latestRun && openDrawer("Feature requests · this week", buildPostsUrl({ run_date: latestRun.run_date, category: "feature_request" }))}
+            sub="latest run"
+            onClick={() => latestRun && openDrawer("Feature requests · latest run", buildPostsUrl({ run_date: latestRun.run_date, category: "feature_request" }))}
           />
           <StatCard
             label="Top tag"
