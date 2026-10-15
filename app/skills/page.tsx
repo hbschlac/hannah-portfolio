@@ -142,7 +142,7 @@ const GROUPS: Group[] = [
         name: "interior-designer",
         oneLiner: "A design advisor that already knows my house.",
         how: "Holds the full context for our Oakland home — style, color palette, room priorities, team contacts, and specs — so I can ask a design question without re-explaining the whole project.",
-        trigger: "662 Calmar",
+        trigger: "update the mood board",
         tags: ["Personal"],
       },
       {
