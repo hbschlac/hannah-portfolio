@@ -169,13 +169,11 @@ export const projects: Project[] = [
     keyLearning: "The scraping workaround that unlocked the product catalog is also the code I can't audit — getting something built and trusting what was built are not the same problem.",
     artifacts: {
       screenshots: [
-        "/projects/muse/welcome.png",
-        "/projects/muse/home-feed.png",
+        "/projects/muse/inspire.jpg",
         "/projects/muse/chat.png",
       ],
       screenshotCaptions: [
-        "Welcome: sign in or browse as guest",
-        "Home feed: follow brands like you follow people",
+        "Inspire: a visual grid of looks to browse",
         "Talk with Muse: AI stylist that learns your taste",
       ],
       liveUrl: "https://muse.shopping",
@@ -297,13 +295,13 @@ export const projects: Project[] = [
     artifacts: {
       screenshots: [
         "/projects/llm-explainer/playground.gif",
+        "/projects/llm-explainer/playground.png",
         "/projects/llm-explainer/mobile-hero.png",
-        "/projects/llm-explainer/desktop-full.png",
       ],
       screenshotCaptions: [
-        "The Text-as-Numbers playground: sentence → tokens → IDs → embeddings in meaning space",
+        "The Text-as-Numbers walkthrough: sentence → tokens → IDs → embeddings in meaning space",
+        "Try it yourself: type a sentence and watch it land on the map. Here, king − man + woman lands next to queen.",
         "Mobile hero — saves to your phone home screen as a standalone app",
-        "Full walkthrough: six concepts from Stanford CME 295, each with an interactive playground",
       ],
       liveUrl: "https://schlacter.me/llm-explainer",
     },
@@ -315,12 +313,12 @@ export const projects: Project[] = [
     tileInsight: "Framing is the product. Nobody asks for a 'persistent system prompt manager.' They might ask for a skill.",
     tags: ["AI", "Product Design", "Vibecoding"],
     thumbnailColor: "#F5C5B0",
-    problem: "Every Claude conversation starts from scratch. You re-explain your tone, your context, your preferences — session after session. The model is capable; the interface forgets.",
+    problem: "When I built this, every Claude conversation started from scratch. You re-explained your tone, your context, your preferences — session after session. The model was capable; the interface forgot.",
     hypothesis: "If you frame AI customization as 'skills' rather than 'system prompts,' you remove the technical barrier. Most people don't know what a system prompt is. Everyone knows what a skill is.",
     built: "A concept site that shows the product working before asking anyone to sign up. The core bet: lead with a live chat preview demonstrating a skill in action, not a feature list. Two pathways — browse pre-built skills or create your own — sized for two different mental models.",
-    broke: "The site shows what persistent skills could feel like — but the actual Claude interface doesn't support this natively. I was designing for a gap in the product, not an existing surface. The thing I shipped is a pitch, not a product.",
+    broke: "The site shows what persistent skills could feel like — but at the time, the actual Claude interface didn't support this natively. I was designing for a gap in the product, not an existing surface. The thing I shipped is a pitch, not a product.",
     learned: "Building a concept product is different from building a functional one. The constraint isn't 'can I build this' — it's 'can I make someone believe this should exist.' That's mostly a copywriting and sequencing problem.",
-    nextSteps: "If Anthropic ships persistent memory or a skills layer, this design is a ready-made reference. The real test would be a working prototype — a Chrome extension that actually persists instructions across sessions would turn a concept into a proof of concept.",
+    nextSteps: "Anthropic has since shipped both: Claude has memory, and Skills are a real feature with the same name. I've built 31 of my own. This concept is now a record of the call I made early: 'skill' was the right word for it.",
     keyLearning: "Naming matters more than features. 'Claude Skills' communicates the idea in two words. 'Persistent system prompt manager' communicates nothing to anyone who doesn't already know what they want.",
     services: [
       {
@@ -368,7 +366,7 @@ export const projects: Project[] = [
         "/projects/kindle-libby/libby-loans.png",
       ],
       screenshotCaptions: [
-        "The monitoring dashboard — active holds, currently reading, check-for-updates trigger, and a text-based add-books form",
+        "The dashboard when a login has expired: holds and reading go blank, and a banner asks for a re-login that takes under a minute. Making failures like this visible was most of the work.",
         "The source: Libby showing 14 real library loans the automation watches for Kindle-compatible availability",
       ],
       liveUrl: undefined,
@@ -499,7 +497,7 @@ export const projects: Project[] = [
     thumbnailColor: "#F5C5B0",
     problem: "I picked up Claude Code in February and shipped four products in a few months — some days from 11am to 2am, completely unable to stop. I started keeping notes on every gap I hit. But a single consumer's wishlist is one data point. I wanted signal at the scale of the community, not just me.",
     hypothesis: "If I built a listening tool that watched r/ClaudeAI on a cadence, categorized posts into pain points / feature requests / positive / competitor, and ranked what mattered via a PM-style weekly analysis — I'd end up with a better artifact than any static doc I could write. And it would keep updating without me.",
-    built: "A scheduled agent (Mon / Wed / Fri / Sun 9am) that scrapes pullpush.io for r/ClaudeAI posts, deduplicates, categorizes with tags (rate_limits, code_quality, context_window, mcp, pricing, ux…), computes week-over-week deltas, and writes raw data + a run summary to a public GitHub repo. The dashboard at /claude-ideas renders three modules: Fresh Findings (latest run, filterable by category), Trends (WoW delta charts), and PM Today (ranked priorities with supporting post IDs). Every stat is clickable — a drilldown drawer fetches the raw posts backing any claim.\n\nThe pipeline is complete and the dashboard is real. The corpus behind it is not. One run finished, on 14 April 2026, collecting 11 posts. Scheduled runs never resumed, so the delta charts have nothing to compare against and the rankings sit on a sample far too small to carry them. The page says so plainly: 11 posts, all time.",
+    built: "A scheduled agent (Mon / Wed / Fri / Sun 9am) that scrapes pullpush.io for r/ClaudeAI posts, deduplicates, categorizes with tags (rate_limits, code_quality, context_window, mcp, pricing, ux…), computes week-over-week deltas, and writes raw data + a run summary to a public GitHub repo. The dashboard at /claude-ideas renders three modules: Fresh Findings (latest run, filterable by category), Trends (WoW delta charts), and PM Today (ranked priorities with supporting post IDs). Every stat is clickable — a drilldown drawer fetches the raw posts backing any claim.\n\nThe pipeline is complete and the dashboard is real. The corpus behind it is not. One run finished, on 14 April 2026, collecting 11 posts. Scheduled runs never resumed, so the delta charts have nothing to compare against and the rankings sit on a sample far too small to carry them. The page says so plainly: one run, 11 posts.",
     broke: "The first four weeks of scheduled runs silently 409'd on GitHub's content API because the two file PUTs (posts.json, runs.json) were fired in parallel — the second write's parent commit went stale mid-flight. The dashboard read as 'first run pending' for a month. Fixed by awaiting the first PUT before starting the second. The agent completed exactly one run after that and then stopped for good — no scheduled task was ever registered for it, so nothing fired and nothing alerted. The dashboard served that single run for five months while I assumed it was working.",
     learned: "An automated listening tool is harder to keep running than it is to build, and silent failure is the enemy of any system meant to be invisible. I shipped every part of the pipeline — scrape, dedup, categorize, rank, render, drill down — and none of the one thing that actually mattered, which was something to tell me when it stopped. It stopped after a single run. I found out five months later, from a dashboard still showing April.",
     nextSteps: "Register the agent as a real scheduled task with a failure alert, so a second run happens at all — pullpush rate-limits Vercel's IPs, so the scrape probably has to run locally and push its results up. Then add a fourth module: 'Shipped vs. Requested' — compare Reddit feature requests against Anthropic's public changelog so you can see what's been addressed vs. still open. Also: widen the source beyond r/ClaudeAI — HN, Twitter, Discord — to de-bias toward one forum's demographics.",
@@ -528,14 +526,16 @@ export const projects: Project[] = [
     ],
     artifacts: {
       screenshots: [
-        "/projects/claude-wishlist/dashboard-full.png",
+        "/projects/claude-wishlist/hero.png",
         "/projects/claude-wishlist/drilldown.gif",
-        "/projects/claude-wishlist/dashboard.png",
+        "/projects/claude-wishlist/trends.png",
+        "/projects/claude-wishlist/pm-today.png",
       ],
       screenshotCaptions: [
-        "The full dashboard: headline stats, Fresh Findings (filterable by category), Trends, and PM Today — agent-autonomy guardrails ranked top priority",
+        "The dashboard: headline stats and the latest run's findings, filterable by category. One run, on 14 April 2026, is all it collected.",
         "Every stat is clickable — a drilldown drawer opens with the raw Reddit posts backing the number",
-        "Earlier view — first successful run: 11 posts, 6 pain points, 3 feature requests, top tag: ux",
+        "Trends: the category split and top tags. With a single run, the run-over-run deltas have nothing to compare against.",
+        "PM Today: ranked priorities, with agent-autonomy guardrails on top, each backed by the posts behind it",
       ],
       liveUrl: "https://schlacter.me/claude-ideas",
     },
@@ -609,9 +609,9 @@ export const projects: Project[] = [
         "/projects/workspace-ai-gaps/bottom.png",
       ],
       screenshotCaptions: [
-        "Dashboard hero: theme distribution across 5 public sources.",
-        "Competitor callouts: ChatGPT, Copilot, Notion AI — with the specific reasons users prefer each.",
-        "Raw feedback viewer: every stat drills into the source posts.",
+        "Dashboard hero: 1,096 public signals across 6 sources, mapped by urgency and frequency.",
+        "Opportunity themes ranked by mentions, from weak spreadsheet intelligence to hallucination and trust.",
+        "The prioritization: platform-level bets, app-level fixes, and why trust and grounding come first.",
       ],
       liveUrl: "https://schlacter.me/workspace-ai-gaps",
     },
@@ -639,8 +639,8 @@ export const projects: Project[] = [
       ],
       screenshotCaptions: [
         "Dashboard hero: three working hypotheses — Accuracy, Action Gap, Voice.",
-        "Each hypothesis has a tagline, frequency count, and the real Reddit quotes backing it.",
-        "Competitor signal per hypothesis — what Superhuman, Copilot, Notion AI do differently.",
+        "What it could look like: Gmail today next to a mockup that adds accuracy, then action, then voice.",
+        "Where I'd take it: accuracy first, then the search-to-action loop, then voice matching.",
       ],
       liveUrl: "https://schlacter.me/gmail-search-ai",
     },
@@ -668,8 +668,8 @@ export const projects: Project[] = [
       ],
       screenshotCaptions: [
         "Research memo hero: where the end-to-end ACC experience leaks, from public customer voice.",
-        "Launches vs. signal — Walmart has been shipping the right blueprint; it's the scale that's lagging.",
-        "Journey view: friction ranked by stage, every quote links to Reddit source.",
+        "Journey view: friction ranked by stage, with the first experiment the signal suggests.",
+        "What I'd test: each experiment with a hypothesis, a primary metric and a guardrail.",
       ],
       liveUrl: "https://schlacter.me/acc-omni-customer-pulse",
     },
@@ -696,9 +696,9 @@ export const projects: Project[] = [
         "/projects/managed-agents-pulse/bottom.png",
       ],
       screenshotCaptions: [
-        "Dark-mode dashboard: live developer pulse on a major AI lab's Managed Agents API.",
-        "Category breakdowns — Momentum, Friction, Use Case, Feature Request.",
-        "Every post links to its source forum.",
+        "The dashboard, with the concept-build note up top: the launch and the developer feed are simulated.",
+        "Most-quoted posts in each bucket: Momentum, Friction, Use Case, Feature Request.",
+        "The latest run's posts, filterable by category. Every post links to its source.",
       ],
       liveUrl: "https://schlacter.me/managed-agents-pulse",
     },
@@ -715,7 +715,7 @@ export const projects: Project[] = [
     built: "A public stats page at schlacter.me/claude-code showing headline KPIs (hours, sessions, commits, days active), month-by-month breakdown, and top projects by time. Data comes from a local aggregator.py that parses ~/.claude/projects/ JSONL transcripts + git log. A render_social_image.py script generates a 1200x1200 PNG for LinkedIn. The whole workflow runs from one natural-language prompt to Claude Code — the prompt is copy-pasteable on the page.",
     broke: "Session duration is estimated from timestamps — idle time between tool calls inflates hours. I was explicit about the methodology. The public GitHub commit count misses private repos, which is most of my work; I linked the GitHub profile so readers can see for themselves.",
     learned: "Making your own usage data public changes how you use the product. Once the number is on a page, you notice when it drops. The page isn't just a portfolio artifact — it's a feedback loop on my own habits.",
-    nextSteps: "Automate the weekly refresh via scheduled task instead of manual prompt. Add a private/public commit split so the count is less misleading. Chart the hours-per-week trend as a sparkline at the top — the shape tells the story better than a table.",
+    nextSteps: "Add a private/public commit split so the count is less misleading. Chart the hours-per-week trend as a sparkline at the top — the shape tells the story better than a table.",
     keyLearning: "A PM claim about yourself is just another product claim. The honest version is the one with the data behind it — and the willingness to update the number when it's embarrassing.",
     artifacts: {
       screenshots: [
@@ -753,7 +753,7 @@ export const projects: Project[] = [
         "/projects/linkedin-feed/demo.png",
       ],
       screenshotCaptions: [
-        "The thesis: LinkedIn's feed drives massive engagement — AI can make every interaction count. Earnings data from Q2/Q3 FY25.",
+        "The thesis: LinkedIn's feed drives massive engagement — AI can make every interaction count. Momentum numbers from LinkedIn's quarterly earnings.",
         "The save signal: real Reddit quotes showing members treating Save as an intent signal LinkedIn hasn't yet acted on.",
         "The prototype: pick a scenario — Job opportunity, Someone to reach out to, Article to act on — and the Newsfeed Agent drafts the completed action.",
       ],
@@ -782,7 +782,7 @@ export const projects: Project[] = [
         "/projects/ldor/site-bundle.png",
       ],
       screenshotCaptions: [
-        "Landing: cultural heritage, reimagined for you — pricing anchored at $22 and $88",
+        "Landing: Judaica, reimagined for you, opening on the candleholder set from $48",
         "The collection: six pieces for the Shabbat table — Every Holiday. Every Shabbat.",
         "Shabbat Candleholder Set PDP — $48 anchor product, warm editorial photography",
         "Starter Bundle: $88 gift-mode entry with three of the most-requested pieces",
