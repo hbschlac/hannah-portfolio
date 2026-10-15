@@ -252,7 +252,7 @@ function JourneyStage({ onNext, onBack }: { onNext: () => void; onBack: () => vo
           <Whisper text="Tokens are the atomic units the model works with. Modern tokenizers use ~50,000 tokens — a middle ground between individual characters (~100) and whole words (~500,000+).">
             <span className="border-b border-dotted border-gray-400 cursor-help">tokens</span>
           </Whisper>
-          . Notice &ldquo;reading&rdquo; becomes &ldquo;read&rdquo; + &ldquo;ing&rdquo; \u2014 like LEGO bricks the model can reuse across many words.
+          . Notice &ldquo;reading&rdquo; becomes &ldquo;read&rdquo; + &ldquo;ing&rdquo; &mdash; like LEGO bricks the model can reuse across many words.
         </>
       ),
     },
@@ -264,7 +264,7 @@ function JourneyStage({ onNext, onBack }: { onNext: () => void; onBack: () => vo
           <Whisper text="The vocabulary is a fixed list of ~50,000 tokens built before training. Every token gets a permanent ID. Think of it as a phone book for word-pieces.">
             <span className="border-b border-dotted border-gray-400 cursor-help">vocabulary</span>
           </Whisper>
-          . These IDs are like page numbers in a dictionary \u2014 they carry no meaning yet.
+          . These IDs are like page numbers in a dictionary &mdash; they carry no meaning yet.
         </>
       ),
     },
@@ -565,10 +565,11 @@ function PlaygroundStage({ onBack }: { onBack: () => void }) {
                   const ptA = embeddingPoints.find((p) => p.token.toLowerCase() === a);
                   const ptB = embeddingPoints.find((p) => p.token.toLowerCase() === b);
                   if (!ptA || !ptB) return null;
+                  // Points are placed in % of the plot; this viewBox is 75 units tall, so scale y to match.
                   const x1 = ptA.pos[0] * 80 + 10;
-                  const y1 = (1 - ptA.pos[1]) * 60 + 7.5;
+                  const y1 = ((1 - ptA.pos[1]) * 60 + 7.5) * 0.75;
                   const x2 = ptB.pos[0] * 80 + 10;
-                  const y2 = (1 - ptB.pos[1]) * 60 + 7.5;
+                  const y2 = ((1 - ptB.pos[1]) * 60 + 7.5) * 0.75;
                   return (
                     <line
                       key={i}
@@ -587,41 +588,45 @@ function PlaygroundStage({ onBack }: { onBack: () => void }) {
                 const px = pt.pos[0] * 80 + 10;
                 const py = (1 - pt.pos[1]) * 60 + 7.5;
                 const isHovered = hoveredToken === pt.idx;
+                // Position outside the Whisper: its wrapper is `relative`, so a point
+                // positioned inside it would resolve left/top against the wrapper, not the plot.
                 return (
-                  <Whisper
+                  <div
                     key={`${pt.token}-${i}`}
-                    text={`"${pt.token}" landed here based on the contexts it appeared in across billions of sentences.`}
-                    position={py < 40 ? "bottom" : "top"}
+                    className="absolute transition-all duration-200"
+                    style={{
+                      left: `${px}%`,
+                      top: `${py}%`,
+                      transform: `translate(-50%, -50%) scale(${isHovered ? 1.5 : 1})`,
+                      zIndex: isHovered ? 10 : 1,
+                    }}
+                    onMouseEnter={() => setHoveredToken(pt.idx)}
+                    onMouseLeave={() => setHoveredToken(null)}
                   >
-                    <div
-                      className="absolute flex flex-col items-center transition-all duration-200 cursor-help"
-                      style={{
-                        left: `${px}%`,
-                        top: `${py}%`,
-                        transform: `translate(-50%, -50%) scale(${isHovered ? 1.5 : 1})`,
-                        zIndex: isHovered ? 10 : 1,
-                      }}
-                      onMouseEnter={() => setHoveredToken(pt.idx)}
-                      onMouseLeave={() => setHoveredToken(null)}
+                    <Whisper
+                      text={`"${pt.token}" landed here based on the contexts it appeared in across billions of sentences.`}
+                      position={py < 40 ? "bottom" : "top"}
                     >
-                      <div
-                        className="w-3 h-3 rounded-full shadow-sm transition-all"
-                        style={{
-                          background: TOKEN_COLORS[pt.idx % TOKEN_COLORS.length],
-                          opacity: isHovered ? 1 : 0.8,
-                        }}
-                      />
-                      <span
-                        className="text-[10px] font-mono font-medium mt-0.5"
-                        style={{
-                          color: TOKEN_COLORS[pt.idx % TOKEN_COLORS.length],
-                          opacity: isHovered ? 1 : 0.7,
-                        }}
-                      >
-                        {pt.token}
-                      </span>
-                    </div>
-                  </Whisper>
+                      <div className="flex flex-col items-center cursor-help">
+                        <div
+                          className="w-3 h-3 rounded-full shadow-sm transition-all"
+                          style={{
+                            background: TOKEN_COLORS[pt.idx % TOKEN_COLORS.length],
+                            opacity: isHovered ? 1 : 0.8,
+                          }}
+                        />
+                        <span
+                          className="text-[10px] font-mono font-medium mt-0.5"
+                          style={{
+                            color: TOKEN_COLORS[pt.idx % TOKEN_COLORS.length],
+                            opacity: isHovered ? 1 : 0.7,
+                          }}
+                        >
+                          {pt.token}
+                        </span>
+                      </div>
+                    </Whisper>
+                  </div>
                 );
               })}
             </div>
