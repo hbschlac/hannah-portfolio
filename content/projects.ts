@@ -169,10 +169,12 @@ export const projects: Project[] = [
     keyLearning: "The scraping workaround that unlocked the product catalog is also the code I can't audit — getting something built and trusting what was built are not the same problem.",
     artifacts: {
       screenshots: [
+        "/projects/muse/home-feed.png",
         "/projects/muse/inspire.jpg",
         "/projects/muse/chat.png",
       ],
       screenshotCaptions: [
+        "Home feed: follow brands like you follow people",
         "Inspire: a visual grid of looks to browse",
         "Talk with Muse: AI stylist that learns your taste",
       ],
