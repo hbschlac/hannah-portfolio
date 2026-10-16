@@ -14,6 +14,12 @@ const DUTCH_SOLUTIONS_ORIGIN = "https://dutchinterviewprep.vercel.app";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  // Next traces sharp (~20-35 MB of native image libraries) into every server
+  // function, but nothing here imports it and Vercel optimizes images on its
+  // own servers. Dropping it keeps each deployment small (Function Storage).
+  outputFileTracingExcludes: {
+    "/**": ["node_modules/sharp/**", "node_modules/@img/**"],
+  },
   async rewrites() {
     return [
       ...WIX_ARCHIVES.flatMap((site) => [
