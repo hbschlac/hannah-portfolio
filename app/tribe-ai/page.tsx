@@ -69,7 +69,9 @@ const ARTIFACTS: Artifact[] = [
 
 function previewExists(relPath: string): boolean {
   try {
-    const abs = path.join(process.cwd(), "public", relPath.replace(/^\//, ""));
+    // Join a fixed "public/tribe-ai" prefix (not the whole public/ folder) so
+    // Vercel's file tracing only bundles the preview images into this page.
+    const abs = path.join(process.cwd(), "public", "tribe-ai", path.basename(relPath));
     return fs.existsSync(abs);
   } catch {
     return false;
