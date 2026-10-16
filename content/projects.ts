@@ -543,53 +543,6 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: "vantara-agent-studio",
-    unlisted: true,
-    title: "Vantara Agent Studio",
-    oneLiner: "A working enterprise agent-builder, built in a day for my Vercel PM application — demo mode included, no API setup required.",
-    tileInsight: "Building a prototype for a hiring manager is the same job as building one for a user: show them what's possible, make it real enough to believe.",
-    tags: ["AI", "Full-Stack", "Vibecoding"],
-    thumbnailColor: "#1A1A1A",
-    thumbnailImage: "/projects/vantara-agent-studio/landing.png",
-    keyLearning: "The hard design problem in enterprise agent building isn't the AI layer — it's giving non-technical users enough structure to describe what they actually want. The wizard is really a structured prompt for the human, not the model.",
-    problem: "The Vercel PM (Agent Platform) role asked for someone who understands where enterprise agent UX is heading. I didn't want to write another cover letter about it. I wanted to build something instead — a real product that shows the PM thinking, not a doc that describes it.",
-    hypothesis: "If I can design a credible enterprise agent-building workflow in a day — with real AI responses, a dashboard, and version history — I can show the product judgment that matters for the role without a slide deck.",
-    built: "A 4-step wizard that takes an enterprise use case to a deployed agent: collect context, generate Claude-powered clarifying questions, preview agent output, simulate deploy. Built on Vercel AI SDK edge runtime with Upstash Redis for persistence.\n\nThe scenario: a healthcare org managing 500 employees across 15 practices, with three agent types — Leadership (monthly updates), Regulatory (federal policy monitoring), Operations (patient volume). Demo mode lets a hiring manager walk through the full wizard without any API setup. Try it: vantara-agent-studio.vercel.app/build?usecase=comms&demo=true",
-    broke: "Demo mode revealed something: the experience with real Claude responses and with pre-baked ones felt almost identical — which means the UX is doing real work independent of the model. The enterprise vertical also taught me that agent use case framing is everything. The same capability reads completely differently depending on the job it's being asked to do.",
-    learned: "Structuring the wizard as a 'prompt for the human' — not a configuration UI — was the right call. Non-technical users don't know how to specify what they want from an agent. The clarifying question step isn't about collecting data; it's about helping the user articulate the problem.",
-    nextSteps: "This stays a demo unless I get the job. If I kept going: A/B test the clarifying question step — fewer, better questions probably outperform the current model. Version history with semantic diffs (what actually changed about the agent's behavior, not just a timestamp) would be the real product bet.",
-    services: [
-      {
-        layer: "Frontend",
-        note: "Next.js 16 App Router with Tailwind CSS 4 and Geist font",
-        items: ["Next.js 16.2.2", "TypeScript", "Tailwind CSS 4", "Geist"],
-      },
-      {
-        layer: "AI Layer",
-        note: "Vercel AI SDK on Edge Runtime, Claude for questions + preview",
-        items: ["Vercel AI SDK", "Anthropic Claude", "Edge Runtime", "Demo mode"],
-      },
-      {
-        layer: "Data & Platform",
-        note: "Upstash Redis for agent persistence, Vercel Analytics + Speed Insights",
-        items: ["Upstash Redis", "Vercel Analytics", "Vercel Speed Insights"],
-      },
-    ],
-    artifacts: {
-      screenshots: [
-        "/projects/vantara-agent-studio/landing.png",
-        "/projects/vantara-agent-studio/wizard-flow.gif",
-        "/projects/vantara-agent-studio/dashboard.png",
-      ],
-      screenshotCaptions: [
-        "Landing: build agents your team can use — no engineering required",
-        "The 4-step wizard end-to-end: starting point → clarifying questions → preview → deployed",
-        "Dashboard: 3 agents deployed, version history, schedule, and status",
-      ],
-      liveUrl: "https://vantara-agent-studio.vercel.app",
-    },
-  },
-  {
     slug: "workspace-ai-gaps",
     unlisted: true,
     title: "Gemini Workspace AI Opportunity Map",
