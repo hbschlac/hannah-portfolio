@@ -161,6 +161,14 @@ const nextConfig: NextConfig = {
           "https://drive.google.com/file/d/1hKrG9YZ57Qtmcj75iKT_rihxop413H0w/view",
         permanent: false,
       },
+      // Sela AI Product Manager-tailored CV (Sam's note to their CTO). PDF export in Drive for
+      // the same iPhone reason as /resume-serveai; re-export after any edit to the Doc.
+      {
+        source: "/resume-sela-pm",
+        destination:
+          "https://drive.google.com/file/d/19mDNqiapUhbhibtvgZvQiTpSyvzTAJWH/view",
+        permanent: false,
+      },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
       // reasoning as the CV links above: the bench is a private Artifact, and if it
       // is ever republished to a new artifact this slug has to stay repointable.
