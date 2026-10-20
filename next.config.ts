@@ -153,6 +153,14 @@ const nextConfig: NextConfig = {
           "https://drive.google.com/file/d/15X8VLLkdqQjKkrlW_-6XtbXhfDNknkAs/view",
         permanent: false,
       },
+      // SUNNNY-tailored CV (warm intro via Eric Case, no posting). PDF export in Drive for
+      // the same iPhone reason as /resume-serveai; re-export after any edit to the Doc.
+      {
+        source: "/resume-sunnny",
+        destination:
+          "https://drive.google.com/file/d/1hKrG9YZ57Qtmcj75iKT_rihxop413H0w/view",
+        permanent: false,
+      },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
       // reasoning as the CV links above: the bench is a private Artifact, and if it
       // is ever republished to a new artifact this slug has to stay repointable.
