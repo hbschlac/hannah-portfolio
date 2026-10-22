@@ -169,6 +169,14 @@ const nextConfig: NextConfig = {
           "https://drive.google.com/file/d/19mDNqiapUhbhibtvgZvQiTpSyvzTAJWH/view",
         permanent: false,
       },
+      // Truewind Accounting Agents Solutions-tailored CV (reply to Sam Klein's outreach). PDF
+      // export in Drive for the same iPhone reason as /resume-serveai; re-export after any edit.
+      {
+        source: "/resume-truewind-solutions",
+        destination:
+          "https://drive.google.com/file/d/1yRsVouoO9Miq-IQ2W9NMFbCjQAtY96mu/view",
+        permanent: false,
+      },
       // Memorable link to Bullet Bench, the resume builder. 307 on purpose, same
       // reasoning as the CV links above: the bench is a private Artifact, and if it
       // is ever republished to a new artifact this slug has to stay repointable.
