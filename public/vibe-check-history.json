@@ -1,15 +1,5 @@
 [
   {
-    "generated_at": "2026-08-20T17:04:56.225745+00:00",
-    "vibe_score": 62,
-    "theme_scores": {
-      "does_it_work": 68,
-      "do_i_know": 67,
-      "any_mess": 52
-    },
-    "biggest_lever": "debug_spiral"
-  },
-  {
     "generated_at": "2026-08-21T17:01:23.627628+00:00",
     "vibe_score": 60,
     "theme_scores": {
@@ -514,6 +504,16 @@
     "vibe_score": 62,
     "theme_scores": {
       "does_it_work": 66,
+      "do_i_know": 67,
+      "any_mess": 52
+    },
+    "biggest_lever": "debug_spiral"
+  },
+  {
+    "generated_at": "2026-10-25T17:11:59.425024+00:00",
+    "vibe_score": 69,
+    "theme_scores": {
+      "does_it_work": 89,
       "do_i_know": 67,
       "any_mess": 52
     },
