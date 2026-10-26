@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-25T17:11:59.425024+00:00",
+  "generated_at": "2026-10-26T17:00:27.982388+00:00",
   "window_days": 90,
-  "vibe_score": 69,
-  "verdict": "solid",
+  "vibe_score": 64,
+  "verdict": "decent",
   "biggest_lever": "debug_spiral",
   "focus": {
     "metric": "debug_spiral",
@@ -60,9 +60,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 89,
+      "score": 74,
       "weakest_metric": "uptime",
-      "weakest_score": 57
+      "weakest_score": 29
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -105,44 +105,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "971ms",
+      "value": "1486ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1395
+            "ttfb_ms": 1214
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 501
+            "ttfb_ms": 2203
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1018
+            "ttfb_ms": 1040
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 971,
+        "avg_ttfb_ms": 1486,
         "unreachable": []
       },
-      "score": 57,
+      "score": 29,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
+          "url": "https://www.muse.shopping",
+          "status": 200,
+          "ttfb_ms": 2203
+        },
+        {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1395
+          "ttfb_ms": 1214
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1018
-        },
-        {
-          "url": "https://www.muse.shopping",
-          "status": 200,
-          "ttfb_ms": 501
+          "ttfb_ms": 1040
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -160,40 +160,26 @@
       "how_to_improve": "Already perfect on this one."
     },
     "cron_health": {
-      "value": "all current",
+      "value": "1 stale",
       "raw": {
-        "healthy": 3,
-        "stale": 0,
+        "healthy": 2,
+        "stale": 1,
         "disabled": 3,
         "no_data": 0,
         "total_enabled": 3
       },
-      "score": 100,
+      "score": 67,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "vercel-deploy-fixer",
           "last_run": "2026-10-25",
-          "days_stale": 0.1,
+          "days_stale": 1.1,
           "expected_period_days": 0.2,
-          "ratio": 0.5
-        },
-        {
-          "task": "git-sync-fixer",
-          "last_run": "2026-10-25",
-          "days_stale": 0.6,
-          "expected_period_days": 1.0,
-          "ratio": 0.6
-        },
-        {
-          "task": "vibe-coach-weekly",
-          "last_run": "2026-10-25",
-          "days_stale": 0.6,
-          "expected_period_days": 1.0,
-          "ratio": 0.6
+          "ratio": 6.5
         }
       ],
-      "examples_label": "Healthy tasks",
+      "examples_label": "Stale scheduled tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
