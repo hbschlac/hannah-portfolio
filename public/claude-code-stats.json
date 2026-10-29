@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-27T17:00:15+00:00",
+  "generated_at": "2026-10-29T17:00:11+00:00",
   "total": {
-    "hours": 1453.4,
-    "sessions": 905,
+    "hours": 1453.5,
+    "sessions": 909,
     "commits": 362,
-    "days_active": 132,
+    "days_active": 133,
     "first_month": "2026-02",
     "latest_month": "2026-10"
   },
@@ -225,12 +225,12 @@
     },
     {
       "month": "2026-10",
-      "sessions": 178,
-      "hours": 119.7,
-      "avg_per_week_hours": 31.0,
+      "sessions": 182,
+      "hours": 119.8,
+      "avg_per_week_hours": 28.9,
       "max_session_hours": 6.0,
-      "days_active": 23,
-      "avg_length_min": 40,
+      "days_active": 24,
+      "avg_length_min": 39,
       "commits": 0,
       "top_projects": [
         {

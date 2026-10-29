@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-27T17:00:35.024396+00:00",
+  "generated_at": "2026-10-29T17:00:29.589616+00:00",
   "window_days": 90,
   "vibe_score": 64,
   "verdict": "decent",
@@ -60,9 +60,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 72,
+      "score": 73,
       "weakest_metric": "uptime",
-      "weakest_score": 22
+      "weakest_score": 25
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -105,44 +105,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1604ms",
+      "value": "1558ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1226
+            "ttfb_ms": 1416
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2205
+            "ttfb_ms": 2099
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1381
+            "ttfb_ms": 1159
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1604,
+        "avg_ttfb_ms": 1558,
         "unreachable": []
       },
-      "score": 22,
+      "score": 25,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2205
-        },
-        {
-          "url": "https://kindle.schlacter.me",
-          "status": 200,
-          "ttfb_ms": 1381
+          "ttfb_ms": 2099
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1226
+          "ttfb_ms": 1416
+        },
+        {
+          "url": "https://kindle.schlacter.me",
+          "status": 200,
+          "ttfb_ms": 1159
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -174,9 +174,9 @@
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-10-25",
-          "days_stale": 2.6,
+          "days_stale": 4.6,
           "expected_period_days": 1.0,
-          "ratio": 2.6
+          "ratio": 4.6
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -199,7 +199,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-08-03",
-        "total_sessions": 426
+        "total_sessions": 430
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
