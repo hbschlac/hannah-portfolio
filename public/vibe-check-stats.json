@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-02T18:20:11.260829+00:00",
+  "generated_at": "2026-11-03T18:02:24.888631+00:00",
   "window_days": 90,
-  "vibe_score": 62,
-  "verdict": "decent",
+  "vibe_score": 46,
+  "verdict": "mid",
   "biggest_lever": "debug_spiral",
   "focus": {
     "metric": "debug_spiral",
@@ -60,9 +60,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 67,
-      "weakest_metric": "cron_health",
-      "weakest_score": 33
+      "score": 30,
+      "weakest_metric": "broken_in_prod",
+      "weakest_score": 25
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -73,7 +73,7 @@
         "reverts",
         "debug_spiral"
       ],
-      "score": 67,
+      "score": 57,
       "weakest_metric": "debug_spiral",
       "weakest_score": 0
     },
@@ -93,71 +93,97 @@
   },
   "metrics": {
     "broken_in_prod": {
-      "value": "0",
+      "value": "1",
       "raw": {
-        "emergencies": 0,
-        "total_fixes": 0
+        "emergencies": 1,
+        "total_fixes": 2
       },
-      "score": 100,
+      "score": 25,
       "caption": "hotfixes within 24h of the commit they broke",
-      "examples": [],
+      "examples": [
+        {
+          "repo": "muse-shopping",
+          "sha": "f09f40d",
+          "msg": "Fix agent key setup alert and make the script safe to re-run\u2026",
+          "ts": 1793688975,
+          "broke": "Merge pull request #20 from hbschlac/claude/project-thread-0\u2026",
+          "broke_sha": "597e3ac",
+          "gap_hours": 0.0
+        }
+      ],
       "examples_label": "Hotfixes and the commits they patched",
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1350ms",
+      "value": "1401ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1007
+            "ttfb_ms": 1149
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2132
+            "ttfb_ms": 1955
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 910
+            "ttfb_ms": 1100
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1350,
+        "avg_ttfb_ms": 1401,
         "unreachable": []
       },
-      "score": 36,
+      "score": 33,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2132
+          "ttfb_ms": 1955
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 1007
+          "ttfb_ms": 1149
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 910
+          "ttfb_ms": 1100
         }
       ],
       "examples_label": "Live site response times (slowest first)",
       "how_to_improve": "Slow TTFB usually means a cold serverless function or a DB call on every request. Cache reads at the edge, lazy-load non-critical data, and keep the homepage payload small."
     },
     "mttf": {
-      "value": "n/a",
+      "value": "523.8h",
       "raw": {
-        "samples": 0
+        "median_hours": 523.8,
+        "samples": 2
       },
-      "score": 100,
+      "score": 27,
       "caption": "median hours bugs lived before patched",
-      "examples": [],
-      "examples_label": "Slowest-detected fixes",
-      "how_to_improve": "Already perfect on this one."
+      "examples": [
+        {
+          "repo": "muse-shopping",
+          "sha": "8a163a4",
+          "msg": "Fix broken brand images on Home and $0.00 prices on Discover\u2026",
+          "ts": 1792028003,
+          "hours": 523.8
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "f09f40d",
+          "msg": "Fix agent key setup alert and make the script safe to re-run\u2026",
+          "ts": 1793688975,
+          "hours": 0.0
+        }
+      ],
+      "examples_label": "Slowest-detected fixes (highest delays)",
+      "how_to_improve": "Long delays mean bugs lived in prod unnoticed. Add a smoke-check on the routes you care about. Get failure alerts to your phone for at least one path per site."
     },
     "cron_health": {
       "value": "2 stale",
@@ -174,31 +200,44 @@
         {
           "task": "git-sync-fixer",
           "last_run": "2026-10-29",
-          "days_stale": 4.5,
+          "days_stale": 5.5,
           "expected_period_days": 1.0,
-          "ratio": 4.5
+          "ratio": 5.5
         },
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-10-31",
-          "days_stale": 2.1,
+          "days_stale": 3.1,
           "expected_period_days": 1.0,
-          "ratio": 2.1
+          "ratio": 3.1
         }
       ],
       "examples_label": "Stale scheduled tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
-      "value": "0%",
+      "value": "22%",
       "raw": {
-        "fix": 0,
-        "feat": 0,
-        "total": 0
+        "fix": 2,
+        "feat": 7,
+        "total": 28
       },
-      "score": 100,
+      "score": 72,
       "caption": "of commits start with 'fix'",
-      "examples": [],
+      "examples": [
+        {
+          "repo": "muse-shopping",
+          "sha": "f09f40d",
+          "msg": "Fix agent key setup alert and make the script safe to re-run\u2026",
+          "ts": 1793688975
+        },
+        {
+          "repo": "muse-shopping",
+          "sha": "8a163a4",
+          "msg": "Fix broken brand images on Home and $0.00 prices on Discover\u2026",
+          "ts": 1792028003
+        }
+      ],
       "examples_label": "Sample fix commits",
       "how_to_improve": "Write one more line of plan before each change. Run it locally or in a preview before merging. Pair commit msgs with 'feat:' when you're adding something \u2014 habitual 'fix:' framing skews the number."
     },
@@ -206,7 +245,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-08-09",
-        "total_sessions": 445
+        "total_sessions": 451
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
@@ -301,9 +340,9 @@
       "how_to_improve": "Half your TODOs are dead \u2014 written, forgotten, irrelevant. Once a month, walk through them: delete what no longer applies, turn what matters into a real task, leave only what's truly pending."
     },
     "secrets_blocked": {
-      "value": "3",
+      "value": "5",
       "raw": {
-        "patterns_blocked": 3,
+        "patterns_blocked": 5,
         "repos_protected": 2,
         "total_repos": 4
       },
@@ -326,7 +365,7 @@
       "value": "0",
       "raw": {
         "reverts": 0,
-        "total": 0
+        "total": 28
       },
       "score": 100,
       "caption": "reverts and 'oops' commits",
