@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-06T18:00:32.433448+00:00",
+  "generated_at": "2026-11-07T18:07:50.743949+00:00",
   "window_days": 90,
-  "vibe_score": 46,
-  "verdict": "mid",
+  "vibe_score": 51,
+  "verdict": "decent",
   "biggest_lever": "debug_spiral",
   "focus": {
     "metric": "debug_spiral",
@@ -60,7 +60,7 @@
         "mttf",
         "cron_health"
       ],
-      "score": 29,
+      "score": 44,
       "weakest_metric": "broken_in_prod",
       "weakest_score": 25
     },
@@ -115,44 +115,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1440ms",
+      "value": "1534ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 731
+            "ttfb_ms": 1296
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 2408
+            "ttfb_ms": 2111
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1182
+            "ttfb_ms": 1194
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1440,
+        "avg_ttfb_ms": 1534,
         "unreachable": []
       },
-      "score": 31,
+      "score": 26,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 2408
-        },
-        {
-          "url": "https://kindle.schlacter.me",
-          "status": 200,
-          "ttfb_ms": 1182
+          "ttfb_ms": 2111
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 731
+          "ttfb_ms": 1296
+        },
+        {
+          "url": "https://kindle.schlacter.me",
+          "status": 200,
+          "ttfb_ms": 1194
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -186,33 +186,40 @@
       "how_to_improve": "Long delays mean bugs lived in prod unnoticed. Add a smoke-check on the routes you care about. Get failure alerts to your phone for at least one path per site."
     },
     "cron_health": {
-      "value": "2 stale",
+      "value": "all current",
       "raw": {
-        "healthy": 1,
-        "stale": 2,
+        "healthy": 3,
+        "stale": 0,
         "disabled": 3,
         "no_data": 0,
         "total_enabled": 3
       },
-      "score": 33,
+      "score": 100,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
+          "task": "vercel-deploy-fixer",
+          "last_run": "2026-11-07",
+          "days_stale": 0.1,
+          "expected_period_days": 0.2,
+          "ratio": 0.7
+        },
+        {
           "task": "git-sync-fixer",
-          "last_run": "2026-10-29",
-          "days_stale": 8.5,
+          "last_run": "2026-11-07",
+          "days_stale": 0.4,
           "expected_period_days": 1.0,
-          "ratio": 8.5
+          "ratio": 0.4
         },
         {
           "task": "vibe-coach-weekly",
-          "last_run": "2026-10-31",
-          "days_stale": 6.1,
+          "last_run": "2026-11-07",
+          "days_stale": 0.1,
           "expected_period_days": 1.0,
-          "ratio": 6.1
+          "ratio": 0.1
         }
       ],
-      "examples_label": "Stale scheduled tasks",
+      "examples_label": "Healthy tasks",
       "how_to_improve": "Open the Scheduled sidebar and hit 'Run now' on each stale task to pre-approve its tools. Tasks hang at permission prompts when unattended. If the app is closed when a task is due, it queues until next launch \u2014 keep Claude Code open during expected firings."
     },
     "fix_to_feature": {
@@ -244,18 +251,12 @@
     "debug_spiral": {
       "value": "6.0h",
       "raw": {
-        "date": "2026-08-09",
-        "total_sessions": 463
+        "date": "2026-08-16",
+        "total_sessions": 466
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
       "examples": [
-        {
-          "session": "f77a1d52",
-          "project": "Interior-Design",
-          "hours": 6.0,
-          "date": "2026-08-09"
-        },
         {
           "session": "d6adde5a",
           "project": "Interior-Design",
@@ -276,6 +277,12 @@
         },
         {
           "session": "21bfd5b7",
+          "project": "-Users-hannahschlacter",
+          "hours": 6.0,
+          "date": "2026-08-16"
+        },
+        {
+          "session": "8385e4c5",
           "project": "-Users-hannahschlacter",
           "hours": 6.0,
           "date": "2026-08-16"
