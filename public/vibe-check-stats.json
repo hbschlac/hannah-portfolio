@@ -1,16 +1,17 @@
 {
-  "generated_at": "2026-11-11T18:00:32.567784+00:00",
+  "generated_at": "2026-11-12T18:00:31.022087+00:00",
   "window_days": 90,
-  "vibe_score": 49,
+  "vibe_score": 46,
   "verdict": "mid",
-  "biggest_lever": "debug_spiral",
+  "biggest_lever": "uptime",
   "focus": {
-    "metric": "debug_spiral",
-    "headline": "Stop the 6-hour loops",
+    "metric": "uptime",
+    "headline": "Make the live sites respond fast",
     "score": 0,
     "actions": [
-      "Worst loop was 6.0h in Interior-Design \u2014 when 3 hours in and looping, stop. Restart with a written goal.",
-      "Set a personal 2-hour timer on hard debugging sessions before walking away."
+      "Cut TTFB on https://www.muse.shopping (currently 3277ms) \u2014 likely a cold serverless function or an un-cached DB call on the homepage.",
+      "Add edge caching to read-heavy routes.",
+      "Move non-critical data fetches client-side so the first byte lands quickly."
     ]
   },
   "improver_activity": {
@@ -60,9 +61,9 @@
         "mttf",
         "cron_health"
       ],
-      "score": 38,
-      "weakest_metric": "broken_in_prod",
-      "weakest_score": 25
+      "score": 30,
+      "weakest_metric": "uptime",
+      "weakest_score": 0
     },
     "do_i_know": {
       "label": "Do I know what I'm doing?",
@@ -115,44 +116,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "1423ms",
+      "value": "2144ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1234
+            "ttfb_ms": 1158
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 1897
+            "ttfb_ms": 3277
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1137
+            "ttfb_ms": 1996
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 1423,
+        "avg_ttfb_ms": 2144,
         "unreachable": []
       },
-      "score": 32,
+      "score": 0,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 1897
-        },
-        {
-          "url": "https://schlacter.me",
-          "status": 200,
-          "ttfb_ms": 1234
+          "ttfb_ms": 3277
         },
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1137
+          "ttfb_ms": 1996
+        },
+        {
+          "url": "https://schlacter.me",
+          "status": 200,
+          "ttfb_ms": 1158
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -200,9 +201,9 @@
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-11-07",
-          "days_stale": 4.1,
+          "days_stale": 5.1,
           "expected_period_days": 1.0,
-          "ratio": 4.1
+          "ratio": 5.1
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -238,7 +239,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-08-16",
-        "total_sessions": 493
+        "total_sessions": 498
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
