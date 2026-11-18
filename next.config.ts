@@ -12,6 +12,10 @@ const WIX_ARCHIVES = ["biggerthanrun", "reva", "ruach2016"];
 // headers, so visitors stay on schlacter.me.
 const DUTCH_SOLUTIONS_ORIGIN = "https://dutchinterviewprep.vercel.app";
 
+// /dutch-plan is a second password-gated app from the same private repo (its plan/ folder, basePath
+// "/dutch-plan", its own Vercel project and password). Same pattern: its proxy does the auth.
+const DUTCH_PLAN_ORIGIN = "https://dutch-plan.vercel.app";
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   // Next traces sharp (~20-35 MB of native image libraries) into every server
@@ -28,6 +32,8 @@ const nextConfig: NextConfig = {
       ]),
       { source: "/dutch-solutions", destination: `${DUTCH_SOLUTIONS_ORIGIN}/dutch-solutions` },
       { source: "/dutch-solutions/:path*", destination: `${DUTCH_SOLUTIONS_ORIGIN}/dutch-solutions/:path*` },
+      { source: "/dutch-plan", destination: `${DUTCH_PLAN_ORIGIN}/dutch-plan` },
+      { source: "/dutch-plan/:path*", destination: `${DUTCH_PLAN_ORIGIN}/dutch-plan/:path*` },
       {
         source: "/aiprojects",
         destination: "/projects",
