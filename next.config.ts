@@ -14,7 +14,7 @@ const DUTCH_SOLUTIONS_ORIGIN = "https://dutchinterviewprep.vercel.app";
 
 // /dutch-plan is a second password-gated app from the same private repo (its plan/ folder, basePath
 // "/dutch-plan", its own Vercel project and password). Same pattern: its proxy does the auth.
-const DUTCH_PLAN_ORIGIN = "https://dutch-plan.vercel.app";
+const DUTCH_PLAN_ORIGIN = "https://dutchinterviewprep-5xvo.vercel.app";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
