@@ -16,6 +16,12 @@ const DUTCH_SOLUTIONS_ORIGIN = "https://dutchinterviewprep.vercel.app";
 // "/dutch-plan", its own Vercel project and password). Same pattern: its proxy does the auth.
 const DUTCH_PLAN_ORIGIN = "https://dutchinterviewprep-5xvo.vercel.app";
 
+// /agentic-commerce is a static one-page work sample from a private repo,
+// deployed as its own Vercel project. Its pages send noindex headers. Same forwarding pattern as the
+// Dutch apps; the bare path maps to index.html explicitly so the origin never has to redirect (a
+// redirect would show the vercel.app host).
+const AGENTIC_COMMERCE_ORIGIN = "https://agentic-commerce-ras.vercel.app";
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   // Next traces sharp (~20-35 MB of native image libraries) into every server
@@ -34,6 +40,8 @@ const nextConfig: NextConfig = {
       { source: "/dutch-solutions/:path*", destination: `${DUTCH_SOLUTIONS_ORIGIN}/dutch-solutions/:path*` },
       { source: "/dutch-plan", destination: `${DUTCH_PLAN_ORIGIN}/dutch-plan` },
       { source: "/dutch-plan/:path*", destination: `${DUTCH_PLAN_ORIGIN}/dutch-plan/:path*` },
+      { source: "/agentic-commerce", destination: `${AGENTIC_COMMERCE_ORIGIN}/agentic-commerce/index.html` },
+      { source: "/agentic-commerce/:path*", destination: `${AGENTIC_COMMERCE_ORIGIN}/agentic-commerce/:path*` },
       {
         source: "/aiprojects",
         destination: "/projects",
