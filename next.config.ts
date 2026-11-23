@@ -14,7 +14,8 @@ const DUTCH_SOLUTIONS_ORIGIN = "https://dutchinterviewprep.vercel.app";
 
 // /dutch-presentation is a second password-gated app from the same private repo (its plan/ folder, basePath
 // "/dutch-presentation", its own Vercel project and password). Same pattern: its proxy does the auth.
-// It was /dutch-plan until 11/23; the old path redirects so links already shared still work.
+// It was /dutch-plan until 11/23; the old path redirects so links already shared still work
+// (deployed 11/23 after Vercel's daily deploy cap reset).
 const DUTCH_PLAN_ORIGIN = "https://dutchinterviewprep-5xvo.vercel.app";
 
 // /agentic-commerce is a static one-page work sample from a private repo,
