@@ -12,8 +12,9 @@ const WIX_ARCHIVES = ["biggerthanrun", "reva", "ruach2016"];
 // headers, so visitors stay on schlacter.me.
 const DUTCH_SOLUTIONS_ORIGIN = "https://dutchinterviewprep.vercel.app";
 
-// /dutch-plan is a second password-gated app from the same private repo (its plan/ folder, basePath
-// "/dutch-plan", its own Vercel project and password). Same pattern: its proxy does the auth.
+// /dutch-presentation is a second password-gated app from the same private repo (its plan/ folder, basePath
+// "/dutch-presentation", its own Vercel project and password). Same pattern: its proxy does the auth.
+// It was /dutch-plan until 11/23; the old path redirects so links already shared still work.
 const DUTCH_PLAN_ORIGIN = "https://dutchinterviewprep-5xvo.vercel.app";
 
 // /agentic-commerce is a static one-page work sample from a private repo,
@@ -38,8 +39,8 @@ const nextConfig: NextConfig = {
       ]),
       { source: "/dutch-solutions", destination: `${DUTCH_SOLUTIONS_ORIGIN}/dutch-solutions` },
       { source: "/dutch-solutions/:path*", destination: `${DUTCH_SOLUTIONS_ORIGIN}/dutch-solutions/:path*` },
-      { source: "/dutch-plan", destination: `${DUTCH_PLAN_ORIGIN}/dutch-plan` },
-      { source: "/dutch-plan/:path*", destination: `${DUTCH_PLAN_ORIGIN}/dutch-plan/:path*` },
+      { source: "/dutch-presentation", destination: `${DUTCH_PLAN_ORIGIN}/dutch-presentation` },
+      { source: "/dutch-presentation/:path*", destination: `${DUTCH_PLAN_ORIGIN}/dutch-presentation/:path*` },
       { source: "/agentic-commerce", destination: `${AGENTIC_COMMERCE_ORIGIN}/agentic-commerce/index.html` },
       { source: "/agentic-commerce/:path*", destination: `${AGENTIC_COMMERCE_ORIGIN}/agentic-commerce/:path*` },
       {
@@ -92,6 +93,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/dutch-plan", destination: "/dutch-presentation", permanent: false },
+      { source: "/dutch-plan/:path*", destination: "/dutch-presentation/:path*", permanent: false },
       // Short link for sharing the general CV (e.g. in outreach and group chats).
       // Temporary (307) on purpose: points at the live Google Doc for now, so it
       // can be repointed to a PDF later without browsers having cached a 308.
