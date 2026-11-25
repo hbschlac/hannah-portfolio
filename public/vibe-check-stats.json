@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T18:09:42.932149+00:00",
+  "generated_at": "2026-11-25T18:14:26.297972+00:00",
   "window_days": 90,
   "vibe_score": 52,
   "verdict": "decent",
@@ -60,7 +60,7 @@
         "mttf",
         "cron_health"
       ],
-      "score": 47,
+      "score": 48,
       "weakest_metric": "broken_in_prod",
       "weakest_score": 25
     },
@@ -115,44 +115,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "734ms",
+      "value": "716ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 992
+            "ttfb_ms": 812
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 194
+            "ttfb_ms": 222
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1017
+            "ttfb_ms": 1113
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 734,
+        "avg_ttfb_ms": 716,
         "unreachable": []
       },
-      "score": 70,
+      "score": 71,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1017
+          "ttfb_ms": 1113
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 992
+          "ttfb_ms": 812
         },
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 194
+          "ttfb_ms": 222
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -200,9 +200,9 @@
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-11-21",
-          "days_stale": 3.1,
+          "days_stale": 4.1,
           "expected_period_days": 1.0,
-          "ratio": 3.1
+          "ratio": 4.1
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -238,7 +238,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-11-19",
-        "total_sessions": 518
+        "total_sessions": 524
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
