@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-25T18:14:26.297972+00:00",
+  "generated_at": "2026-11-27T21:24:42.701944+00:00",
   "window_days": 90,
-  "vibe_score": 52,
-  "verdict": "decent",
+  "vibe_score": 49,
+  "verdict": "mid",
   "biggest_lever": "debug_spiral",
   "focus": {
     "metric": "debug_spiral",
@@ -60,7 +60,7 @@
         "mttf",
         "cron_health"
       ],
-      "score": 48,
+      "score": 38,
       "weakest_metric": "broken_in_prod",
       "weakest_score": 25
     },
@@ -115,44 +115,44 @@
       "how_to_improve": "The damning pattern: ship \u2192 site breaks \u2192 hotfix. Before merging, run the actual user flow once in preview. For auth/payments/data writes, do it in prod after the deploy lands."
     },
     "uptime": {
-      "value": "716ms",
+      "value": "767ms",
       "raw": {
         "sites": {
           "https://schlacter.me": {
             "status": 200,
-            "ttfb_ms": 812
+            "ttfb_ms": 732
           },
           "https://www.muse.shopping": {
             "status": 200,
-            "ttfb_ms": 222
+            "ttfb_ms": 595
           },
           "https://kindle.schlacter.me": {
             "status": 200,
-            "ttfb_ms": 1113
+            "ttfb_ms": 973
           }
         },
         "ok_rate": 1.0,
-        "avg_ttfb_ms": 716,
+        "avg_ttfb_ms": 767,
         "unreachable": []
       },
-      "score": 71,
+      "score": 68,
       "unmeasured": false,
       "caption": "avg time to first byte across live sites",
       "examples": [
         {
           "url": "https://kindle.schlacter.me",
           "status": 200,
-          "ttfb_ms": 1113
+          "ttfb_ms": 973
         },
         {
           "url": "https://schlacter.me",
           "status": 200,
-          "ttfb_ms": 812
+          "ttfb_ms": 732
         },
         {
           "url": "https://www.muse.shopping",
           "status": 200,
-          "ttfb_ms": 222
+          "ttfb_ms": 595
         }
       ],
       "examples_label": "Live site response times (slowest first)",
@@ -186,23 +186,30 @@
       "how_to_improve": "Long delays mean bugs lived in prod unnoticed. Add a smoke-check on the routes you care about. Get failure alerts to your phone for at least one path per site."
     },
     "cron_health": {
-      "value": "1 stale",
+      "value": "2 stale",
       "raw": {
-        "healthy": 2,
-        "stale": 1,
+        "healthy": 1,
+        "stale": 2,
         "disabled": 3,
         "no_data": 0,
         "total_enabled": 3
       },
-      "score": 67,
+      "score": 33,
       "caption": "scheduled tasks firing on time (stale = >2\u00d7 expected period)",
       "examples": [
         {
           "task": "vibe-coach-weekly",
           "last_run": "2026-11-21",
-          "days_stale": 4.1,
+          "days_stale": 6.2,
           "expected_period_days": 1.0,
-          "ratio": 4.1
+          "ratio": 6.2
+        },
+        {
+          "task": "git-sync-fixer",
+          "last_run": "2026-11-24",
+          "days_stale": 3.6,
+          "expected_period_days": 1.0,
+          "ratio": 3.6
         }
       ],
       "examples_label": "Stale scheduled tasks",
@@ -238,7 +245,7 @@
       "value": "6.0h",
       "raw": {
         "date": "2026-11-19",
-        "total_sessions": 524
+        "total_sessions": 529
       },
       "score": 0,
       "caption": "longest single debug spiral, capped 6h",
